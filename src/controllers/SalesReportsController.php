@@ -36,9 +36,11 @@ class SalesReportsController extends Controller
 	
 	public function report($request, $response, $args)
 	{
-		$customers_ids 			= (isset($request->getParsedBody()["customers_ids"]) ? $request->getParsedBody()["customers_ids"] : null);
-		$sales_docs_codes		= (isset($request->getParsedBody()["sales_docs_codes"]) ? $request->getParsedBody()["sales_docs_codes"] : null);
-		$collections_docs_codes	= (isset($request->getParsedBody()["collections_docs_codes"]) ? $request->getParsedBody()["collections_docs_codes"] : null);
+		$body = $request->getParsedBody();
+		
+		$customers_ids 			= (isset($body["customers_ids"]) ? $body["customers_ids"] : null);
+		$sales_docs_codes		= (isset($body["sales_docs_codes"]) ? $body["sales_docs_codes"] : null);
+		$collections_docs_codes	= (isset($body["collections_docs_codes"]) ? $body["collections_docs_codes"] : null);
 		
 		$sales = SaleHeader::where('project_id', $_SESSION['project_session']->id)
 										->where('is_canceled', false)
@@ -124,7 +126,7 @@ class SalesReportsController extends Controller
 			// subtotals
 			$document->total *= $document->documentType->balance_multiplier;
 			
-			if ($document->documentType->currency_code == 'ARS') {
+			if ($document->documentType->currency_code == 'ARS' || $document->documentType->currency_code == 'UYU') {
 				$subtotalARS = $document->total;
 				$subtotalUSD = $document->total / $exchangePrice;
 			}
@@ -145,7 +147,7 @@ class SalesReportsController extends Controller
                 "dated_at"      => $document->dated_at,
                 "number"        => $document->number,
                 "unique_code"   => $document->document_type_code,
-                "business_name" => $document->customer->business_name,
+                "business_name" => strtoupper(str_replace($find, $replace, $document->customer->business_name)),
 				"description"	=> $description,
                 "exchange"		=> $this->parsedFloat($exchangePrice, 2),
 				"totalARS"		=> $this->parsedFloat($subtotalARS, 2),
@@ -159,7 +161,7 @@ class SalesReportsController extends Controller
 						$this->padr("FECHA", 12, " ") .
 						$this->padr("TIPO", 6, " ") .
 						$this->padr("NUMERO", 15, " ") .
-						$this->padr("PROVEEDOR", 20, " ") .
+						$this->padr("CLIENTE", 20, " ") .
 						$this->padr("DESCRIPCION", 15, " ") .
 						$this->padl("CAMBIO", 7, " ") .
 						$this->padl("TOTAL AR", 14, " ") .

@@ -12,7 +12,7 @@ class Exchange extends Model
 		'dated_at',
 		'currency_code',
 		'price',
-		'company_id',
+		//'company_id',
 	];
 	
 }

@@ -35,9 +35,9 @@ class CurrenciesController extends Controller
 	
 	private function read($request, $response, $args)
 	{
-		$records = Model::where('company_id', $_SESSION["company_session"]->id)
-							->orderBy('description')
-							->get();
+		$records = Model::orderBy('description')
+		                ->where('disabled', 0)
+	                    ->get();
 		
 		return $response->withJson([
 			"Result" 	=> "OK",
@@ -48,7 +48,7 @@ class CurrenciesController extends Controller
 	private function create($request, $response, $args)
 	{
 		$newRecord 					= $request->getParsedBody();
-		$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
+		//$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
 		
 		$id = Model::create($newRecord)->id;
 		$newRecord['id'] = $id;
@@ -85,8 +85,23 @@ class CurrenciesController extends Controller
 	
 	private function options($request, $response, $args)
 	{
-		$options = Model::where('company_id', $_SESSION["company_session"]->id)
-							->selectRaw("unique_code as Value, description as DisplayText")
+		//$options = Model::where('company_id', $_SESSION["company_session"]->id)
+		//					->selectRaw("unique_code as Value, description as DisplayText")
+		//					->orderBy('description', 'asc')
+		//					->get();
+		
+		$exchangeEnabled = false;					
+	    if (isset($args["exchange"]) && $args["exchange"] == 'EXCHANGE') {
+	        $exchangeEnabled = true;
+	    }
+							
+		$options = Model::selectRaw("unique_code as Value, description as DisplayText")
+		                    ->where('disabled', 0)
+		                    ->where(function($q) use ($exchangeEnabled) {
+		                        if ($exchangeEnabled) {
+		                            $q->where('exchange_enabled', 1);
+		                        }
+		                    })
 							->orderBy('description', 'asc')
 							->get();
 		

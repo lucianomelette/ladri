@@ -39,7 +39,7 @@ $app->group('/login', function() use ($sessionAuth, $companyAuth) {
 // currencies
 $app->group('/currencies', function() {
 	$this->get('', 'CurrenciesController');
-	$this->post('/{action}', 'CurrenciesController:action');
+	$this->post('/{action}[/{exchange}]', 'CurrenciesController:action');
 })->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // exchange

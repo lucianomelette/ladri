@@ -11,6 +11,8 @@ class Currency extends Model
 		'id',
 		'unique_code',
 		'description',
-		'company_id',
+		//'company_id',
+		'disabled',
+		'exchange_enabled',
 	];
 }
