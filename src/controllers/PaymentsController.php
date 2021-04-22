@@ -10,6 +10,9 @@ use App\Models\PaymentDetailDeposit;
 use App\Models\PaymentDetailOwnCheck;
 use App\Models\PaymentDetailDebit;
 use App\Models\PaymentDocumentType;
+use App\Models\Currency;
+
+use Illuminate\Support\Facades\DB;
  
 class PaymentsController extends Controller
 {
@@ -19,7 +22,7 @@ class PaymentsController extends Controller
 		$company->load('suppliers');
 		$company->load('banks');
 		$company->load('banksAccounts');
-		$company->load('currencies');
+		//$company->load('currencies');
 		
 		$project = $_SESSION["project_session"];
 		$project->load([
@@ -39,7 +42,7 @@ class PaymentsController extends Controller
 			"documentsTypes" 	=> $project->paymentsDocumentsTypes,
 			"banks" 			=> $company->banks->sortBy("description"),
 			"banksAccounts" 	=> $company->banksAccounts,
-			"currencies" 		=> $company->currencies,
+			"currencies" 		=> Currency::where('disabled', 0)->get(), //$company->currencies,
 		];
 		
 		if (isset($params["headerId"]) and $params["headerId"] > 0)

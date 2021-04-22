@@ -43,10 +43,10 @@ class Company extends Model
         return $this->hasMany('App\Models\BankAccount');
     }
 	
-    public function currencies()
+    /*public function currencies()
     {
         return $this->hasMany('App\Models\Currency');
-    }
+    }*/
 	
 	public function photo()
 	{

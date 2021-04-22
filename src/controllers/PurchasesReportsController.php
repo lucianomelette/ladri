@@ -71,8 +71,8 @@ class PurchasesReportsController extends Controller
 		$balanceARS = 0;
 		$balanceUSD = 0;
 		
-		$find 		= ['Ñ', 'ñ', 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú'];
-		$replace 	= ['N', 'n', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+		$find 		= ['Ñ', 'ñ', 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', '°'];
+		$replace 	= ['N', 'n', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', ''];
 		
 	    while (count($purchases) > $pur or count($payments) > $pay)
 	    {
@@ -125,7 +125,7 @@ class PurchasesReportsController extends Controller
 			// subtotals
 			$document->total *= $document->documentType->balance_multiplier;
 			
-			if ($document->documentType->currency_code == 'ARS') {
+			if ($document->documentType->currency_code == 'ARS' || $document->documentType->currency_code == 'UYU') {
 				$subtotalARS = $document->total;
 				$subtotalUSD = $document->total / $exchangePrice;
 			}
@@ -146,7 +146,7 @@ class PurchasesReportsController extends Controller
                 "dated_at"      => $document->dated_at,
                 "number"        => $document->number,
                 "unique_code"   => $document->document_type_code,
-                "business_name" => $document->supplier->business_name,
+                "business_name" => strtoupper(str_replace($find, $replace, $document->supplier->business_name)),
 				"description"	=> $description,
                 "exchange"		=> $this->parsedFloat($exchangePrice, 2),
 				"totalARS"		=> $this->parsedFloat($subtotalARS, 2),
@@ -197,7 +197,7 @@ class PurchasesReportsController extends Controller
 							$this->padl($this->parsedFloat($balanceUSD, 2), 14, " ") .
 							$this->padl("", 14, " ") .
 							$this->padl("", 14, " ");
-		
+							
 		//return $response->write($responseHTML);
 		
 		return $response->withJson([

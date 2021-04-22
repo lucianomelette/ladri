@@ -8,6 +8,7 @@ use App\Models\CollectionDetailMaterial;
 use App\Models\CollectionDetailThirdPartyCheck;
 use App\Models\CollectionDetailTransfer;
 use App\Models\CollectionDocumentType;
+use App\Models\Currency;
  
 class CashController extends Controller
 {
@@ -17,7 +18,7 @@ class CashController extends Controller
 		$company->load('customers');
 		$company->load('banks');
 		$company->load('banksAccounts');
-		$company->load('currencies');
+		//$company->load('currencies');
 		
 		$project = $_SESSION["project_session"];
 		$project->load([
@@ -37,7 +38,7 @@ class CashController extends Controller
 			"documentsTypes" 	=> $project->collectionsDocumentsTypes,
 			"banks" 			=> $company->banks->sortBy("description"),
 			"banksAccounts" 	=> $company->banksAccounts,
-			"currencies" 		=> $company->currencies,
+			"currencies" 		=> Currency::where('disabled', 0)->get(), //$company->currencies,
 		];
 		
 		if (isset($params["headerId"]) and $params["headerId"] > 0)

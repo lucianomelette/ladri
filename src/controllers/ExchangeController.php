@@ -41,18 +41,15 @@ class ExchangeController extends Controller
 		$recordsCount   = 0;
 		
 	    if ($pageSize != null) {
-	        $records = Model::where('company_id', $_SESSION["company_session"]->id)
-	                        ->orderBy('dated_at', 'desc')
+			$records = Model::orderBy('dated_at', 'desc')
 	                        ->take($pageSize)
 	                        ->skip($startIndex)
 							->get();
 			
-			$recordsCount = Model::where('company_id', $_SESSION["company_session"]->id)
-		                        ->count();
+			$recordsCount = Model::count();
 	    }
 	    else {
-	        $records = Model::where('company_id', $_SESSION["company_session"]->id)
-							->orderBy('dated_at', 'desc')
+	        $records = Model::orderBy('dated_at', 'desc')
 							->get();
 	    }
 		
@@ -68,8 +65,14 @@ class ExchangeController extends Controller
 		$datedAt 		= $request->getParsedBody()["dated_at"];
 		$currencyCode 	= $request->getParsedBody()["currency_code"];
 		
+		/*
 		$exchange =	Model::where('company_id', $_SESSION["company_session"]->id)
 				->where("currency_code", $currencyCode)
+				->where("dated_at", $datedAt)
+				->first();
+		*/
+				
+		$exchange =	Model::where("currency_code", $currencyCode)
 				->where("dated_at", $datedAt)
 				->first();
 			
@@ -89,7 +92,7 @@ class ExchangeController extends Controller
 	private function create($request, $response, $args)
 	{
 		$newRecord 					= $request->getParsedBody();
-		$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
+		//$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
 		
 		$id = Model::create($newRecord)->id;
 		$newRecord['id'] = $id;
