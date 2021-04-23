@@ -26,6 +26,8 @@
 							<data name="document-data" data-header-id="<?= $headerId ?>"></data>
 							<?php endif; ?>
 
+							<data name="document-type-data" data-aff-stock="0"></data>
+
 							<div class="card-body">
 								
 								<div class="row">
@@ -272,6 +274,19 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="row" name="dialog-state-row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="font-weight-bold">Estados:</label>
+							<br>
+							<select class='form-control' name='dialog-state-select'>
+								<option value='0' selected>Pendiente</option>
+								<option value='10.5'>Entregado</option>
+							</select>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 			
@@ -392,6 +407,10 @@
                     }
 
 				    $('input[name="doc-number"]').val(docNumber);
+
+					// Update aff stock on document type change
+					var affStock = $(this).find("option:selected").attr("data-aff-stock");
+					setAffStock(affStock);
 				});
 				
 				// perceptions change
@@ -526,6 +545,14 @@
 				}
 				
 				function showAddOrEditProductDialog(recordData) {
+
+					const affStock = getAffStock();
+					if (affStock != 0) {
+						$('div[name="dialog-state-row"]').show();
+					}
+					else {
+						$('div[name="dialog-state-row"]').hide();
+					}
 
 					if (recordData != undefined) {
 						addOrEditProductsDialog.dialog("option", "recordKey", recordData.record_key);
@@ -842,11 +869,6 @@
 					}
 				}
 
-				function existsMetadata()
-				{
-					return $("data[name='document-data']").length > 0;
-				}
-				
 				function isEdit()
 				{
 					return $("data[name='document-data']").length > 0 && $("data[name='document-data']").attr("data-header-id") > 0;
@@ -857,19 +879,28 @@
 					return $("data[name='document-data']").attr("data-header-id");
 				}
 
+				function getDocumentTypeMetadata()
+				{
+					if ( $("data[name='document-type-data']").length > 0 )
+						return $("data[name='document-type-data']").length > 0;
+					return null;
+				}
+
 				function setAffStock(affStock)
 				{
-					if (existsMetadata()) {
-						$("data[name='document-data']").attr("data-aff-stock", affStock);
+					var meta = getDocumentTypeMetadata();
+					if (meta) {
+						meta.attr("data-aff-stock", affStock);
 					}
 				}
 
 				function getAffStock()
 				{
-					if (existsMetadata()) {
-						return $("data[name='document-data']").attr("data-aff-stock");
+					var meta = getDocumentTypeMetadata();
+					if (meta) {
+						return meta.attr("data-aff-stock");
 					}
-					return false;
+					return 0;
 				}
 				
 				// ********************** //
