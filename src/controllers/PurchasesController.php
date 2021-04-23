@@ -138,6 +138,10 @@ class PurchasesController extends Controller
 			{
 				$row['header_id'] = $headerId;
 
+				var_dump($row['status_id']);
+				var_dump(isset($row['status_id']) && $row['status_id'] == -1);
+				return;
+				
 				if (isset($row['status_id']) && $row['status_id'] == -1)
 					unset($row['status_id']);
 
