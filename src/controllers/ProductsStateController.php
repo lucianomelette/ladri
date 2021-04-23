@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\ProductStatus as Model;
  
-class ProductStateController extends Controller
+class ProductsStateController extends Controller
 {
 	public function __invoke($request, $response)
 	{	
