@@ -18,6 +18,8 @@ class PurchaseHeader extends Model
 		'taxes',
 		'total',
 		'comments',
+		'delivery_date',
+		'delivery_place',
 		'project_id',
 		'is_canceled',
 	];
