@@ -114,6 +114,11 @@ $container['ProductsController'] = function ($container) {
 	return new \App\Controllers\ProductsController($container);
 };
 
+// products controller
+$container['ProductsStateController'] = function ($container) {
+	return new \App\Controllers\ProductsStateController($container);
+};
+
 // investors controller
 $container['InvestorsController'] = function ($container) {
 	return new \App\Controllers\InvestorsController($container);
