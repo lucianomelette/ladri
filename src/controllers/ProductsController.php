@@ -58,16 +58,27 @@ class ProductsController extends Controller
 	
 	private function create($request, $response, $args)
 	{
-		$newRecord 					= $request->getParsedBody();
-		$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
-		
-		$id = Model::create($newRecord)->id;
-		$newRecord['id'] = $id;
-		
-		return $response->withJson([
-			"Result" 	=> "OK",
-			"Record"	=> $newRecord,
-		]);
+		try
+		{
+			$newRecord 					= $request->getParsedBody();
+			$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
+			
+			$id = Model::create($newRecord)->id;
+			$newRecord['id'] = $id;
+			
+			return $response->withJson([
+				"Result" 	=> "OK",
+				"Record"	=> $newRecord,
+			]);
+		}
+		catch(Exception $e)
+		{
+			return $response->withJson([
+				"Result" 	=> "ERROR",
+				"Record"	=> $e->message,
+			]);
+		}
+
 	}
 	
 	private function update($request, $response, $args)
