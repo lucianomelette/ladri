@@ -557,8 +557,7 @@
 					if (recordData != undefined) {
 						addOrEditProductsDialog.dialog("option", "recordKey", recordData.record_key);
 						
-						debugger;
-						$('select[name="dialog-products-select"]').val(recordData.product_id);
+						$('select[name="dialog-products-select"]').val(recordData.product_id).trigger('change');
 						$('input[name="dialog-quantity"]').val(recordData.quantity);
 						$('input[name="dialog-unit-price"]').val(recordData.unit_price);
 						$('input[name="dialog-subtotal"]').val(recordData.subtotal);
