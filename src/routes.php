@@ -156,6 +156,12 @@ $app->group('/products', function() {
 	$this->post('/{action}', 'ProductsController:action');
 })->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
+// products state
+$app->group('/products_state', function() {
+	$this->get('', 'ProductsStateController');
+	$this->post('/{action}', 'ProductsStateController:action');
+})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+
 // ******************* //
 // **  INVESTMENTS  ** //
 // ******************* //
