@@ -14,69 +14,72 @@
 		<ul class="navbar-nav mr-auto">
 		
 			<?php if (isset($user_display_name) and isset($project_session) and isset($company_session)) : ?>
-			<li class="nav-item dropdown active">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<i class="fa fa-file-alt"></i> Archivos
-				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<!-- <a class="dropdown-item" href="/currencies"><i class="fa fa-coins"></i> Monedas</a> -->
-					<a class="dropdown-item" href="/exchange"><i class="fa fa-file-invoice-dollar"></i> Cotizaciones</a>
-					
-				</div>
-			</li>
-			<li class="nav-item dropdown active">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<i class="fa fa-store-alt"></i> Ventas
-				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/customers"><i class="fa fa-users"></i> Clientes</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/sales"><i class="fa fa-receipt"></i> Confección de Comprobantes</a>
-					<a class="dropdown-item" href="/sales/query"><i class="fa fa-search"></i> Consulta de Comprobantes</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/collections"><i class="fa fa-handshake"></i> Cobranzas</a>
-					<a class="dropdown-item" href="/collections/query"><i class="fa fa-search-dollar"></i> Consulta de Cobranzas</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/sales/report"><i class="fa fa-list-ul"></i> Listado de Ventas</a>
-					<a class="dropdown-item" href="/sales/pivot"><i class="fa fa-cube"></i> Cubo de Ventas</a>
-				</div>
-			</li>
-			<li class="nav-item dropdown active">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<i class="fa fa-shopping-cart"></i> Compras
-				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/suppliers"><i class="fa fa-users"></i> Proveedores</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/purchases"><i class="fa fa-receipt"></i> Confección de Comprobantes</a>
-					<a class="dropdown-item" href="/purchases/query"><i class="fa fa-search"></i> Consulta de Comprobantes</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/payments"><i class="fa fa-handshake"></i> Pago a Proveedores</a>
-					<a class="dropdown-item" href="/payments/query"><i class="fa fa-search-dollar"></i> Consulta de Pagos</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/purchases/report"><i class="fa fa-list-ul"></i> Listado de Compras</a>
-				</div>
-			</li>
-			<li class="nav-item dropdown active">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<i class="fa fa-wallet"></i> Caja
-				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/cash/report"><i class="fa fa-list-ul"></i> Listado de Medios de Pago</a>
-					<a class="dropdown-item" href="/cash/pivot"><i class="fa fa-cube"></i> Cubo de Medios de Pago</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/banks"><i class="fa fa-university"></i> Bancos</a>
-					<a class="dropdown-item" href="/banks_accounts"><i class="fa fa-file-invoice-dollar"></i> Cuentas Bancarias</a>
-				</div>
-			</li>
-			<li class="nav-item dropdown active">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<i class="fa fa-chart-line"></i> Stock
-				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/products"><i class="fa fa-cubes"></i> Productos</a>
-				</div>
-			</li>
+
+				<?php if (!isset($user_profile) or $user_profile != 'OPER') : ?>
+				<li class="nav-item dropdown active">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-file-alt"></i> Archivos
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<!-- <a class="dropdown-item" href="/currencies"><i class="fa fa-coins"></i> Monedas</a> -->
+						<a class="dropdown-item" href="/exchange"><i class="fa fa-file-invoice-dollar"></i> Cotizaciones</a>
+						
+					</div>
+				</li>
+				<?php endif; ?>
+				<li class="nav-item dropdown active">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-store-alt"></i> Ventas
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/customers"><i class="fa fa-users"></i> Clientes</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/sales"><i class="fa fa-receipt"></i> Confección de Comprobantes</a>
+						<a class="dropdown-item" href="/sales/query"><i class="fa fa-search"></i> Consulta de Comprobantes</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/collections"><i class="fa fa-handshake"></i> Cobranzas</a>
+						<a class="dropdown-item" href="/collections/query"><i class="fa fa-search-dollar"></i> Consulta de Cobranzas</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/sales/report"><i class="fa fa-list-ul"></i> Listado de Ventas</a>
+						<a class="dropdown-item" href="/sales/pivot"><i class="fa fa-cube"></i> Cubo de Ventas</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown active">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-shopping-cart"></i> Compras
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/suppliers"><i class="fa fa-users"></i> Proveedores</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/purchases"><i class="fa fa-receipt"></i> Confección de Comprobantes</a>
+						<a class="dropdown-item" href="/purchases/query"><i class="fa fa-search"></i> Consulta de Comprobantes</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/payments"><i class="fa fa-handshake"></i> Pago a Proveedores</a>
+						<a class="dropdown-item" href="/payments/query"><i class="fa fa-search-dollar"></i> Consulta de Pagos</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/purchases/report"><i class="fa fa-list-ul"></i> Listado de Compras</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown active">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-wallet"></i> Caja
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/cash/report"><i class="fa fa-list-ul"></i> Listado de Medios de Pago</a>
+						<a class="dropdown-item" href="/cash/pivot"><i class="fa fa-cube"></i> Cubo de Medios de Pago</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/banks"><i class="fa fa-university"></i> Bancos</a>
+						<a class="dropdown-item" href="/banks_accounts"><i class="fa fa-file-invoice-dollar"></i> Cuentas Bancarias</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown active">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-chart-line"></i> Stock
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/products"><i class="fa fa-cubes"></i> Productos</a>
+					</div>
+				</li>
 			<?php endif; ?>
 			
 		</ul>
