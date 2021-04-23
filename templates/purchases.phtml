@@ -693,7 +693,7 @@
 							// aff stock : validate status id
 							const strStatusId = $(this).find('td[name="col-status"]').attr("data-key");
 							var statusId = -1;
-							if (strStatusId != "N/A") {
+							if ( $.isNumeric(strStatusId) ) {
 								statusId = parseInt(strStatusId);
 							}
 
