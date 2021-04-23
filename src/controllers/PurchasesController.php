@@ -28,6 +28,7 @@ class PurchasesController extends Controller
 			"suppliers" 		=> $company->suppliers->sortBy("business_name"),
 			"documentsTypes" 	=> $project->purchasesDocumentsTypes->sortBy("description"),
 			"products" 			=> $company->products->sortBy("description"),
+			"productsState" 	=> $company->productsState->sortBy("description"),
 		];
 		
 		if (isset($params["headerId"]) and $params["headerId"] > 0)

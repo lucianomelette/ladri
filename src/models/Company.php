@@ -32,6 +32,11 @@ class Company extends Model
     {
         return $this->hasMany('App\Models\Product');
     }
+
+    public function productsState()
+    {
+        return $this->hasMany('App\Models\ProductStatus');
+    }
 	
 	public function banks()
     {

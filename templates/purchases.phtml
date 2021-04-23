@@ -278,11 +278,18 @@
 				<div class="row" name="dialog-state-row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="font-weight-bold">Estados:</label>
+							<label class="font-weight-bold">Estado:</label>
 							<br>
-							<select class='form-control' name='dialog-state-select'>
-								<option value='0' selected>Pendiente</option>
-								<option value='10.5'>Entregado</option>
+							<label <?= !$productsState_enabled ? '' : 'class="d-none" ' ?>name="products-state-label"><i class="fa fa-exclamation-triangle"></i> No hay estados disponibles!</label>
+							<select class="form-control<?= $productsState_enabled ? '' : ' d-none' ?>" name="products-state-select">
+							<?php if ($productsState_enabled) : ?>
+								<option value="N/A">Seleccionar estado...</option>
+							<?php foreach($productsState as $state) : ?>
+								<option value="<?= $state->id ?>">
+									<?= $state->unique_code . ' | ' . $state->description ?>
+								</option>
+							<?php endforeach; ?>
+							<?php endif; ?>
 							</select>
 						</div>
 					</div>
