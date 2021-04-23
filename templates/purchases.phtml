@@ -131,7 +131,7 @@
 										</div>
 									</div>
 
-									<div class="col-lg-3 col-md-6">
+									<div class="col-lg-3 col-md-6 status-flag-header-element">
 										<div class="form-group">
 											<label class="font-weight-bold">Fecha Entrega:</label>
 											<br>
@@ -139,7 +139,7 @@
 										</div>
 									</div>
 
-									<div class="col-lg-3 col-md-6">
+									<div class="col-lg-3 col-md-6 status-flag-header-element">
 										<div class="form-group">
 											<label class="font-weight-bold">Lugar Entrega:</label>
 											<br>
@@ -291,7 +291,7 @@
 					</div>
 				</div>
 
-				<div class="row" name="dialog-state-row">
+				<div class="row status-flag-detail-element">
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="font-weight-bold">Estado:</label>
@@ -446,6 +446,8 @@
 					// Update aff stock on document type change
 					var affStock = $(this).find("option:selected").attr("data-aff-stock");
 					setAffStock(affStock);
+
+					updateAffStockHeaderFields();
 				});
 				
 				// perceptions change
@@ -586,10 +588,10 @@
 
 					// if affects stock, then show additional fields...
 					if (affStock()) {
-						$('div[name="dialog-state-row"]').show();
+						$('.status-flag-detail-element').show();
 					}
 					else {
-						$('div[name="dialog-state-row"]').hide();
+						$('.status-flag-detail-element').hide();
 					}
 
 					if (recordData != undefined) {
@@ -982,6 +984,17 @@
 						return (meta.attr("data-aff-stock") != "0");
 					}
 					return false;
+				}
+
+				function updateAffStockHeaderFields()
+				{
+					// if affects stock, then show additional fields...
+					if (affStock()) {
+						$('.status-flag-header-element').show();
+					}
+					else {
+						$('.status-flag-header-element').hide();
+					}
 				}
 				
 				// ********************** //
