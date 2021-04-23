@@ -137,6 +137,10 @@ class PurchasesController extends Controller
 			foreach ($detail as $row)
 			{
 				$row['header_id'] = $headerId;
+
+				if (!isset($row['status_id']) || $row['status_id'] == "null")
+					$row['status_id'] = null;
+
 				PurchaseDetail::create($row);
 			}
 			

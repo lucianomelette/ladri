@@ -692,7 +692,7 @@
 
 							// aff stock : validate status id
 							const strStatusId = $(this).find('td[name="col-status"]').attr("data-key");
-							var statusId = null;
+							var statusId = "null";
 							if (strStatusId != "N/A") {
 								statusId = parseInt(strStatusId);
 							}
@@ -700,7 +700,7 @@
 							detailData[index] = {
 								product_id : 			parseInt($(this).find('td[name="col-product"]').attr("data-key")),
 								product_description : 	$(this).find('td[name="col-product"]').text().trim(),
-								status_id : 			null,
+								status_id : 			statusId,
 								quantity : 				parseFloat($(this).find('td[name="col-quantity"]').text()),
 								unit_price : 			parseFloat($(this).find('td[name="col-unit-price"]').text()),
 								subtotal : 				parseFloat($(this).find('td[name="col-subtotal"]').text()),
