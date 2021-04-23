@@ -67,7 +67,7 @@
 						url: '/login/projects/selected/' + project_id,
 						success: function(data, textStatus, jqXHR) {
 							if (data.status == 'ok') {
-								window.location.replace('/exchange');
+								window.location.replace('/home');
 							}
 							else if (data.status == 'error') {
 								$.stdShowMessage({

@@ -36,6 +36,11 @@ $app->group('/login', function() use ($sessionAuth, $companyAuth) {
 	})->add($companyAuth)->add($sessionAuth);
 })->add($hostAuth);
 
+// home
+$app->group('/home', function() {
+	$this->get('', 'HomeController');
+})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+
 // currencies
 $app->group('/currencies', function() {
 	$this->get('', 'CurrenciesController');

@@ -34,6 +34,11 @@ $container['LoginController'] = function ($container) {
 	return new \App\Controllers\LoginController($container);
 };
 
+// hone controller
+$container['HomeController'] = function ($container) {
+	return new \App\Controllers\HomeController($container);
+};
+
 // projects controller
 $container['ProjectsController'] = function ($container) {
 	return new \App\Controllers\ProjectsController($container);
