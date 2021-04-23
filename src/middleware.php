@@ -28,7 +28,7 @@ $profileAdminAuth = function ($request, $response, $next) {
         return $next($request, $response);
     }
     else {
-        return $response->withRedirect($this->router->pathFor('login'));
+        return;
     }
 };
 
@@ -37,7 +37,7 @@ $profileOperAuth = function ($request, $response, $next) {
         return $next($request, $response);
     }
     else {
-        return $response->withRedirect($this->router->pathFor('login'));
+        return;
     }
 };
 
