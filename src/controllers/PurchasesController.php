@@ -125,6 +125,10 @@ class PurchasesController extends Controller
 								->where("dated_at", $body["dated_at"])
 								->where("total", $body["total"])
 								->exists();
+
+		var_dump($exists);
+		return;
+
 		if (!$exists)
 		{
 			// save header
