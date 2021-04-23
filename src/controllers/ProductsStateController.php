@@ -73,6 +73,7 @@ class ProductsStateController extends Controller
 		}
 		catch(Exception $e)
 		{
+			var_dump("HOLA MUNDO!!");
 			var_dump($e);
 			return;
 
