@@ -138,8 +138,7 @@ class PurchasesController extends Controller
 			{
 				$row['header_id'] = $headerId;
 
-				if (isset($row['status_id']) && $row['status_id'] == "null")
-					unset($row['status_id']);
+				unset($row['status_id']);
 
 				PurchaseDetail::create($row);
 			}
