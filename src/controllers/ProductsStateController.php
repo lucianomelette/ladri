@@ -75,7 +75,7 @@ class ProductsStateController extends Controller
 		{
 			return $response->withJson([
 				"Result" 	=> "ERROR",
-				"Record"	=> $e->getMessage(),
+				"Message"	=> $e->getMessage(),
 			]);
 		}
 	}
