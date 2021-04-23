@@ -22,7 +22,9 @@
 								<span><b><i class="fa fa-receipt"></i> Compras <i class="fa fa-chevron-right"></i> Confección de Comprobantes</b></span>
 							</div>
 							
-							<data name="document-data" <?= (isset($headerId) and $headerId > 0 ? 'data-header-id="'.$headerId.'"' : "") ?>></data>
+							<?php if (isset($headerId) and $headerId > 0) : ?>
+							<data name="document-data" data-header-id="<?= $headerId ?>"></data>
+							<?php endif; ?>
 
 							<div class="card-body">
 								
