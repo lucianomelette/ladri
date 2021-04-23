@@ -28,7 +28,7 @@ $profileAdminAuth = function ($request, $response, $next) {
         return $next($request, $response);
     }
     else {
-        return;
+        return $response->withJson(["result" => "Prueba"]);
     }
 };
 
