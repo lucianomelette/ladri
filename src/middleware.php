@@ -23,6 +23,24 @@ $sessionAuth = function ($request, $response, $next) {
     }
 };
 
+$profileAdminAuth = function ($request, $response, $next) {
+    if (isset($_SESSION['user_session']) && $_SESSION['user_session']->profile == 'ADMIN') {
+        return $next($request, $response);
+    }
+    else {
+        return $response->withRedirect($this->router->pathFor('login'));
+    }
+};
+
+$profileOperAuth = function ($request, $response, $next) {
+    if (isset($_SESSION['user_session']) && $_SESSION['user_session']->profile == 'OPER') {
+        return $next($request, $response);
+    }
+    else {
+        return $response->withRedirect($this->router->pathFor('login'));
+    }
+};
+
 $companyAuth = function ($request, $response, $next) {
 	if (isset($_SESSION['company_session'])) {
 		return $next($request, $response);

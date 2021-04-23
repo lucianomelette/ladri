@@ -40,7 +40,7 @@ $app->group('/login', function() use ($sessionAuth, $companyAuth) {
 $app->group('/currencies', function() {
 	$this->get('', 'CurrenciesController');
 	$this->post('/{action}[/{exchange}]', 'CurrenciesController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // exchange
 $app->group('/exchange', function() {
