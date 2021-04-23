@@ -61,7 +61,7 @@
 												<option
 													value="<?= $documentType->unique_code ?>"
 													data-sequence="<?= $documentType->sequence ?>"
-													data-aff-stock="<?= $documentType->aff_stock ?>">
+													data-aff-stock="<?= (isset($documentType->aff_stock) ? $documentType->aff_stock : 0) ?>">
 													<?= trim($documentType->description) ?>
 												</option>
 											<?php endforeach; ?>
@@ -546,8 +546,7 @@
 				
 				function showAddOrEditProductDialog(recordData) {
 
-					const affStock = getAffStock();
-					if (affStock != 0) {
+					if (affStock()) {
 						$('div[name="dialog-state-row"]').show();
 					}
 					else {
@@ -895,13 +894,13 @@
 					}
 				}
 
-				function getAffStock()
+				function affStock()
 				{
 					var meta = getDocumentTypeMetadata();
 					if (meta) {
-						return meta.attr("data-aff-stock");
+						return (meta.attr("data-aff-stock") != "0");
 					}
-					return 0;
+					return false;
 				}
 				
 				// ********************** //
