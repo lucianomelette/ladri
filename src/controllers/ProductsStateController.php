@@ -58,8 +58,6 @@ class ProductsStateController extends Controller
 	
 	private function create($request, $response, $args)
 	{
-		var_dump("CHAYYY");
-
 		try
 		{
 			$newRecord 					= $request->getParsedBody();
@@ -75,10 +73,6 @@ class ProductsStateController extends Controller
 		}
 		catch (\Exception $e)
 		{
-			var_dump("HOLA MUNDO!!");
-			var_dump($e);
-			return;
-
 			return $response->withJson([
 				"Result" 	=> "ERROR",
 				"Record"	=> $e->getMessage(),
