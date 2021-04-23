@@ -75,7 +75,7 @@ class ProductsStateController extends Controller
 		{
 			return $response->withJson([
 				"Result" 	=> "ERROR",
-				"Message"	=> $e->getMessage(),
+				"Message"	=> "Código duplicado",
 			]);
 		}
 	}

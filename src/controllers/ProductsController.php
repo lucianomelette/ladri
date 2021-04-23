@@ -71,14 +71,11 @@ class ProductsController extends Controller
 				"Record"	=> $newRecord,
 			]);
 		}
-		catch(Exception $e)
+		catch (\Exception $e)
 		{
-			var_dump($e);
-			return;
-
 			return $response->withJson([
 				"Result" 	=> "ERROR",
-				"Record"	=> $e->getMessage(),
+				"Record"	=> "Código duplicado",
 			]);
 		}
 
