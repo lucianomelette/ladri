@@ -119,9 +119,6 @@ class PurchasesController extends Controller
 	private function create($request, $response, $params)
 	{
 		$body = $request->getParsedBody();
-
-		var_dump($body);
-		return;
 		
 		// validate duplicated document
 		$exists = PurchaseHeader::where("supplier_id", $body["supplier_id"])
