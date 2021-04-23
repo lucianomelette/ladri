@@ -138,6 +138,7 @@ class PurchasesController extends Controller
 			{
 				$row['header_id'] = $headerId;
 
+				// product status
 				if (isset($row['status_id']) && $row['status_id'] == -1)
 					unset($row['status_id']);
 
@@ -196,6 +197,11 @@ class PurchasesController extends Controller
 		foreach ($detail as $row)
 		{
 			$row['header_id'] = $headerId;
+
+			// product status
+			if (isset($row['status_id']) && $row['status_id'] == -1)
+				unset($row['status_id']);
+
 			PurchaseDetail::create($row);
 		}
 		
