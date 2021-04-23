@@ -18,5 +18,6 @@ class PurchaseDetail extends Model
 		'subtotal',
 		'tax',
 		'total',
+		'more_info',
 	];
 }
