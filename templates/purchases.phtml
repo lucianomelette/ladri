@@ -56,7 +56,7 @@
 											<label <?= !$documentsTypes_enabled ? '' : 'class="d-none" ' ?>name="docs-types-label"><i class="fa fa-exclamation-triangle"></i> No hay documentos disponibles!</label>
 											<select class="form-control<?= $documentsTypes_enabled ? '' : ' d-none' ?>" name="docs-types-select">
 											<?php if ($documentsTypes_enabled) : ?>
-												<option value="N/A">Seleccionar documento...</option>
+												<option value="N/A" data-aff-stock="0">Seleccionar documento...</option>
 											<?php foreach($documentsTypes as $documentType) : ?>
 												<option
 													value="<?= $documentType->unique_code ?>"
