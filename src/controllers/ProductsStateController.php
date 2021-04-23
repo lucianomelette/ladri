@@ -73,6 +73,9 @@ class ProductsStateController extends Controller
 		}
 		catch(Exception $e)
 		{
+			var_dump($e);
+			return;
+
 			return $response->withJson([
 				"Result" 	=> "ERROR",
 				"Record"	=> $e->getMessage(),
