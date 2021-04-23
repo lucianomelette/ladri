@@ -58,6 +58,8 @@ class ProductsStateController extends Controller
 	
 	private function create($request, $response, $args)
 	{
+		var_dump("CHAYYY");
+
 		try
 		{
 			$newRecord 					= $request->getParsedBody();
