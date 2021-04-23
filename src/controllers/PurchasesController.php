@@ -14,6 +14,7 @@ class PurchasesController extends Controller
 		$company = $_SESSION["company_session"];
 		$company->load('suppliers');
 		$company->load('products');
+		$company->load('productsState');
 		
 		$project = $_SESSION["project_session"];
 		$project->load('purchasesDocumentsTypes');
