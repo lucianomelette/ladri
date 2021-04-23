@@ -299,9 +299,6 @@
 							<label class="font-weight-bold">Más info:</label>
 							<br>
 							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text">$</span>
-								</div>
 							    <input type='text' class='form-control' name='dialog-more-info' />
 						    </div>
 						</div>
@@ -583,24 +580,24 @@
 						addOrEditProductsDialog.dialog("option", "recordKey", recordData.record_key);
 						
 						$('select[name="dialog-products-select"]').val(recordData.product_id).trigger('change');
+						$('select[name="dialog-state-select"]').val(recordData.status_id);
 						$('input[name="dialog-quantity"]').val(recordData.quantity);
 						$('input[name="dialog-unit-price"]').val(recordData.unit_price);
 						$('input[name="dialog-subtotal"]').val(recordData.subtotal);
 						$('select[name="dialog-taxes-select"]').val(recordData.tax_id);
 						$('input[name="dialog-total"]').val(recordData.total);
-						$('select[name="dialog-state-select"]').val(recordData.status_id);
 						$('input[name="dialog-more-info"]').val(recordData.more_info);
 					}
 					else {
 						addOrEditProductsDialog.dialog("option", "recordKey", 0);
 						
 						$('select[name="dialog-products-select"]').val('N/A').trigger('change');
+						$('select[name="dialog-state-select"]').val( $('select[name="dialog-state-select"] option:first').val() );
 						$('input[name="dialog-quantity"]').val(0);
 						$('input[name="dialog-unit-price"]').val(0);
 						$('input[name="dialog-subtotal"]').val(0);
 						$('select[name="dialog-taxes-select"]').val( $('select[name="dialog-taxes-select"] option:first').val() );
 						$('input[name="dialog-total"]').val(0);
-						$('select[name="dialog-state-select"]').val( $('select[name="dialog-state-select"] option:first').val() );
 						$('input[name="dialog-more-info"]').val("");
 					}
 					
