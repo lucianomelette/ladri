@@ -8,14 +8,7 @@ class ExchangeController extends Controller
 {
 	public function __invoke($request, $response)
 	{	
-		$args = [
-			"navbar" => [
-				"username_session" 	=> $_SESSION["user_session"]->username,
-				"user_display_name" => $_SESSION["user_session"]->display_name,
-				"project_session" 	=> $_SESSION["project_session"]->full_name,
-				"company_session" 	=> $_SESSION["company_session"]->business_name,
-			],
-		];
+		$args = ["navbar"=> $this->navbar];
 	
 		return $this->container->renderer->render($response, 'exchange.phtml', $args);
 	}

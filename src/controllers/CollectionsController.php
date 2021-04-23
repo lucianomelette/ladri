@@ -28,12 +28,7 @@ class CollectionsController extends Controller
 		]);
 	
 		$args = [
-			"navbar" => [
-				"username_session" 	=> $_SESSION["user_session"]->username,
-				"user_display_name" => $_SESSION["user_session"]->display_name,
-				"project_session" 	=> $_SESSION["project_session"]->full_name,
-				"company_session" 	=> $company->business_name,
-			],
+			"navbar"			=> $this->navbar,
 			"customers" 		=> $company->customers->sortBy("business_name"),
 			"documentsTypes" 	=> $project->collectionsDocumentsTypes,
 			"banks" 			=> $company->banks->sortBy("description"),

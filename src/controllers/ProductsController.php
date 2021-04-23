@@ -8,7 +8,7 @@ class ProductsController extends Controller
 {
 	public function __invoke($request, $response)
 	{	
-		$args = $this->navbar;
+		$args = ["navbar" => $this->navbar];
 	
 		return $this->container->renderer->render($response, 'products.phtml', $args);
 	}
