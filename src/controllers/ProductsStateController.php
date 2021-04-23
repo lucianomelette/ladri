@@ -73,7 +73,7 @@ class ProductsStateController extends Controller
 				"Record"	=> $newRecord,
 			]);
 		}
-		catch(Exception $e)
+		catch (\Exception $e)
 		{
 			var_dump("HOLA MUNDO!!");
 			var_dump($e);
