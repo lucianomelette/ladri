@@ -61,7 +61,7 @@ $app->group('/exchange', function() {
 $app->group('/customers', function() {
 	$this->get('', 'CustomersController')->setName('customers');
 	$this->post('/{action}[/{customer_id}]', 'CustomersController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // sales
 $app->group('/sales', function() {
@@ -79,7 +79,7 @@ $app->group('/sales', function() {
 	// general
 	$this->get('[/{headerId}]', 'SalesController');
 	$this->post('/{action}[/{headerId}]', 'SalesController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // collections
 $app->group('/collections', function(){
@@ -89,7 +89,7 @@ $app->group('/collections', function(){
 	// general
 	$this->get('[/{headerId}]', 'CollectionsController');
 	$this->post('/{action}[/{headerId}]', 'CollectionsController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // ***************** //
 // **  PURCHASES  ** //
@@ -99,7 +99,7 @@ $app->group('/collections', function(){
 $app->group('/suppliers', function() {
 	$this->get('', 'SuppliersController')->setName('suppliers');
 	$this->post('/{action}[/{supplier_id}]', 'SuppliersController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // purchases
 $app->group('/purchases', function() {
@@ -113,7 +113,7 @@ $app->group('/purchases', function() {
 	// general
 	$this->get('[/{headerId}]', 'PurchasesController');
 	$this->post('/{action}[/{headerId}]', 'PurchasesController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // payments
 $app->group('/payments', function() {
@@ -123,7 +123,7 @@ $app->group('/payments', function() {
 	// general
 	$this->get('[/{headerId}]', 'PaymentsController');
 	$this->post('/{action}[/{headerId}]', 'PaymentsController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // ************ //
 // **  CASH  ** //
@@ -141,31 +141,31 @@ $app->group('/cash', function() {
 	
 	$this->get('', 'CashController');
 	$this->post('/{action}', 'CashController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // banks
 $app->group('/banks', function() {
 	$this->get('', 'BanksController');
 	$this->post('/{action}', 'BanksController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // banks accounts
 $app->group('/banks_accounts', function() {
 	$this->get('', 'BanksAccountsController');
 	$this->post('/{action}', 'BanksAccountsController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // products
 $app->group('/products', function() {
 	$this->get('', 'ProductsController');
 	$this->post('/{action}', 'ProductsController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileOperAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // products state
 $app->group('/products_state', function() {
 	$this->get('', 'ProductsStateController');
 	$this->post('/{action}', 'ProductsStateController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileOperAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // ******************* //
 // **  INVESTMENTS  ** //
@@ -175,4 +175,4 @@ $app->group('/products_state', function() {
 $app->group('/investors', function() {
 	$this->get('', 'InvestorsController')->setName('investors');
 	$this->post('/{action}[/{investor_id}]', 'InvestorsController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);

@@ -33,7 +33,7 @@ $profileAdminAuth = function ($request, $response, $next) {
 };
 
 $profileOperAuth = function ($request, $response, $next) {
-    if (isset($_SESSION['user_session']) && $_SESSION['user_session']->profile == 'OPER') {
+    if (isset($_SESSION['user_session']) && ($_SESSION['user_session']->profile == 'ADMIN' || $_SESSION['user_session']->profile == 'OPER')) {
         return $next($request, $response);
     }
     else {
