@@ -8,7 +8,7 @@ class BanksAccountsController extends Controller
 {
 	public function __invoke($request, $response)
 	{	
-		$args = [ "navbar" => $this->navbar ];
+		$args = ["navbar" => $this->navbar];
 	
 		return $this->container->renderer->render($response, 'banks_accounts.phtml', $args);
 	}

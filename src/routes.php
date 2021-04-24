@@ -20,7 +20,7 @@ $app->group('/login', function() use ($sessionAuth, $companyAuth) {
 	$this->post('/logout', 'LoginController:logout');
 	
 	// password recovery
-	$this->get('/recovery', 'LoginController:passwordRecovery')->setName('login');
+	$this->get('/recovery', 'LoginController:passwordRecovery')->setName('password_recovery');
 	$this->post('/recovery', 'LoginController:sendTemporaryPassword');
 	
 	// companies options
@@ -38,7 +38,7 @@ $app->group('/login', function() use ($sessionAuth, $companyAuth) {
 
 // home
 $app->group('/home', function() {
-	$this->get('', 'HomeController');
+	$this->get('', 'HomeController')->setName('home');
 })->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // currencies
@@ -51,7 +51,7 @@ $app->group('/currencies', function() {
 $app->group('/exchange', function() {
 	$this->get('', 'ExchangeController');
 	$this->post('/{action}', 'ExchangeController:action');
-})->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // ************* //
 // **  SALES  ** //

@@ -28,7 +28,7 @@ $profileAdminAuth = function ($request, $response, $next) {
         return $next($request, $response);
     }
     else {
-        return $response->withJson(["result" => "Prueba"]);
+        return $response->withRedirect($this->router->pathFor('home'));
     }
 };
 
@@ -37,7 +37,7 @@ $profileOperAuth = function ($request, $response, $next) {
         return $next($request, $response);
     }
     else {
-        return;
+        return $response->withRedirect($this->router->pathFor('home'));
     }
 };
 
