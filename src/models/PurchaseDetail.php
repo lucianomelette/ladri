@@ -20,4 +20,9 @@ class PurchaseDetail extends Model
 		'total',
 		'more_info',
 	];
+
+	public function purchaseHeader()
+	{
+		return $this->hasOne('\App\Models\PurchaseHeader', 'id', 'header_id');
+	}
 }

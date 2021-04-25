@@ -84,14 +84,19 @@ $container['PurchasesController'] = function ($container) {
 	return new \App\Controllers\PurchasesController($container);
 };
 
-// payments controller
-$container['PaymentsController'] = function ($container) {
-	return new \App\Controllers\PaymentsController($container);
+// purchases delivery controller
+$container['PurchasesDeliveryController'] = function ($container) {
+	return new \App\Controllers\PurchasesDeliveryController($container);
 };
 
 // purchases reports controller
 $container['PurchasesReportsController'] = function ($container) {
 	return new \App\Controllers\PurchasesReportsController($container);
+};
+
+// payments controller
+$container['PaymentsController'] = function ($container) {
+	return new \App\Controllers\PaymentsController($container);
 };
 
 // cash controller

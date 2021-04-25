@@ -227,12 +227,7 @@ class PurchasesController extends Controller
 		$project->load('purchasesDocumentsTypes');
 		
 		$args = [
-			"navbar" => [
-				"username_session" 	=> $_SESSION["user_session"]->username,
-				"user_display_name" => $_SESSION["user_session"]->display_name,
-				"project_session" 	=> $project->full_name,
-				"company_session" 	=> $company->business_name,
-			],
+			"navbar" 			=> $this->navbar,
 			"suppliers" 		=> $company->suppliers->sortBy("business_name"),
 			"documentsTypes" 	=> $project->purchasesDocumentsTypes->sortBy("description"),
 		];

@@ -106,6 +106,10 @@ $app->group('/purchases', function() {
 	// reports
 	$this->get('/report', 'PurchasesReportsController');
 	$this->post('/report', 'PurchasesReportsController:report');
+
+	// delivery
+	$this->get('/delivery', 'PurchasesDeliveryController');
+	$this->post('/{action}[/{detailId}]', 'PurchasesDeliveryController:action');
 	
 	// query
 	$this->get('/query', 'PurchasesController:query');
