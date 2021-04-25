@@ -10,6 +10,7 @@ class Company extends Model
 	protected $fillable = [
 		'id',
 		'business_name',
+        'environment',
 		'photo_id',
 	];
 	

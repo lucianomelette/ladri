@@ -124,9 +124,14 @@ $container['ProductsController'] = function ($container) {
 	return new \App\Controllers\ProductsController($container);
 };
 
-// products controller
+// products state controller
 $container['ProductsStateController'] = function ($container) {
 	return new \App\Controllers\ProductsStateController($container);
+};
+
+// products units controller
+$container['ProductsUnitsController'] = function ($container) {
+	return new \App\Controllers\ProductsUnitsController($container);
 };
 
 // investors controller

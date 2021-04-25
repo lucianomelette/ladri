@@ -163,13 +163,19 @@ $app->group('/banks_accounts', function() {
 $app->group('/products', function() {
 	$this->get('', 'ProductsController');
 	$this->post('/{action}', 'ProductsController:action');
-})->add($profileOperAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // products state
 $app->group('/products_state', function() {
 	$this->get('', 'ProductsStateController');
 	$this->post('/{action}', 'ProductsStateController:action');
-})->add($profileOperAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
+
+// products units
+$app->group('/products_units', function() {
+	$this->get('', 'ProductsUnitsController');
+	$this->post('/{action}', 'ProductsUnitsController:action');
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // ******************* //
 // **  INVESTMENTS  ** //
