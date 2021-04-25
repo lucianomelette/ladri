@@ -109,7 +109,7 @@ $app->group('/purchases', function() {
 
 	// delivery
 	$this->get('/delivery', 'PurchasesDeliveryController');
-	$this->post('/{action}[/{detailId}]', 'PurchasesDeliveryController:action');
+	$this->post('/delivery/{action}[/{detailId}]', 'PurchasesDeliveryController:action');
 	
 	// query
 	$this->get('/query', 'PurchasesController:query');
