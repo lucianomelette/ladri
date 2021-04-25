@@ -56,6 +56,8 @@ class PurchasesDeliveryController extends Controller
 												$q2->whereIn('supplier_id', $suppliers_ids);
 											})
 											->orderBy('delivery_date', 'ASC');
+
+										$q1->laod('supplier');
 									})
 									->when($pageSize != null and $startIndex != null, function($query) use ($pageSize, $startIndex) {
 										$query->take($pageSize)
@@ -64,7 +66,6 @@ class PurchasesDeliveryController extends Controller
 									->get();
 
 		$records->load('purchaseHeader');
-		$records->purchaseHeader->load('supplier');
 
 		/*
 		$records = PurchaseHeader::where('project_id', $_SESSION["project_session"]->id)
