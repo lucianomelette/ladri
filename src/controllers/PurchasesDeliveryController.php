@@ -47,7 +47,8 @@ class PurchasesDeliveryController extends Controller
 
 		$records = PurchaseDetail::whereHas('purchaseHeader', function($q1) use ($projectId, $suppliers_ids) {
 										$q1->whereHas('documentType', function($q2) {
-												$q2->whereNot('aff_stock', 0);
+												$q2->whereNotNull('aff_stock')
+													->where('aff_stock', '!=', 0);
 											})
 											->where('project_id', $projectId)
 											->where('is_canceled', 0)
