@@ -100,7 +100,7 @@ class ProductsStateController extends Controller
 	private function options($request, $response, $args)
 	{
 		$options = Model::where('company_id', $_SESSION["company_session"]->id)
-							->selectRaw("id as Value, CONCAT(unique_code, ' | ', description) as DisplayText")
+							->selectRaw("id as Value, description as DisplayText")
 							->orderBy('description', 'asc')
 							->get();
 		
