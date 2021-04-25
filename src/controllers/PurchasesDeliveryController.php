@@ -53,12 +53,13 @@ class PurchasesDeliveryController extends Controller
 												})
 												->orderBy('delivery_date', 'ASC');
 									})
-									->load('purchaseHeader')
 									->when($pageSize != null and $startIndex != null, function($query) use ($pageSize, $startIndex) {
 										$query->take($pageSize)
 											->skip($startIndex);
 									})
 									->get();
+
+		$records->load('purchaseHeader');
 
 		/*
 		$records = PurchaseHeader::where('project_id', $_SESSION["project_session"]->id)
