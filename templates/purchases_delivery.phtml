@@ -119,10 +119,13 @@
 							width: '30%',
 							options: '/suppliers/options',
 						},
-						'purchase_header.number': {
+						number: {
 							title: 'Número',
 							width: '20%',
 							listClass: 'd-lg-table-cell',
+							display:function(data){
+								return data.record.purchase_header.number;
+							}
 						},
 						product_desc: {
 							title: 'Detalle',
