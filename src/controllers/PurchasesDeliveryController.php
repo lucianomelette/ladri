@@ -64,6 +64,7 @@ class PurchasesDeliveryController extends Controller
 									->get();
 
 		$records->load('purchaseHeader');
+		$records->purchasesHeader->load('supplier');
 
 		/*
 		$records = PurchaseHeader::where('project_id', $_SESSION["project_session"]->id)

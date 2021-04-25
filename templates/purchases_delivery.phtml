@@ -114,19 +114,18 @@
 								return '<span class="btn btn-light btn-sm" name="btn-table-context-menu" data-record-key="' + data.record.id + '"><i class="fa fa-ellipsis-v"></i></span>';
 							},
 						},
-						supplier_id: {
+						supplier_description: {
 							title: 'Proveedor',
 							width: '30%',
-							options: '/suppliers/options',
-							display:function(data){
-								return data.record.purchase_header.supplier_id;
+							display: function(data){
+								return data.record.purchase_header.supplier.desciption;
 							}
 						},
 						number: {
 							title: 'Número',
 							width: '20%',
 							listClass: 'd-lg-table-cell',
-							display:function(data){
+							display: function(data){
 								return data.record.purchase_header.number;
 							}
 						},
