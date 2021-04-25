@@ -45,14 +45,15 @@ class PurchasesDeliveryController extends Controller
 		
 		$projectId = $_SESSION["project_session"]->id;
 
-		$records = PurchaseDetail::load(['purchaseHeader', function($q1) use ($projectId, $suppliers_ids) {
+		$records = PurchaseDetail::whereHas('purchaseHeader', function($q1) use ($projectId, $suppliers_ids) {
 										$q1->where('project_id', $projectId)
 												->where('is_canceled', 0)
 												->when($suppliers_ids != null, function($q2) use ($suppliers_ids) {
 													$q2->whereIn('supplier_id', $suppliers_ids);
 												})
 												->orderBy('delivery_date', 'ASC');
-									}])
+									})
+									->load('purchaseHeader')
 									->when($pageSize != null and $startIndex != null, function($query) use ($pageSize, $startIndex) {
 										$query->take($pageSize)
 											->skip($startIndex);
