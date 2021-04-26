@@ -6,6 +6,7 @@ use App\Models\PurchaseHeader;
 use App\Models\PurchaseDetail;
 use App\Models\PurchaseDocumentType;
 use App\Models\SupplierBalance;
+use App\Models\ProductUnit;
  
 class PurchasesController extends Controller
 {
@@ -18,6 +19,8 @@ class PurchasesController extends Controller
 		
 		$project = $_SESSION["project_session"];
 		$project->load('purchasesDocumentsTypes');
+
+		$units = ProductUnit::where('environment', $company->environment)->get();
 	
 		$args = [
 			"navbar" 			=> $this->navbar,
@@ -25,6 +28,7 @@ class PurchasesController extends Controller
 			"documentsTypes" 	=> $project->purchasesDocumentsTypes->sortBy("description"),
 			"products" 			=> $company->products->sortBy("description"),
 			"productsState" 	=> $company->productsState->sortBy("description"),
+			"productsUnits" 	=> $units->sortBy("description"),
 		];
 		
 		if (isset($params["headerId"]) and $params["headerId"] > 0)
@@ -137,6 +141,10 @@ class PurchasesController extends Controller
 				if (isset($row['status_id']) && $row['status_id'] == -1)
 					unset($row['status_id']);
 
+				// product unit of measurement
+				if (isset($row['unit_id']) && $row['unit_id'] == -1)
+					unset($row['unit_id']);
+
 				PurchaseDetail::create($row);
 			}
 			
@@ -196,6 +204,10 @@ class PurchasesController extends Controller
 			// product status
 			if (isset($row['status_id']) && $row['status_id'] == -1)
 				unset($row['status_id']);
+
+			// product unit of measurement
+			if (isset($row['unit_id']) && $row['unit_id'] == -1)
+				unset($row['unit_id']);
 
 			PurchaseDetail::create($row);
 		}

@@ -12,6 +12,7 @@
 		<?php $documentsTypes_enabled	= (isset($documentsTypes) and count($documentsTypes) > 0); ?>
 		<?php $products_enabled 		= (isset($products) and count($products) > 0); ?>
 		<?php $productsState_enabled 	= (isset($productsState) and count($productsState) > 0); ?>
+		<?php $productsUnits_enabled 	= (isset($productsUnits) and count($productsUnits) > 0); ?>
 		
 		<div class="container-fluid">
 			<div class="content">
@@ -131,7 +132,7 @@
 										</div>
 									</div>
 
-									<div class="col-lg-3 col-md-6 status-flag-header-element">
+									<div class="col-lg-3 col-md-6 aff-stock-flag-header-element">
 										<div class="form-group">
 											<label class="font-weight-bold">Fecha Entrega:</label>
 											<br>
@@ -139,7 +140,7 @@
 										</div>
 									</div>
 
-									<div class="col-lg-3 col-md-6 status-flag-header-element">
+									<div class="col-lg-3 col-md-6 aff-stock-flag-header-element">
 										<div class="form-group">
 											<label class="font-weight-bold">Lugar Entrega:</label>
 											<br>
@@ -252,6 +253,26 @@
 					
 					<div class="col-md-4">
 						<div class="form-group">
+							<label class="font-weight-bold">Unidad:</label>
+							<br>
+							<label <?= !$productsUnits_enabled ? '' : 'class="d-none" ' ?>name="units-label"><i class="fa fa-exclamation-triangle"></i> No hay unidades de medida!</label>
+							<select class="form-control<?= $productsUnits_enabled ? '' : ' d-none' ?>" name="dialog-units-select">
+							<?php if ($productsUnits_enabled) : ?>
+								<option value="N/A">Seleccionar unidad...</option>
+							<?php foreach($productsUnits as $unit) : ?>
+								<option value="<?= $unit->id ?>">
+									<?= $unit->description ?>
+								</option>
+							<?php endforeach; ?>
+							<?php endif; ?>
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
 							<label class="font-weight-bold">Subtotal:</label>
 							<br>
 							<div class="input-group">
@@ -262,10 +283,8 @@
 						    </div>
 						</div>
 					</div>
-				</div>
-				
-				<div class="row">
-					<div class="col-md-6">
+
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="font-weight-bold">I.V.A.:</label>
 							<br>
@@ -277,7 +296,7 @@
 						</div>
 					</div>
 					
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="font-weight-bold">Total:</label>
 							<br>
@@ -291,7 +310,7 @@
 					</div>
 				</div>
 
-				<div class="row status-flag-detail-element">
+				<div class="row aff-stock-flag-detail-element">
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="font-weight-bold">Estado:</label>
@@ -302,7 +321,7 @@
 								<option value="N/A">Seleccionar estado...</option>
 							<?php foreach($productsState as $status) : ?>
 								<option value="<?= $status->id ?>">
-									<?= $status->unique_code . ' | ' . $status->description ?>
+									<?= $status->description ?>
 								</option>
 							<?php endforeach; ?>
 							<?php endif; ?>
@@ -374,15 +393,16 @@
 								var row = $('tr#' + recordKey);
 
 								var recordData = {
-									record_key :	recordKey,
-									product_id : 	row.find('td[name="col-product"]').attr('data-key'),
-									status_id : 	row.find('td[name="col-status"]').attr('data-key'),
-									quantity : 		row.find('td[name="col-quantity"]').text(),
-									unit_price :	row.find('td[name="col-unit-price"]').text(),
-									subtotal :		row.find('td[name="col-subtotal"]').text(),
-									tax_id :		row.find('td[name="col-tax"]').attr('data-key'),
-									total :			row.find('td[name="col-total"]').text(),
-									more_info :		row.find('td[name="col-more-info"]').text(),
+									record_key :		recordKey,
+									product_id : 		row.find('td[name="col-product"]').attr('data-key'),
+									status_id : 		row.find('td[name="col-status"]').attr('data-key'),
+									unit_id : 			row.find('td[name="col-unit"]').attr('data-key'),
+									quantity : 			row.find('td[name="col-quantity"]').text(),
+									unit_price :		row.find('td[name="col-unit-price"]').text(),
+									subtotal :			row.find('td[name="col-subtotal"]').text(),
+									tax_id :			row.find('td[name="col-tax"]').attr('data-key'),
+									total :				row.find('td[name="col-total"]').text(),
+									more_info :			row.find('td[name="col-more-info"]').text(),
 								};
 								
 								showAddOrEditProductDialog(recordData)
@@ -546,6 +566,7 @@
 									product_desc : 	$('select[name="dialog-products-select"] option:selected').attr("data-description"),
 									status_id : 	$('select[name="dialog-state-select"] option:selected').val(),
 									status_desc : 	$('select[name="dialog-state-select"] option:selected').attr("data-description"),
+									unit_id : 		$('select[name="dialog-units-select"] option:selected').val(),
 									quantity : 		$('input[name="dialog-quantity"]').val(),
 									unit_price :	$('input[name="dialog-unit-price"]').val(),
 									subtotal :		$('input[name="dialog-subtotal"]').val(),
@@ -588,10 +609,10 @@
 
 					// if affects stock, then show additional fields...
 					if (affStock()) {
-						$('.status-flag-detail-element').show();
+						$('.aff-stock-flag-detail-element').show();
 					}
 					else {
-						$('.status-flag-detail-element').hide();
+						$('.aff-stock-flag-detail-element').hide();
 					}
 
 					if (recordData != undefined) {
@@ -599,6 +620,7 @@
 						
 						$('select[name="dialog-products-select"]').val(recordData.product_id).trigger('change');
 						$('select[name="dialog-state-select"]').val(recordData.status_id);
+						$('select[name="dialog-units-select"]').val(recordData.unit_id);
 						$('input[name="dialog-quantity"]').val(recordData.quantity);
 						$('input[name="dialog-unit-price"]').val(recordData.unit_price);
 						$('input[name="dialog-subtotal"]').val(recordData.subtotal);
@@ -611,6 +633,7 @@
 						
 						$('select[name="dialog-products-select"]').val('N/A').trigger('change');
 						$('select[name="dialog-state-select"]').val( $('select[name="dialog-state-select"] option:first').val() );
+						$('select[name="dialog-units-select"]').val( $('select[name="dialog-units-select"] option:first').val() );
 						$('input[name="dialog-quantity"]').val(0);
 						$('input[name="dialog-unit-price"]').val(0);
 						$('input[name="dialog-subtotal"]').val(0);
@@ -666,6 +689,7 @@
 							"<td class='align-middle' name='col-total'>" + data.total + "</td>" +
 							"<td class='align-middle d-none' name='col-status' data-key='" + data.status_id + "'>" + data.status_desc + "</td>" +
 							"<td class='align-middle d-none' name='col-more-info'>" + data.more_info + "</td>" +
+							"<td class='align-middle d-none' name='col-unit' data-key='" + data.unit_id + "'></td>" +
 						"</tr>";
 						
 					body.append(newRecordHTML);
@@ -681,6 +705,7 @@
 					row.find('td[name="col-product"]').text(data.product_desc);
 					row.find('td[name="col-status"]').attr('data-key', data.status_id);
 					row.find('td[name="col-status"]').text(data.status_desc);
+					row.find('td[name="col-unit"]').attr('data-key', data.unit_id);
                     row.find('td[name="col-quantity"]').text(data.quantity);
                     row.find('td[name="col-unit-price"]').text(data.unit_price);
                     row.find('td[name="col-subtotal"]').text(data.subtotal);
@@ -732,11 +757,19 @@
 								statusId = parseInt(strStatusId);
 							}
 
+							// unit of measurement
+							const strUnitId = $(this).find('td[name="col-unit"]').attr("data-key");
+							unitId = -1;
+							if ( $.isNumeric(strUnitId) ) {
+								unitId = parseInt(strUnitId);
+							}
+
 							detailData[index] = {
 								product_id : 			parseInt($(this).find('td[name="col-product"]').attr("data-key")),
 								product_description : 	$(this).find('td[name="col-product"]').text().trim(),
 								status_id : 			statusId,
 								quantity : 				parseFloat($(this).find('td[name="col-quantity"]').text()),
+								unit_id : 				unitId,
 								unit_price : 			parseFloat($(this).find('td[name="col-unit-price"]').text()),
 								subtotal : 				parseFloat($(this).find('td[name="col-subtotal"]').text()),
 								tax : 					parseFloat($(this).find('td[name="col-tax"]').attr("data-key")),
@@ -899,6 +932,7 @@
 											product_id : 	detail.product_id,
 											product_desc : 	detail.product_description,
 											status_id :		detail.status_id,
+											unit_id : 		detail.unit_id,
 											quantity : 		detail.quantity,
 											unit_price :	detail.unit_price,
 											subtotal :		detail.subtotal,
@@ -990,10 +1024,10 @@
 				{
 					// if affects stock, then show additional fields...
 					if (affStock()) {
-						$('.status-flag-header-element').show();
+						$('.aff-stock-flag-header-element').show();
 					}
 					else {
-						$('.status-flag-header-element').hide();
+						$('.aff-stock-flag-header-element').hide();
 					}
 				}
 				
