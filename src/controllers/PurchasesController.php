@@ -7,6 +7,8 @@ use App\Models\PurchaseDetail;
 use App\Models\PurchaseDocumentType;
 use App\Models\SupplierBalance;
 use App\Models\ProductUnit;
+
+use Illuminate\Support\Facades\DB;
  
 class PurchasesController extends Controller
 {
@@ -117,6 +119,8 @@ class PurchasesController extends Controller
 	
 	private function create($request, $response, $params)
 	{
+		DB::transaction(function () {
+
 		$body = $request->getParsedBody();
 		
 		// validate duplicated document
@@ -182,6 +186,8 @@ class PurchasesController extends Controller
 			'status'	=> 'ERROR',
 			'message'	=> 'Comprobante ya generado!',
 		]);
+
+		});
 	}
 	
 	private function update($request, $response, $params)
