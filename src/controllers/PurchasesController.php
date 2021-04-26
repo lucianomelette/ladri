@@ -119,10 +119,8 @@ class PurchasesController extends Controller
 	
 	private function create($request, $response, $params)
 	{
-		DB::beginTransaction();
-
 		$body = $request->getParsedBody();
-		
+	
 		// validate duplicated document
 		$exists = PurchaseHeader::where("supplier_id", $body["supplier_id"])
 								->where("dated_at", $body["dated_at"])
@@ -131,11 +129,95 @@ class PurchasesController extends Controller
 
 		if (!$exists)
 		{
+			DB::beginTransaction();
+
+			try
+			{
+				// save header
+				$body['project_id'] = $_SESSION["project_session"]->id;		
+				$headerId = PurchaseHeader::create($body)->id;
+						
+				// save each detail
+				$detail = $body["detail"];
+				foreach ($detail as $row)
+				{
+					$row['header_id'] = $headerId;
+
+					// product status
+					if (isset($row['status_id']) && $row['status_id'] == -1)
+						unset($row['status_id']);
+
+					// product unit of measurement
+					if (isset($row['unit_id']) && $row['unit_id'] == -1)
+						unset($row['unit_id']);
+
+					PurchaseDetail::create($row);
+				}
+				
+				// update document type sequence
+				$docType = PurchaseDocumentType::where("unique_code", $body["document_type_code"])
+												->where("project_id", $body['project_id'])
+												->first();
+				
+				if ($docType != null)
+				{
+					$docNumber 		= $body["number"];
+					$docSequence 	= explode("-", $docNumber)[1]; // take 2nd part of the number
+					
+					$int_value = ctype_digit($docSequence) ? intval($docSequence) : null;
+					if ($int_value !== null)
+					{
+						$docType->sequence = $int_value + 1;
+						$docType->save();
+					}
+					
+					// update supplier balance
+					if ($docType->balance_multiplier != 0)
+					{
+						$_SESSION["project_session"]->updateSupplierBalance($body["supplier_id"], $docType->balance_multiplier * $body["total"]);
+					}
+				}
+
+				DB::commit();
+						
+				return $response->withJson([
+					'status'	=> 'OK',
+					'message'	=> 'Comprobante guardado correctamente',
+				]);
+			}
+			catch (\Exception $e)
+			{
+				DB::rollBack();
+						
+				return $response->withJson([
+					'status'	=> 'ERROR',
+					'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+				]);
+			}
+		}
+
+		return $response->withJson([
+			'status'	=> 'ERROR',
+			'message'	=> 'Comprobante ya generado!',
+		]);
+	}
+	
+	private function update($request, $response, $params)
+	{
+		DB::transactions();
+
+		try
+		{
+			$body = $request->getParsedBody();
+			
 			// save header
 			$body['project_id'] = $_SESSION["project_session"]->id;		
-			$headerId = PurchaseHeader::create($body)->id;
+			$headerId = $body["id"];
+			PurchaseHeader::find($headerId)->update($body);
 					
 			// save each detail
+			PurchaseDetail::where("header_id", $headerId)->delete();
+			
 			$detail = $body["detail"];
 			foreach ($detail as $row)
 			{
@@ -151,79 +233,23 @@ class PurchasesController extends Controller
 
 				PurchaseDetail::create($row);
 			}
-			
-			// update document type sequence
-			$docType = PurchaseDocumentType::where("unique_code", $body["document_type_code"])
-											->where("project_id", $body['project_id'])
-											->first();
-			
-			if ($docType != null)
-			{
-				$docNumber 		= $body["number"];
-				$docSequence 	= explode("-", $docNumber)[1]; // take 2nd part of the number
-				
-				$int_value = ctype_digit($docSequence) ? intval($docSequence) : null;
-				if ($int_value !== null)
-				{
-					$docType->sequence = $int_value + 1;
-					$docType->save();
-				}
-				
-				// update supplier balance
-				if ($docType->balance_multiplier != 0)
-				{
-					$_SESSION["project_session"]->updateSupplierBalance($body["supplier_id"], $docType->balance_multiplier * $body["total"]);
-				}
-			}
 
 			DB::commit();
-					
+			
 			return $response->withJson([
 				'status'	=> 'OK',
 				'message'	=> 'Comprobante guardado correctamente',
 			]);
 		}
-
-		DB::rollBack();
-		
-		return $response->withJson([
-			'status'	=> 'ERROR',
-			'message'	=> 'Comprobante ya generado!',
-		]);
-	}
-	
-	private function update($request, $response, $params)
-	{
-		$body = $request->getParsedBody();
-		
-		// save header
-		$body['project_id'] = $_SESSION["project_session"]->id;		
-		$headerId = $body["id"];
-		PurchaseHeader::find($headerId)->update($body);
-				
-		// save each detail
-		PurchaseDetail::where("header_id", $headerId)->delete();
-		
-		$detail = $body["detail"];
-		foreach ($detail as $row)
+		catch (\Exception $e)
 		{
-			$row['header_id'] = $headerId;
-
-			// product status
-			if (isset($row['status_id']) && $row['status_id'] == -1)
-				unset($row['status_id']);
-
-			// product unit of measurement
-			if (isset($row['unit_id']) && $row['unit_id'] == -1)
-				unset($row['unit_id']);
-
-			PurchaseDetail::create($row);
+			DB::rollBack();
+			
+			return $response->withJson([
+				'status'	=> 'ERROR',
+				'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+			]);
 		}
-		
-		return $response->withJson([
-			'status'	=> 'OK',
-			'message'	=> 'Comprobante guardado correctamente',
-		]);
 	}
 	
 	private function remove($request, $response, $args)

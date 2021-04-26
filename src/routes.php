@@ -142,9 +142,6 @@ $app->group('/cash', function() {
 	// pivot
 	$this->get('/pivot', 'CashReportsController:pivot');
 	$this->post('/pivot', 'CashReportsController:pivotData');
-	
-	$this->get('', 'CashController');
-	$this->post('/{action}', 'CashController:action');
 })->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // banks

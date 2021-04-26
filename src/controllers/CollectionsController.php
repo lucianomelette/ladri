@@ -9,6 +9,8 @@ use App\Models\CollectionDetailThirdPartyCheck;
 use App\Models\CollectionDetailTransfer;
 use App\Models\CollectionDocumentType;
 use App\Models\Currency;
+
+use Illuminate\Database\Capsule\Manager as DB;
  
 class CollectionsController extends Controller
 {
@@ -125,110 +127,143 @@ class CollectionsController extends Controller
 	
 	private function create($request, $response, $params)
 	{
-		$body = $request->getParsedBody();
-		
-		// save header
-		$body['project_id'] = $_SESSION["project_session"]->id;		
-		$headerId = CollectionHeader::create($body)->id;
-		
-		// save each detail
-		$detail = $body["detail"];
-		foreach ($detail as $row)
+		DB::beginTransaction();
+
+		try
 		{
-			$row['header_id'] = $headerId;
+			$body = $request->getParsedBody();
 			
-			$type = $row["type"];
-			switch($type) {
-				case 'cash':
-					CollectionDetailCash::create($row);
-					break;
-					
-				case 'materials':
-					CollectionDetailMaterial::create($row);
-					break;
-					
-				case 'third-party-check':
-					CollectionDetailThirdPartyCheck::create($row);
-					break;
-					
-				case 'transfer':
-					CollectionDetailTransfer::create($row);
-					break;
+			// save header
+			$body['project_id'] = $_SESSION["project_session"]->id;		
+			$headerId = CollectionHeader::create($body)->id;
+			
+			// save each detail
+			$detail = $body["detail"];
+			foreach ($detail as $row)
+			{
+				$row['header_id'] = $headerId;
+				
+				$type = $row["type"];
+				switch($type) {
+					case 'cash':
+						CollectionDetailCash::create($row);
+						break;
+						
+					case 'materials':
+						CollectionDetailMaterial::create($row);
+						break;
+						
+					case 'third-party-check':
+						CollectionDetailThirdPartyCheck::create($row);
+						break;
+						
+					case 'transfer':
+						CollectionDetailTransfer::create($row);
+						break;
+				}
 			}
+			
+			// update document type sequence
+			$docType = CollectionDocumentType::where("unique_code", $body["document_type_code"])->first();
+			
+			if ($docType != null)
+			{
+				$docNumber 		= $body["number"];
+				$docSequence 	= explode("-", $docNumber)[1]; // take 2nd part of the number
+				
+				$int_value = ctype_digit($docSequence) ? intval($docSequence) : null;
+				if ($int_value !== null)
+				{
+					$docType->sequence = $int_value + 1;
+					$docType->save();
+				}
+				
+				// update customer balance
+				if ($docType->balance_multiplier != 0)
+				{
+					$_SESSION["project_session"]->updateCustomerBalance($body["customer_id"], $docType->balance_multiplier * $body["total"]);
+				}
+			}
+			
+			DB::commit();
+
+			return $response->withJson([
+				'status'	=> 'OK',
+				'message'	=> 'Comprobante guardado correctamente',
+			]);
 		}
-		
-		// update document type sequence
-		$docType = CollectionDocumentType::where("unique_code", $body["document_type_code"])->first();
-		
-		if ($docType != null)
+		catch(\Exception $e)
 		{
-			$docNumber 		= $body["number"];
-			$docSequence 	= explode("-", $docNumber)[1]; // take 2nd part of the number
-			
-			$int_value = ctype_digit($docSequence) ? intval($docSequence) : null;
-			if ($int_value !== null)
-			{
-				$docType->sequence = $int_value + 1;
-				$docType->save();
-			}
-			
-			// update customer balance
-			if ($docType->balance_multiplier != 0)
-			{
-				$_SESSION["project_session"]->updateCustomerBalance($body["customer_id"], $docType->balance_multiplier * $body["total"]);
-			}
+			DB::rollBack();
+
+			return $response->withJson([
+				'status'	=> 'ERROR',
+				'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+			]);
+
 		}
-		
-		return $response->withJson([
-			'status'	=> 'OK',
-			'message'	=> 'Comprobante guardado correctamente',
-		]);
 	}
 	
 	private function update($request, $response, $params)
 	{
-		$body = $request->getParsedBody();
-		
-		// save header
-		$body['project_id'] = $_SESSION["project_session"]->id;		
-		$headerId = $body["id"];
-		CollectionHeader::find($headerId)->update($body);
-		
-		CollectionDetailCash::where("header_id", $headerId)->delete();
-		CollectionDetailMaterial::where("header_id", $headerId)->delete();
-		CollectionDetailThirdPartyCheck::where("header_id", $headerId)->delete();
-		CollectionDetailTransfer::where("header_id", $headerId)->delete();
-		
-		// save each detail
-		$detail = $body["detail"];
-		foreach ($detail as $row)
+		DB::beginTransaction();
+
+		try
 		{
-			$row['header_id'] = $headerId;
+			$body = $request->getParsedBody();
 			
-			$type = $row["type"];
-			switch($type) {
-				case 'cash':
-					CollectionDetailCash::create($row);
-					break;
-					
-				case 'materials':
-					CollectionDetailMaterial::create($row);
-					break;
-					
-				case 'transfer':
-					CollectionDetailTransfer::create($row);
-					break;
+			// save header
+			$body['project_id'] = $_SESSION["project_session"]->id;		
+			$headerId = $body["id"];
+			CollectionHeader::find($headerId)->update($body);
+			
+			CollectionDetailCash::where("header_id", $headerId)->delete();
+			CollectionDetailMaterial::where("header_id", $headerId)->delete();
+			CollectionDetailThirdPartyCheck::where("header_id", $headerId)->delete();
+			CollectionDetailTransfer::where("header_id", $headerId)->delete();
+			
+			// save each detail
+			$detail = $body["detail"];
+			foreach ($detail as $row)
+			{
+				$row['header_id'] = $headerId;
 				
-				case 'third-party-check':
-					CollectionDetailThirdPartyCheck::create($row);
-					break;
+				$type = $row["type"];
+				switch($type) {
+					case 'cash':
+						CollectionDetailCash::create($row);
+						break;
+						
+					case 'materials':
+						CollectionDetailMaterial::create($row);
+						break;
+						
+					case 'transfer':
+						CollectionDetailTransfer::create($row);
+						break;
+					
+					case 'third-party-check':
+						CollectionDetailThirdPartyCheck::create($row);
+						break;
+				}
 			}
+
+			DB::commit();
+			
+			return $response->withJson([
+				'status'	=> 'OK',
+				'message'	=> 'Comprobante guardado correctamente',
+			]);
 		}
-		
-		return $response->withJson([
-			'status'	=> 'OK',
-			'message'	=> 'Comprobante guardado correctamente',
-		]);
+		catch(\Exception $e)
+		{
+			DB::rollBack();
+			
+			return $response->withJson([
+				'status'	=> 'ERROR',
+				'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+			]);
+		}
 	}
 	
 	private function remove($request, $response, $args)

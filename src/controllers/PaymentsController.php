@@ -12,7 +12,7 @@ use App\Models\PaymentDetailDebit;
 use App\Models\PaymentDocumentType;
 use App\Models\Currency;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Capsule\Manager as DB;
  
 class PaymentsController extends Controller
 {
@@ -140,9 +140,113 @@ class PaymentsController extends Controller
 								->exists();
 		if (!$exists)
 		{
+			DB::beginTransaction();
+			
+			try
+			{
+				// save header
+				$body['project_id'] = $_SESSION["project_session"]->id;		
+				$headerId = PaymentHeader::create($body)->id;
+				
+				// save each detail
+				$detail = $body["detail"];
+				foreach ($detail as $row)
+				{
+					$row['header_id'] = $headerId;
+					
+					$type = $row["type"];
+					switch($type) {
+						case 'cash':
+							PaymentDetailCash::create($row);
+							break;
+							
+						case 'third-party-check':
+							PaymentDetailThirdPartyCheck::create($row);
+							break;
+							
+						case 'transfer':
+							PaymentDetailTransfer::create($row);
+							break;
+							
+						case 'deposit':
+							PaymentDetailDeposit::create($row);
+							break;
+							
+						case 'own-check':
+							PaymentDetailOwnCheck::create($row);
+							break;
+							
+						case 'debit':
+							PaymentDetailDebit::create($row);
+							break;
+					}
+				}
+				
+				// update document type sequence
+				$docType = PaymentDocumentType::where("unique_code", $body["document_type_code"])->first();
+				
+				if ($docType != null)
+				{
+					$docNumber 		= $body["number"];
+					$docSequence 	= explode("-", $docNumber)[1]; // take 2nd part of the number
+					
+					$int_value = ctype_digit($docSequence) ? intval($docSequence) : null;
+					if ($int_value !== null)
+					{
+						$docType->sequence = $int_value + 1;
+						$docType->save();
+					}
+					
+					// update supplier balance
+					if ($docType->balance_multiplier != 0)
+					{
+						$_SESSION["project_session"]->updateSupplierBalance($body["supplier_id"], $docType->balance_multiplier * $body["total"]);
+					}
+				}
+
+				DB::commit();
+				
+				return $response->withJson([
+					'status'	=> 'OK',
+					'message'	=> 'Comprobante guardado correctamente',
+				]);
+			}
+			catch (\Exception $e)
+			{
+				DB::rollBack();
+				
+				return $response->withJson([
+					'status'	=> 'ERROR',
+					'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+				]);
+			}
+		}
+
+		return $response->withJson([
+			'status'	=> 'ERROR',
+			'message'	=> 'Comprobante ya generado!',
+		]);
+	}
+	
+	private function update($request, $response, $params)
+	{
+		DB::beginTransaction();
+
+		try
+		{
+			$body = $request->getParsedBody();
+			
 			// save header
 			$body['project_id'] = $_SESSION["project_session"]->id;		
-			$headerId = PaymentHeader::create($body)->id;
+			$headerId = $body["id"];
+			PaymentHeader::find($headerId)->update($body);
+			
+			PaymentDetailCash::where("header_id", $headerId)->delete();
+			PaymentDetailDebit::where("header_id", $headerId)->delete();
+			PaymentDetailDeposit::where("header_id", $headerId)->delete();
+			PaymentDetailOwnCheck::where("header_id", $headerId)->delete();
+			PaymentDetailThirdPartyCheck::where("header_id", $headerId)->delete();
+			PaymentDetailTransfer::where("header_id", $headerId)->delete();
 			
 			// save each detail
 			$detail = $body["detail"];
@@ -156,12 +260,8 @@ class PaymentsController extends Controller
 						PaymentDetailCash::create($row);
 						break;
 						
-					case 'third-party-check':
-						PaymentDetailThirdPartyCheck::create($row);
-						break;
-						
-					case 'transfer':
-						PaymentDetailTransfer::create($row);
+					case 'debit':
+						PaymentDetailDebit::create($row);
 						break;
 						
 					case 'deposit':
@@ -172,100 +272,32 @@ class PaymentsController extends Controller
 						PaymentDetailOwnCheck::create($row);
 						break;
 						
-					case 'debit':
-						PaymentDetailDebit::create($row);
+					case 'transfer':
+						PaymentDetailTransfer::create($row);
+						break;
+					
+					case 'third-party-check':
+						PaymentDetailThirdPartyCheck::create($row);
 						break;
 				}
 			}
-			
-			// update document type sequence
-			$docType = PaymentDocumentType::where("unique_code", $body["document_type_code"])->first();
-			
-			if ($docType != null)
-			{
-				$docNumber 		= $body["number"];
-				$docSequence 	= explode("-", $docNumber)[1]; // take 2nd part of the number
-				
-				$int_value = ctype_digit($docSequence) ? intval($docSequence) : null;
-				if ($int_value !== null)
-				{
-					$docType->sequence = $int_value + 1;
-					$docType->save();
-				}
-				
-				// update supplier balance
-				if ($docType->balance_multiplier != 0)
-				{
-					$_SESSION["project_session"]->updateSupplierBalance($body["supplier_id"], $docType->balance_multiplier * $body["total"]);
-				}
-			}
+
+			DB::commit();
 			
 			return $response->withJson([
 				'status'	=> 'OK',
 				'message'	=> 'Comprobante guardado correctamente',
 			]);
 		}
-		
-		return $response->withJson([
-			'status'	=> 'ERROR',
-			'message'	=> 'Comprobante ya generado!',
-		]);
-	}
-	
-	private function update($request, $response, $params)
-	{
-		$body = $request->getParsedBody();
-		
-		// save header
-		$body['project_id'] = $_SESSION["project_session"]->id;		
-		$headerId = $body["id"];
-		PaymentHeader::find($headerId)->update($body);
-		
-		PaymentDetailCash::where("header_id", $headerId)->delete();
-		PaymentDetailDebit::where("header_id", $headerId)->delete();
-		PaymentDetailDeposit::where("header_id", $headerId)->delete();
-		PaymentDetailOwnCheck::where("header_id", $headerId)->delete();
-		PaymentDetailThirdPartyCheck::where("header_id", $headerId)->delete();
-		PaymentDetailTransfer::where("header_id", $headerId)->delete();
-		
-		// save each detail
-		$detail = $body["detail"];
-		foreach ($detail as $row)
+		catch (\Exception $e)
 		{
-			$row['header_id'] = $headerId;
+			DB::rollBack();
 			
-			$type = $row["type"];
-			switch($type) {
-				case 'cash':
-					PaymentDetailCash::create($row);
-					break;
-					
-				case 'debit':
-					PaymentDetailDebit::create($row);
-					break;
-					
-				case 'deposit':
-					PaymentDetailDeposit::create($row);
-					break;
-					
-				case 'own-check':
-					PaymentDetailOwnCheck::create($row);
-					break;
-					
-				case 'transfer':
-					PaymentDetailTransfer::create($row);
-					break;
-				
-				case 'third-party-check':
-					PaymentDetailThirdPartyCheck::create($row);
-					break;
-			}
+			return $response->withJson([
+				'status'	=> 'ERROR',
+				'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+			]);
 		}
-		
-		return $response->withJson([
-			'status'	=> 'OK',
-			'message'	=> 'Comprobante guardado correctamente',
-		]);
 	}
 	
 	private function remove($request, $response, $args)

@@ -110,71 +110,103 @@ class SalesController extends Controller
 	
 	private function create($request, $response, $params)
 	{
-		$body = $request->getParsedBody();
-		
-		// save header
-		$body['project_id'] = $_SESSION["project_session"]->id;		
-		$headerId = SaleHeader::create($body)->id;
+		DB::beginTransaction();
+
+		try
+		{
+			$body = $request->getParsedBody();
+			
+			// save header
+			$body['project_id'] = $_SESSION["project_session"]->id;		
+			$headerId = SaleHeader::create($body)->id;
+					
+			// save each detail
+			$detail = $body["detail"];
+			foreach ($detail as $row)
+			{
+				$row['header_id'] = $headerId;
+				SaleDetail::create($row);
+			}
+			
+			// update document type sequence
+			$docType = SaleDocumentType::where("unique_code", $body["document_type_code"])->first();
+			
+			if ($docType != null)
+			{
+				$docNumber 		= $body["number"];
+				$docSequence 	= explode("-", $docNumber)[1]; // take 2nd part of the number
 				
-		// save each detail
-		$detail = $body["detail"];
-		foreach ($detail as $row)
-		{
-			$row['header_id'] = $headerId;
-			SaleDetail::create($row);
-		}
-		
-		// update document type sequence
-		$docType = SaleDocumentType::where("unique_code", $body["document_type_code"])->first();
-		
-		if ($docType != null)
-		{
-			$docNumber 		= $body["number"];
-			$docSequence 	= explode("-", $docNumber)[1]; // take 2nd part of the number
-			
-			$int_value = ctype_digit($docSequence) ? intval($docSequence) : null;
-			if ($int_value !== null)
-			{
-				$docType->sequence = $int_value + 1;
-				$docType->save();
+				$int_value = ctype_digit($docSequence) ? intval($docSequence) : null;
+				if ($int_value !== null)
+				{
+					$docType->sequence = $int_value + 1;
+					$docType->save();
+				}
+				
+				// update customer balance
+				if ($docType->balance_multiplier != 0)
+				{
+					$_SESSION["project_session"]->updateCustomerBalance($body["customer_id"], $docType->balance_multiplier * $body["total"]);
+				}
 			}
+
+			DB::commit();
 			
-			// update customer balance
-			if ($docType->balance_multiplier != 0)
-			{
-				$_SESSION["project_session"]->updateCustomerBalance($body["customer_id"], $docType->balance_multiplier * $body["total"]);
-			}
+			return $response->withJson([
+				'status'	=> 'OK',
+				'message'	=> 'Comprobante guardado correctamente',
+			]);
 		}
-		
-		return $response->withJson([
-			'status'	=> 'OK',
-			'message'	=> 'Comprobante guardado correctamente',
-		]);
+		catch (\Exception $e)
+		{
+			DB::rollBack();
+					
+			return $response->withJson([
+				'status'	=> 'ERROR',
+				'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+			]);
+		}
 	}
 	
 	private function update($request, $response, $params)
 	{
-		$body = $request->getParsedBody();
-		
-		// save header
-		$body['project_id'] = $_SESSION["project_session"]->id;		
-		$headerId = $body["id"];
-		SaleHeader::find($headerId)->update($body);
-				
-		// save each detail
-		SaleDetail::where("header_id", $headerId)->delete();
-		
-		$detail = $body["detail"];
-		foreach ($detail as $row)
+		DB::beginTransaction();
+
+		try
 		{
-			$row['header_id'] = $headerId;
-			SaleDetail::create($row);
+			$body = $request->getParsedBody();
+			
+			// save header
+			$body['project_id'] = $_SESSION["project_session"]->id;		
+			$headerId = $body["id"];
+			SaleHeader::find($headerId)->update($body);
+					
+			// save each detail
+			SaleDetail::where("header_id", $headerId)->delete();
+			
+			$detail = $body["detail"];
+			foreach ($detail as $row)
+			{
+				$row['header_id'] = $headerId;
+				SaleDetail::create($row);
+			}
+
+			DB::commit();
+			
+			return $response->withJson([
+				'status'	=> 'OK',
+				'message'	=> 'Comprobante guardado correctamente',
+			]);
 		}
-		
-		return $response->withJson([
-			'status'	=> 'OK',
-			'message'	=> 'Comprobante guardado correctamente',
-		]);
+		catch (\Exception $e)
+		{
+			DB::rollBack();
+					
+			return $response->withJson([
+				'status'	=> 'ERROR',
+				'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+			]);
+		}
 	}
 	
 	private function remove($request, $response, $args)
