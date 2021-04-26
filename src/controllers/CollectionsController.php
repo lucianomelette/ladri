@@ -138,6 +138,7 @@ class CollectionsController extends Controller
 			$headerId = CollectionHeader::create($body)->id;
 			
 			// save each detail
+			$errorOnPaymentType = false;
 			$detail = $body["detail"];
 			foreach ($detail as $row)
 			{
@@ -160,7 +161,20 @@ class CollectionsController extends Controller
 					case 'transfer':
 						CollectionDetailTransfer::create($row);
 						break;
+
+					default:
+						$errorOnPaymentType = true;
 				}
+			}
+
+			if ($errorOnPaymentType)
+			{
+				DB::rollBack();
+			
+				return $response->withJson([
+					'status'	=> 'ERROR',
+					'message'	=> 'Algún tipo de medio de pago es incorrecto.',
+				]);
 			}
 			
 			// update document type sequence
@@ -223,6 +237,7 @@ class CollectionsController extends Controller
 			CollectionDetailTransfer::where("header_id", $headerId)->delete();
 			
 			// save each detail
+			$errorOnPaymentType = false;
 			$detail = $body["detail"];
 			foreach ($detail as $row)
 			{
@@ -245,7 +260,20 @@ class CollectionsController extends Controller
 					case 'third-party-check':
 						CollectionDetailThirdPartyCheck::create($row);
 						break;
+
+					default:
+						$errorOnPaymentType = true;
 				}
+			}
+
+			if ($errorOnPaymentType)
+			{
+				DB::rollBack();
+			
+				return $response->withJson([
+					'status'	=> 'ERROR',
+					'message'	=> 'Algún tipo de medio de pago es incorrecto.',
+				]);
 			}
 
 			DB::commit();
