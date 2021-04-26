@@ -117,6 +117,9 @@ class PurchasesController extends Controller
 	
 	private function create($request, $response, $params)
 	{
+		var_dump ($this->container);
+		return;
+
 		$this->container->get('db')->transaction(function () {
 
 		$body = $request->getParsedBody();
