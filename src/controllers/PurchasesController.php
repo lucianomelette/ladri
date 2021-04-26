@@ -119,7 +119,7 @@ class PurchasesController extends Controller
 	
 	private function create($request, $response, $params)
 	{
-		DB::transaction(function () {
+		DB::transaction(function () use ($request, $response, $params) {
 
 		$body = $request->getParsedBody();
 		
