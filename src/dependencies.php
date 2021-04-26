@@ -25,9 +25,9 @@ $capsule->addConnection($container['settings']['db']);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
-$container['db'] = function ($capsule) {
-    return $capsule;
-};
+// $container['db'] = function ($capsule) {
+//     return $capsule;
+// };
 
 // login controller
 $container['LoginController'] = function ($container) {

@@ -8,6 +8,8 @@ use App\Models\PurchaseDocumentType;
 use App\Models\SupplierBalance;
 use App\Models\ProductUnit;
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class PurchasesController extends Controller
 {
 	public function __invoke($request, $response, $params)
@@ -117,7 +119,7 @@ class PurchasesController extends Controller
 	
 	private function create($request, $response, $params)
 	{
-		$this->container->db->getConnection()->transaction(function () {
+		DB::transaction(function () {
 
 		$body = $request->getParsedBody();
 		
