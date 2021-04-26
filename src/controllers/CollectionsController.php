@@ -64,7 +64,7 @@ class CollectionsController extends Controller
 	{
 		$headerId = $args["headerId"];
 		
-		$document = CollectionHeader::find($headerId);
+		$document = CollectionHeader::where('project_id', $_SESSION["project_session"]->id)->find($headerId);
 		if ($document != null)
 		{
 			$document->load("detailsCash");

@@ -59,7 +59,7 @@ class PurchasesController extends Controller
 	{
 		$headerId = $args["headerId"];
 		
-		$document = PurchaseHeader::find($headerId);
+		$document = PurchaseHeader::where('project_id', $_SESSION["project_session"]->id)->find($headerId);
 		if ($document != null)
 		{
 			$document->load("details");

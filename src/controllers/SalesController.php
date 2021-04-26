@@ -50,7 +50,7 @@ class SalesController extends Controller
 	{
 		$headerId = $args["headerId"];
 		
-		$document = SaleHeader::find($headerId);
+		$document = SaleHeader::where('project_id', $_SESSION["project_session"]->id)->find($headerId);
 		if ($document != null)
 		{
 			$document->load("details");
