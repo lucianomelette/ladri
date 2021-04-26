@@ -204,7 +204,7 @@ class PurchasesController extends Controller
 	
 	private function update($request, $response, $params)
 	{
-		DB::transactions();
+		DB::beginTransaction();
 
 		try
 		{
