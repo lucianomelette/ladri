@@ -249,7 +249,7 @@ class SalesReportsController extends Controller
 		$project->load('collectionsDocumentsTypes');
 	    
 	    $args = [
-			"navbar" => $this->navbar,
+			"navbar" 				=> $this->navbar,
 			"customers" 			=> $company->customers->sortBy("business_name"),
 			"salesDocsTypes" 		=> $project->salesDocumentsTypes->sortBy("description"),
 			"collectionsDocsTypes" 	=> $project->collectionsDocumentsTypes->sortBy("description"),

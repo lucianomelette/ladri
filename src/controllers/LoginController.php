@@ -64,11 +64,8 @@ class LoginController extends Controller
 					->companies;
 	
 		$args = [
-			"navbar" => [
-				"username_session" => $_SESSION["user_session"]->username,
-				"user_display_name" => $_SESSION["user_session"]->display_name,
-			],
-			"companies" => $companies,
+			"navbar" 	=> $this->navbar,
+			"companies"	=> $companies,
 		];
 		
 		return $this->container->renderer->render($response, 'login_companies_selection.phtml', $args);
@@ -93,12 +90,8 @@ class LoginController extends Controller
 					->where('company_id', $_SESSION["company_session"]->id);
 	
 		$args = [
-			"navbar" => [
-				"username_session" 	=> $_SESSION["user_session"]->username,
-				"user_display_name" => $_SESSION["user_session"]->display_name,
-				"company_session" 	=> $_SESSION["company_session"]->business_name,
-			],
-			"projects" => $projects,
+			"navbar" 	=> $this->navbar,
+			"projects"	=> $projects,
 		];
 		
 		return $this->container->renderer->render($response, 'login_projects_selection.phtml', $args);
