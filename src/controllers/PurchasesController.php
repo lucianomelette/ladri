@@ -119,7 +119,7 @@ class PurchasesController extends Controller
 	
 	private function create($request, $response, $params)
 	{
-		DB::transaction(function () use ($request, $response, $params) {
+		DB::beginTransaction();
 
 		$body = $request->getParsedBody();
 		
@@ -175,19 +175,21 @@ class PurchasesController extends Controller
 					$_SESSION["project_session"]->updateSupplierBalance($body["supplier_id"], $docType->balance_multiplier * $body["total"]);
 				}
 			}
+
+			DB::commit();
 					
 			return $response->withJson([
 				'status'	=> 'OK',
 				'message'	=> 'Comprobante guardado correctamente',
 			]);
 		}
+
+		DB::rollBack();
 		
 		return $response->withJson([
 			'status'	=> 'ERROR',
 			'message'	=> 'Comprobante ya generado!',
 		]);
-
-		});
 	}
 	
 	private function update($request, $response, $params)
