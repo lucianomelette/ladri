@@ -261,7 +261,7 @@
 								<option value="N/A">Seleccionar unidad...</option>
 							<?php foreach($productsUnits as $unit) : ?>
 								<option value="<?= $unit->id ?>">
-									<?= $unit->description ?>
+									<?= $unit->unique_code ?>
 								</option>
 							<?php endforeach; ?>
 							<?php endif; ?>
