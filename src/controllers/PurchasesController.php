@@ -8,8 +8,6 @@ use App\Models\PurchaseDocumentType;
 use App\Models\SupplierBalance;
 use App\Models\ProductUnit;
 
-use Illuminate\Support\Facades\DB;
- 
 class PurchasesController extends Controller
 {
 	public function __invoke($request, $response, $params)
@@ -119,7 +117,7 @@ class PurchasesController extends Controller
 	
 	private function create($request, $response, $params)
 	{
-		DB::transaction(function () {
+		$this->container->db->transaction(function () {
 
 		$body = $request->getParsedBody();
 		
