@@ -1045,7 +1045,7 @@
 							"</td>" +
 							"<td class='align-middle font-weight-bold'>" + currentRecordNumber + "</td>" +
 							"<td class='align-middle form-inline' name='col-detail'>" + detailText + "</td>" +
-							"<td class='align-middle' name='col-amount'>" + data["amount"] * (exchangeToARS ? exchange : 1) + "</td>" +
+							"<td class='align-middle' name='col-amount'>" + Math.round(data["amount"] * (exchangeToARS ? exchange : 1), 2) + "</td>" +
 						"</tr>";
 						
 					body.append(newRecordHTML);
