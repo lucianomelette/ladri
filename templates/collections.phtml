@@ -949,7 +949,7 @@
 						// 2019-03-13 - exchange to AR$
 						if (key === 'currency' && data[key] === 'USD') {
 							exchangeToARS 	= true;
-							exchange 		= data['exchange']; // $('input[name="doc-exchange"]').val();
+							exchange 		= $('input[name="doc-exchange"]').val();
 						}
 					}
 					
@@ -1236,6 +1236,8 @@
 							success: function(data, textStatus, jqXHR) {
 								if (data.Result == 'OK')
 								{
+									const updateTotals = false;
+
 									// header
 									$('select[name="customers-select"]').val(data.Document.customer_id).trigger('change');
 									$('select[name="docs-types-select"]').val(data.Document.document_type_code).trigger('change');
@@ -1245,23 +1247,22 @@
 									// detail
 									data.Document.details_cash.forEach(function(record)
 									{
-										record['exchange'] = data.Document.exchange;
-										loadDetailItem("cash", record);
+										loadDetailItem("cash", record, updateTotals);
 									});
 									
 									data.Document.details_materials.forEach(function(record)
 									{
-										loadDetailItem("materials", record);
+										loadDetailItem("materials", record, updateTotals);
 									});
 									
 									data.Document.details_third_party_checks.forEach(function(record)
 									{
-										loadDetailItem("third-party-check", record);
+										loadDetailItem("third-party-check", record, updateTotals);
 									});
 									
 									data.Document.details_transfers.forEach(function(record)
 									{
-										loadDetailItem("transfer", record);
+										loadDetailItem("transfer", record, updateTotals);
 									});
 									
 									// footer
@@ -1315,10 +1316,6 @@
 							{
 								detail = " | " + recordData[name];
 							}
-						}
-
-						if (name == 'currency') {
-							recordData['exchange'] = data['exchange'];
 						}
 						
 						detailText += detail;

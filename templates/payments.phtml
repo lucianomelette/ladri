@@ -1034,7 +1034,7 @@
 						// 2019-03-13 - exchange to AR$
 						if (key === 'currency' && data[key] === 'USD') {
 							exchangeToARS 	= true;
-							exchange 		= data['exchange']; // $('input[name="doc-exchange"]').val();
+							exchange 		= $('input[name="doc-exchange"]').val();
 						}
 					}
 					
@@ -1164,7 +1164,7 @@
 						if (currencyCode != undefined && currencyCode === 'USD') {
 							var amount = row.attr('data-amount');
 							
-							row.find('td[name="col-amount"]').text(amount * exchange);
+							row.find('td[name="col-amount"]').text(Math.round(amount * exchange, 2));
 							
 							needUpdateDocumentTotals = true;
 						}
@@ -1337,7 +1337,6 @@
 									// detail
 									data.Document.details_cash.forEach(function(record)
 									{
-										record['exchange'] = data.Document.exchange;
 										loadDetailItem("cash", record);
 									});
 									
@@ -1371,6 +1370,9 @@
 									$('input[name="doc-exchange"]').val(data.Document.exchange);
 									$('input[name="doc-withholdings"]').val(data.Document.withholdings);
 									$('input[name="doc-total"]').val(data.Document.total);
+
+									// update totals
+									updateDetailAmounts( data.Document.exchange );
 								}
 								else if (data.Result == 'ERROR') {
 									$.stdShowMessage({
@@ -1414,10 +1416,6 @@
 							{
 								detail = " | " + recordData[name];
 							}
-						}
-
-						if (name == 'currency') {
-							recordData['exchange'] = data['exchange'];
 						}
 						
 						detailText += detail;
