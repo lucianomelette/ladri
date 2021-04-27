@@ -949,7 +949,7 @@
 						// 2019-03-13 - exchange to AR$
 						if (key === 'currency' && data[key] === 'USD') {
 							exchangeToARS 	= true;
-							exchange 		= $('input[name="doc-exchange"]').val();
+							exchange 		= data['exchange']; // $('input[name="doc-exchange"]').val();
 						}
 					}
 					
@@ -960,7 +960,7 @@
 							"</td>" +
 							"<td class='align-middle font-weight-bold'>" + currentRecordNumber + "</td>" +
 							"<td class='align-middle form-inline' name='col-detail'>" + detailText + "</td>" +
-							"<td class='align-middle' name='col-amount'>" + data["amount"] * (exchangeToARS ? exchange : 1) + "</td>" +
+							"<td class='align-middle' name='col-amount'>" + Math.round(data["amount"] * (exchangeToARS ? exchange : 1), 2) + "</td>" +
 						"</tr>";
 						
 					body.append(newRecordHTML);
@@ -1245,6 +1245,7 @@
 									// detail
 									data.Document.details_cash.forEach(function(record)
 									{
+										record['exchange'] = data.Document.exchange;
 										loadDetailItem("cash", record);
 									});
 									
@@ -1314,6 +1315,10 @@
 							{
 								detail = " | " + recordData[name];
 							}
+						}
+
+						if (name == 'currency') {
+							recordData['exchange'] = data['exchange'];
 						}
 						
 						detailText += detail;
