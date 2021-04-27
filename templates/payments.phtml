@@ -1333,10 +1333,17 @@
 									$('select[name="docs-types-select"]').val(data.Document.document_type_code).trigger('change');
 									$('input[name="doc-date"]').val(data.Document.dated_at);
 									$('input[name="doc-number"]').val(data.Document.number);
+
+									// footer
+									$('input[name="doc-comments"]').val(data.Document.comments);
+									$('input[name="doc-exchange"]').val(data.Document.exchange);
+									$('input[name="doc-withholdings"]').val(data.Document.withholdings);
+									$('input[name="doc-total"]').val(data.Document.total);
 									
 									// detail
 									data.Document.details_cash.forEach(function(record)
 									{
+										record.exchange = data.Document.exchange;
 										loadDetailItem("cash", record);
 									});
 									
@@ -1364,12 +1371,6 @@
 									{
 										loadDetailItem("transfer", record);
 									});
-									
-									// footer
-									$('input[name="doc-comments"]').val(data.Document.comments);
-									$('input[name="doc-exchange"]').val(data.Document.exchange);
-									$('input[name="doc-withholdings"]').val(data.Document.withholdings);
-									$('input[name="doc-total"]').val(data.Document.total);
 								}
 								else if (data.Result == 'ERROR') {
 									$.stdShowMessage({
