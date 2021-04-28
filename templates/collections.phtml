@@ -1307,11 +1307,10 @@
 						var visible	= field.visible;
 						var detail	= "";
 						
-						if (column == 'amount') {
-							recordData[name] = roundAmount(data[column]);
-						}
-						else {
-							recordData[name] = data[column];
+						recordData[name] = data[column];
+
+						if (name == 'amount') {
+							recordData[name] = roundAmount(recordData[name]);
 						}
 
 						if (visible)

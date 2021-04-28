@@ -768,11 +768,13 @@
 				
 				// documents exchange change
 				$('input[name="doc-exchange"]').change(function(e) {
+					$(this).val( roundAmount( $(this).val()) );
 					updateDetailAmounts( $(this).val() );
 				});
 				
 				// withholdings change
 				$('input[name="doc-withholdings"]').change(function(e) {
+					$(this).val( roundAmount( $(this).val()) );
 					updateDocumentTotals();
 				});
 				
@@ -884,6 +886,10 @@
 										else {
 											recordData[name] = $(tag + '[name="dialog-' + dialogKey + '-' + name + '"]').val();
 											
+											if (name == 'amount') {
+												recordData[name] = roundAmount(recordData[name]);
+											}
+
 											if (visible) {
 												detail = " | " + recordData[name];
 											}
@@ -1045,7 +1051,7 @@
 							"</td>" +
 							"<td class='align-middle font-weight-bold'>" + currentRecordNumber + "</td>" +
 							"<td class='align-middle form-inline' name='col-detail'>" + detailText + "</td>" +
-							"<td class='align-middle' name='col-amount'>" + Math.round(data["amount"] * (exchangeToARS ? exchange : 1), 2) + "</td>" +
+							"<td class='align-middle' name='col-amount'>" + roundAmount(data["amount"] * (exchangeToARS ? exchange : 1)) + "</td>" +
 						"</tr>";
 						
 					body.append(newRecordHTML);
@@ -1073,7 +1079,7 @@
 					}
 					
 					row.find('td[name="col-detail"]').text(detailText);
-                    row.find('td[name="col-amount"]').text( data["amount"] * (exchangeToARS ? exchange : 1) );
+                    row.find('td[name="col-amount"]').text( roundAmount(data["amount"] * (exchangeToARS ? exchange : 1)) );
 					
 					updateDocumentTotals();
 				}				
@@ -1094,7 +1100,7 @@
 					}
 					
 					//$('input[name="doc-subtotal"]').val(subtotal);
-					$('input[name="doc-total"]').val(total);
+					$('input[name="doc-total"]').val( roundAmount(total) );
 				}
 				
 				function updateSupplierBalance(supplierId)
@@ -1134,7 +1140,7 @@
 						success: function(data, textStatus, jqXHR) {
 							var price = 0;
 							if (data.Result == 'OK') {
-								price = data.Exchange.price;
+								price = roundAmount(data.Exchange.price);
 								$('input[name="doc-exchange"]').val(price);
 							}
 							else {
@@ -1164,7 +1170,7 @@
 						if (currencyCode != undefined && currencyCode === 'USD') {
 							var amount = row.attr('data-amount');
 							
-							row.find('td[name="col-amount"]').text(Math.round(amount * exchange, 2));
+							row.find('td[name="col-amount"]').text( roundAmount(amount * exchange) );
 							
 							needUpdateDocumentTotals = true;
 						}
@@ -1404,6 +1410,11 @@
 						var detail	= "";
 						
 						recordData[name] = data[column];
+
+						if (name == 'amount') {
+							recordData[name] = roundAmount(recordData[name]);
+						}
+
 						if (visible)
 						{
 							if (tag == 'select')
@@ -1434,6 +1445,10 @@
 					return $("data[name='document-data']").attr("data-header-id");
 				}
 				
+				function roundAmount(amount)
+				{
+					return Math.round((parseFloat(amount) + Number.EPSILON) * 100) / 100;
+				}
 			});
 		</script>
 	</body>
