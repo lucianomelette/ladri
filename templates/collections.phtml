@@ -688,6 +688,7 @@
 				
 				// withholdings change
 				$('input[name="doc-withholdings"]').change(function(e) {
+					$(this).val( roundAmount( $(this).val() );
 					updateDocumentTotals();
 				});
 				
@@ -960,7 +961,7 @@
 							"</td>" +
 							"<td class='align-middle font-weight-bold'>" + currentRecordNumber + "</td>" +
 							"<td class='align-middle form-inline' name='col-detail'>" + detailText + "</td>" +
-							"<td class='align-middle' name='col-amount'>" + Math.round(data["amount"] * (exchangeToARS ? exchange : 1), 2) + "</td>" +
+							"<td class='align-middle' name='col-amount'>" + roundAmount(data["amount"] * (exchangeToARS ? exchange : 1)) + "</td>" +
 						"</tr>";
 						
 					body.append(newRecordHTML);
@@ -988,7 +989,7 @@
 					}
 					
 					row.find('td[name="col-detail"]').text(detailText);
-                    row.find('td[name="col-amount"]').text( data["amount"] * (exchangeToARS ? exchange : 1) );
+                    row.find('td[name="col-amount"]').text( roundAmount(data["amount"] * (exchangeToARS ? exchange : 1)) );
 					
 					updateDocumentTotals();
 				}				
@@ -1009,7 +1010,7 @@
 					}
 					
 					//$('input[name="doc-subtotal"]').val(subtotal);
-					$('input[name="doc-total"]').val(total);
+					$('input[name="doc-total"]').val( roundAmount(total) );
 				}
 				
 				function updateCustomerBalance(customerId)
@@ -1048,7 +1049,7 @@
 						success: function(data, textStatus, jqXHR) {
 							var price = 0;
 							if (data.Result == 'OK') {
-								price = data.Exchange.price;
+								price = roundAmount(data.Exchange.price);
 								$('input[name="doc-exchange"]').val(price);
 							}
 							else {
@@ -1078,7 +1079,7 @@
 						if (currencyCode != undefined && currencyCode === 'USD') {
 							var amount = row.attr('data-amount');
 							
-							row.find('td[name="col-amount"]').text(amount * exchange);
+							row.find('td[name="col-amount"]').text( roundAmount(amount * exchange) );
 							
 							needUpdateDocumentTotals = true;
 						}
@@ -1236,8 +1237,6 @@
 							success: function(data, textStatus, jqXHR) {
 								if (data.Result == 'OK')
 								{
-									const updateTotals = false;
-
 									// header
 									$('select[name="customers-select"]').val(data.Document.customer_id).trigger('change');
 									$('select[name="docs-types-select"]').val(data.Document.document_type_code).trigger('change');
@@ -1247,22 +1246,22 @@
 									// detail
 									data.Document.details_cash.forEach(function(record)
 									{
-										loadDetailItem("cash", record, updateTotals);
+										loadDetailItem("cash", record);
 									});
 									
 									data.Document.details_materials.forEach(function(record)
 									{
-										loadDetailItem("materials", record, updateTotals);
+										loadDetailItem("materials", record);
 									});
 									
 									data.Document.details_third_party_checks.forEach(function(record)
 									{
-										loadDetailItem("third-party-check", record, updateTotals);
+										loadDetailItem("third-party-check", record);
 									});
 									
 									data.Document.details_transfers.forEach(function(record)
 									{
-										loadDetailItem("transfer", record, updateTotals);
+										loadDetailItem("transfer", record);
 									});
 									
 									// footer
@@ -1333,7 +1332,11 @@
 				{
 					return $("data[name='document-data']").attr("data-header-id");
 				}
-				
+
+				function roundAmount(amount)
+				{
+					return Math.round((amount + Number.EPSILON) * 100) / 100;
+				}
 			});
 		</script>
 	</body>
