@@ -946,7 +946,12 @@
 					var fieldsData = "";
 					for (var key in data)
 					{
-						fieldsData += " data-" + key + "='" + data[key] + "'";
+						if (key == 'amount') {
+							fieldsData += " data-" + key + "='" + data[key] + "'";
+						}
+						else {
+							fieldsData += " data-amount='" + roundAmount(data['amount']) + "'";
+						}
 						
 						// 2019-03-13 - exchange to AR$
 						if (key === 'currency' && data[key] === 'USD') {
