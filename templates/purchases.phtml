@@ -1065,10 +1065,10 @@
 					}
 					
 					// subtotal
-					$('input[name="dialog-subtotal"]').val(subtotal);
+					$('input[name="dialog-subtotal"]').val( roundAmount(subtotal) );
 					
 					// total
-					$('input[name="dialog-total"]').val(total);
+					$('input[name="dialog-total"]').val( roundAmount(total) );
 				}			
 				
 			});
