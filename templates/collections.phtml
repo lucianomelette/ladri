@@ -683,13 +683,13 @@
 				
 				// documents exchange change
 				$('input[name="doc-exchange"]').change(function(e) {
-					$(this).val( roundAmount( (this).val()) );
+					$(this).val( roundAmount( $(this).val()) );
 					updateDetailAmounts( $(this).val() );
 				});
 				
 				// withholdings change
 				$('input[name="doc-withholdings"]').change(function(e) {
-					$(this).val( roundAmount( (this).val()) );
+					$(this).val( roundAmount( $(this).val()) );
 					updateDocumentTotals();
 				});
 				
