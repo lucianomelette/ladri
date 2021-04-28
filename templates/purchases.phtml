@@ -472,11 +472,13 @@
 				
 				// perceptions change
 				$('input[name="doc-perceptions"]').change(function(e) {
+					$(this).val( roundAmount($(this).val()) );
 					updateDocumentTotals();
 				});
 				
 				// taxes change
 				$('input[name="doc-taxes"]').change(function(e) {
+					$(this).val( roundAmount($(this).val()) );
 					updateDocumentTotals();
 				});
 				
@@ -527,10 +529,12 @@
 					
 					// to calculate dialog totals
 					$('input[name="dialog-quantity"]').change(function(e){
+						$(this).val( roundAmount($(this).val()) );
 						updateDialogTotals();
 					});
 					
 					$('input[name="dialog-unit-price"]').change(function(e){
+						$(this).val( roundAmount($(this).val()) );
 						updateDialogTotals();
 					});
 					
@@ -738,8 +742,8 @@
 						total += parseFloat(taxes);
 					}
 					
-					$('input[name="doc-subtotal"]').val(subtotal);
-					$('input[name="doc-total"]').val(total);
+					$('input[name="doc-subtotal"]').val( roundAmount(subtotal) );
+					$('input[name="doc-total"]').val( roundAmount(total) );
 				}
 				
 				function saveDocument() {
@@ -1031,6 +1035,11 @@
 					else {
 						$('.aff-stock-flag-header-element').hide();
 					}
+				}
+
+				function roundAmount(amount)
+				{
+					return Math.round((parseFloat(amount) + Number.EPSILON) * 100) / 100;
 				}
 				
 				// ********************** //
