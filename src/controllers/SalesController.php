@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\SaleHeader;
 use App\Models\SaleDetail;
 use App\Models\SaleDocumentType;
+
+use Illuminate\Database\Capsule\Manager as DB;
  
 class SalesController extends Controller
 {
