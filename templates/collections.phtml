@@ -683,12 +683,8 @@
 				
 				// documents exchange change
 				$('input[name="doc-exchange"]').change(function(e) {
-					debugger;
-					var exchange = $(this).val();
-					var exchangeRounded = roundAmount(exchange);
-
-					$(this).val(exchangeRounded);
-					updateDetailAmounts(exchangeRounded);
+					$(this).val( roundAmount( $(this).val()) );
+					updateDetailAmounts( $(this).val() );
 				});
 				
 				// withholdings change
@@ -1340,7 +1336,7 @@
 
 				function roundAmount(amount)
 				{
-					return Math.round((amount + Number.EPSILON) * 100) / 100;
+					return Math.round((parseFloat(amount) + Number.EPSILON) * 100) / 100;
 				}
 			});
 		</script>
