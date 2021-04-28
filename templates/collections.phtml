@@ -800,6 +800,10 @@
 										}
 										else {
 											recordData[name] = $(tag + '[name="dialog-' + dialogKey + '-' + name + '"]').val();
+
+											if (name == 'amount') {
+												recordData[name] = roundAmount(recordData[name]);
+											}
 											
 											if (visible) {
 												detail = " | " + recordData[name];
@@ -946,12 +950,7 @@
 					var fieldsData = "";
 					for (var key in data)
 					{
-						if (key == 'amount') {
-							fieldsData += " data-" + key + "='" + data[key] + "'";
-						}
-						else {
-							fieldsData += " data-amount='" + roundAmount(data['amount']) + "'";
-						}
+						fieldsData += " data-" + key + "='" + data[key] + "'";
 						
 						// 2019-03-13 - exchange to AR$
 						if (key === 'currency' && data[key] === 'USD') {
@@ -1308,7 +1307,13 @@
 						var visible	= field.visible;
 						var detail	= "";
 						
-						recordData[name] = data[column];
+						if (column == 'amount') {
+							recordData[name] = roundAmount(data[column]);
+						}
+						else {
+							recordData[name] = data[column];
+						}
+
 						if (visible)
 						{
 							if (tag == 'select')
