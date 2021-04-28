@@ -683,6 +683,7 @@
 				
 				// documents exchange change
 				$('input[name="doc-exchange"]').change(function(e) {
+					debugger;
 					$(this).val( roundAmount( $(this).val()) );
 					updateDetailAmounts( $(this).val() );
 				});
