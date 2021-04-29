@@ -217,9 +217,9 @@
 							isHtmlName: true,
 							callback: function(itemKey, opt, e) {
 								$row = $('tr.jtable-data-row[data-record-key="' + opt.$trigger.attr('data-record-key') + '"]');
-								$('div[name="table-content"]').jtable('showEditDialog', $row);
-								return true;            
-							}   
+								$('div[name="table-content"]').jtable('showEditForm', $row);
+								return true;
+							},
 						},
 					}
 				});
