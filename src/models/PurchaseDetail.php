@@ -26,4 +26,9 @@ class PurchaseDetail extends Model
 	{
 		return $this->hasOne('\App\Models\PurchaseHeader', 'id', 'header_id');
 	}
+
+	public function Pictures()
+	{
+		return $this->hasMany('App\Models\PurchasePicture', 'detail_id', 'id');
+	}
 }
