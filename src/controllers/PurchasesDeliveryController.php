@@ -103,29 +103,15 @@ class PurchasesDeliveryController extends Controller
 	{
 		$body = $request->getParsedBody();
 		
-		// save header
-		$body['project_id'] = $_SESSION["project_session"]->id;		
-		$headerId = $body["id"];
-		PurchaseHeader::find($headerId)->update($body);
+		$detailId = $body["id"];
+		PurchaseDetail::find($detailId)->update($body);
 				
 		// save each detail
 		PurchaseDetail::where("header_id", $headerId)->delete();
 		
-		$detail = $body["detail"];
-		foreach ($detail as $row)
-		{
-			$row['header_id'] = $headerId;
-
-			// product status
-			if (isset($row['status_id']) && $row['status_id'] == -1)
-				unset($row['status_id']);
-
-			PurchaseDetail::create($row);
-		}
-		
 		return $response->withJson([
 			'status'	=> 'OK',
-			'message'	=> 'Comprobante guardado correctamente',
+			'message'	=> 'Estado actualizado correctamente',
 		]);
 	}
 
