@@ -12,6 +12,7 @@ class PurchasesDeliveryController extends Controller
 	{	
 		$company = $_SESSION["company_session"];
 		$company->load('suppliers');
+		$company->load('productsState');
 		
 		$project = $_SESSION["project_session"];
 		$project->load('purchasesDocumentsTypes');
@@ -20,6 +21,7 @@ class PurchasesDeliveryController extends Controller
 			"navbar" 			=> $this->navbar,
 			"suppliers" 		=> $company->suppliers->sortBy("business_name"),
 			"documentsTypes" 	=> $project->purchasesDocumentsTypes->where("aff_stock", "<>", 0)->sortBy("description"),
+			"productsState" 	=> $company->productsState->sortBy("description"),
 		];
 	
 		return $this->container->renderer->render($response, 'purchases_delivery.phtml', $args);
