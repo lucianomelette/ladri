@@ -101,17 +101,14 @@ class PurchasesDeliveryController extends Controller
 	
 	private function update($request, $response, $params)
 	{
-		$body = $request->getParsedBody();
+		$record = $request->getParsedBody();
 		
-		$detailId = $body["id"];
-		PurchaseDetail::find($detailId)->update($body);
+		$detailId = $record["id"];
+		PurchaseDetail::find($detailId)->update($record);
 				
-		// save each detail
-		PurchaseDetail::where("header_id", $headerId)->delete();
-		
 		return $response->withJson([
-			'status'	=> 'OK',
-			'message'	=> 'Estado actualizado correctamente',
+			'Result'	=> 'OK',
+			'Record'	=> $record,
 		]);
 	}
 
