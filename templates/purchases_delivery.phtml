@@ -96,7 +96,7 @@
 					pageSize: 10,
 					actions: {
 						listAction: '/purchases/delivery/read',
-						editAction: '/purchases/delivery/update',
+						updateAction: '/purchases/delivery/update',
 						},
 					fields: {
 						id: {
@@ -117,6 +117,7 @@
 						doc_type_code: {
 							title: 'Comp.',
 							width: '5%',
+							edit: false,
 							display: function(data){
 								return data.record.purchase_header.document_type_code;
 							}
@@ -124,6 +125,7 @@
 						supplier_description: {
 							title: 'Proveedor',
 							width: '20%',
+							edit: false,
 							display: function(data){
 								return data.record.purchase_header.supplier.business_name;
 							}
@@ -131,6 +133,7 @@
 						number: {
 							title: 'Número',
 							width: '10%',
+							edit: false,
 							listClass: 'd-lg-table-cell',
 							display: function(data){
 								return data.record.purchase_header.number;
@@ -139,11 +142,13 @@
 						product_description: {
 							title: 'Detalle',
 							width: '20%',
+							edit: false,
 							listClass: 'd-lg-table-cell',
 						},
 						delivery_date: {
 							title: 'F. Entrega',
 							width: '10%',
+							edit: false,
 							display: function(data) {
 								if (data.record.delivery_date) {
 									US_Date = new Date(data.record.delivery_date);
@@ -156,15 +161,18 @@
 						quantity: {
 							title: 'Cant.',
 							width: '10%',
+							edit: false,
 						},
 						product_unit: {
 							title: 'Uni. Med.',
 							width: '10%',
-							options: '/products_units/options'
+							edit: false,
+							options: '/products_units/options',
 						},
 						more_info: {
 							title: 'Más info',
 							width: '20%',
+							edit: false,
 						},
 						status_id: {
 							title: 'Estado',
