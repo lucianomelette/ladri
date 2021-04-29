@@ -104,6 +104,9 @@
 				
 				if ( !$('select[name="docs-types-select"]').hasClass('d-none') )
 					$('select[name="docs-types-select"]').select2({ width: '100%' });
+
+				if ( !$('select[name="products-state-select"]').hasClass('d-none') )
+					$('select[name="products-state-select"]').select2({ width: '100%' });
 				
 				// table-content
 				$('div[name="table-content"]').jtable({
@@ -212,6 +215,7 @@
 					$('div[name="table-content"]').jtable('load', { 
 						suppliers_ids : $('select[name="suppliers-select"]').val(),
 						docs_types_codes : $('select[name="docs-types-select"]').val(),
+						products_state_ids : $('select[name="products-state-select"]').val(),
 					});
 				});
 				

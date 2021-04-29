@@ -43,8 +43,9 @@ class PurchasesDeliveryController extends Controller
 		$startIndex     = $request->getQueryParam("jtStartIndex", $default = null);
 		$recordsCount   = 0;
 		
-		$suppliers_ids		= (isset($request->getParsedBody()["suppliers_ids"]) ? $request->getParsedBody()["suppliers_ids"] : null);
-		// $docs_types_codes	= (isset($request->getParsedBody()["docs_types_codes"]) ? $request->getParsedBody()["docs_types_codes"] : null);
+		$suppliers_ids			= (isset($request->getParsedBody()["suppliers_ids"]) ? $request->getParsedBody()["suppliers_ids"] : null);
+		$docs_types_codes		= (isset($request->getParsedBody()["docs_types_codes"]) ? $request->getParsedBody()["docs_types_codes"] : null);
+		$products_state_ids		= (isset($request->getParsedBody()["products_state_ids"]) ? $request->getParsedBody()["products_state_ids"] : null);
 		
 		$projectId = $_SESSION["project_session"]->id;
 
@@ -59,6 +60,9 @@ class PurchasesDeliveryController extends Controller
 												$q2->whereIn('supplier_id', $suppliers_ids);
 											})
 											->orderBy('delivery_date', 'ASC');
+									})
+									->when($products_state_ids != null, function($query) use ($products_state_ids) {
+										$query->whereIn('status_id', $products_state_ids);
 									})
 									->when($pageSize != null and $startIndex != null, function($query) use ($pageSize, $startIndex) {
 										$query->take($pageSize)
