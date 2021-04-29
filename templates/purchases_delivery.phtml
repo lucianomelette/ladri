@@ -204,23 +204,6 @@
 					selector: 'span[name="btn-table-context-menu"]',
 					trigger: 'left',
 					items: {
-						"edit": {
-							name: '<span><i class="fa fa-edit"></i> Editar</span>',
-							isHtmlName: true,
-							callback: function(itemKey, opt, e) {
-								window.location.href = '/purchases/' + opt.$trigger.attr('data-record-key');
-								return false;
-							},
-						},
-						"delete": {
-							name: '<span><i class="fa fa-trash-alt"></i> Eliminar</span>',
-							isHtmlName: true,
-							callback: function(itemKey, opt, e) {
-								$row = $('tr.jtable-data-row[data-record-key="' + opt.$trigger.attr('data-record-key') + '"]');
-								$('div[name="table-content"]').jtable('showDeleteDialog', $row);
-								return true;            
-							}   
-						},
 						"edit_status": {
 							name: '<span><i class="fa fa-edit"></i> Cambiar Estado</span>',
 							isHtmlName: true,
@@ -228,6 +211,14 @@
 								$row = $('tr.jtable-data-row[data-record-key="' + opt.$trigger.attr('data-record-key') + '"]');
 								$('div[name="table-content"]').jtable('showEditForm', $row);
 								return true;
+							},
+						},
+						"fotos": {
+							name: '<span><i class="fa fa-camera-retro"></i> Fotos</span>',
+							isHtmlName: true,
+							callback: function(itemKey, opt, e) {
+								window.location.href = '/purchases/' + opt.$trigger.attr('data-record-key');
+								return false;
 							},
 						},
 					}
