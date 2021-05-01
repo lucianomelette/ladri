@@ -96,7 +96,7 @@ class PurchasesDeliveryPicturesController extends Controller
 	{
 		$guid = $args['guid'];
 		
-		if (isset($_FILES['picture']) and $_FILES['picture']['error'] == 0)
+		if (isset($_FILES['picture']) and $_FILES['picture']['error'] == 0 and isset($guid) and $guid != "")
 		{
 			// upload file to server repository
 			$project 		= $_SESSION["project_session"];
