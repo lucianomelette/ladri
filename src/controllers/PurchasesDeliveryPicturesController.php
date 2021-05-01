@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\PurchaseDetail;
 use App\Models\PurchasePicture;
  
-class GalleryController extends Controller
+class PurchasesDeliveryPicturesController extends Controller
 {
 	public function __invoke($request, $response, $params)
 	{	
