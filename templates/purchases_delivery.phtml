@@ -240,7 +240,8 @@
 							name: '<span><i class="fa fa-camera-retro"></i> Fotos</span>',
 							isHtmlName: true,
 							callback: function(itemKey, opt, e) {
-								window.location.href = '/purchases/' + opt.$trigger.attr('data-record-key');
+								// window.location.href = '/purchases/delivery/pictures/' + opt.$trigger.attr('data-record-key');
+								window.open('/purchases/delivery/pictures/' + opt.$trigger.attr('data-record-key'), '_blank');
 								return false;
 							},
 						},
