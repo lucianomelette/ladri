@@ -282,8 +282,10 @@
 					
 					// define dialog width
 					var dialogWidth = "40%";
+					var dialogPosition = { my: "center", at: "center", of: window };
 					if (isBreakpoint('sm') || isBreakpoint('xs')) {
 						dialogWidth = "100%";
+						dialogPosition = 'top';
 					}
 					
 					// load photo from server if exists
@@ -306,6 +308,7 @@
 								$('div[name="upload-picture-dialog"]')
             						.dialog("option", "guid", guid)
             						.dialog({ width : dialogWidth })
+									.dialog({ position: dialogPosition })
             						.dialog("open");
 							}
 						},
