@@ -196,7 +196,7 @@ class PurchasesDeliveryPicturesController extends Controller
 			
 			return $response->withJson([
 				"Result" 	=> "OK",
-				"Message"	=> "Imagen borrada exitosamente."
+				"Message"	=> $this->nvlPicture(null)
 			]);
 		}
 		
