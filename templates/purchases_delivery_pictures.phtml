@@ -118,7 +118,7 @@
 						height: "auto",
 						modal: true,
 						autoOpen: false,
-						position: 'top',
+						position: { my: "center", at: "top", of: window },
 						buttons: {
 						    Borrar: function()
 						    {
@@ -282,10 +282,8 @@
 					
 					// define dialog width
 					var dialogWidth = "40%";
-					var dialogPosition = { my: "center", at: "top", of: $('div.card-body') };
 					if (isBreakpoint('sm') || isBreakpoint('xs')) {
 						dialogWidth = "100%";
-						dialogPosition = 'top';
 					}
 					
 					// load photo from server if exists
@@ -308,7 +306,6 @@
 								$('div[name="upload-picture-dialog"]')
             						.dialog("option", "guid", guid)
             						.dialog({ width : dialogWidth })
-									.dialog({ position: dialogPosition })
             						.dialog("open");
 							}
 						},
