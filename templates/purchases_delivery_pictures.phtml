@@ -31,11 +31,13 @@
 							            if (($rowCounter % 6) == 0) {
 							                echo '<div class="row">';
 							            }
+
+										$d = new DateTime();
 							            
 								        echo '<div class="col-lg-2">';
 								            echo '<div class="form-group">';
 								                echo '<div name="' . $key . '">';
-								                    echo '<img class="img-fluid rounded mx-auto d-block" name="picture-image" src="' . $pic->public_url . '">';
+								                    echo '<img class="img-fluid rounded mx-auto d-block" name="picture-image" src="' . $pic->public_url . '?' . $d . '">';
 												    echo '<hr>';
 												    echo '<label name="picture-title"><b>' . $pic->title . '</b></label>';
 											    echo '</div>';
