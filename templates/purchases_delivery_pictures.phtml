@@ -247,6 +247,7 @@
 				{
 					// on click match photo button
 					$('img[name="picture-image"]').on('click', function(e) {
+						debugger;
 						var guid = $(this).parent().attr('name');					
 						showUploadPictureDialog(guid);
 					});
