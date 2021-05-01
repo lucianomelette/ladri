@@ -33,13 +33,11 @@
 							            }
 
 										$d = new DateTime();
-										var_dump($d);
-										return;
 							            
 								        echo '<div class="col-lg-2">';
 								            echo '<div class="form-group">';
 								                echo '<div name="' . $key . '">';
-								                    echo '<img class="img-fluid rounded mx-auto d-block" name="picture-image" src="' . $pic->public_url . '?' . $d . '">';
+								                    echo '<img class="img-fluid rounded mx-auto d-block" name="picture-image" src="' . $pic->public_url . '?' . $d->getTimestamp() . '">';
 												    echo '<hr>';
 												    echo '<label name="picture-title"><b>' . $pic->title . '</b></label>';
 											    echo '</div>';
