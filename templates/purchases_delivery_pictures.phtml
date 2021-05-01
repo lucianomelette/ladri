@@ -119,6 +119,7 @@
 						buttons: {
 						    Borrar: function()
 						    {
+								debugger;
 						        var guid    = $(this).dialog("option", "guid");
 						        var dialog 	= $(this);
 						        
@@ -293,7 +294,7 @@
 							resetCropper();
 						}, 
 						success: function(data, textStatus, jqXHR) {
-							debugger;
+
 							if (data.Result == 'OK')
 							{
 								$('img[name="upload-picture-image"]').attr("src", data.Picture.public_url);
