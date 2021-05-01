@@ -24,29 +24,29 @@ class PurchasesDeliveryPicturesController extends Controller
 			return $this->container->renderer->render($response, 'purchases_delivery_pictures.phtml', $args);
 		}
 
-		$gallery = PurchasePicture::where("detail_id", $params["detail_id"])->get();
+		$pics = PurchasePicture::where("detail_id", $params["detail_id"])->get();
 
 		$args = [
 			"navbar" 	=> $this->navbar,
 			"detailId"	=> $params["detail_id"],
 			"pictures" 	=> [
-				"roger_federer"         => $this->loadPicture($gallery, "roger_federer"),
-				"novak_djokovic"        => $this->loadPicture($gallery, "novak_djokovic"),
-				"rafael_nadal"          => $this->loadPicture($gallery, "rafael_nadal"),
-				"del_potro"             => $this->loadPicture($gallery, "del_potro"),
-				"diego_schwartzman"     => $this->loadPicture($gallery, "diego_schwartzman"),
-				"dominic_thiem"         => $this->loadPicture($gallery, "dominic_thiem"),
+				"roger_federer"         => $this->loadPicture($pics, "roger_federer"),
+				"novak_djokovic"        => $this->loadPicture($pics, "novak_djokovic"),
+				"rafael_nadal"          => $this->loadPicture($pics, "rafael_nadal"),
+				"del_potro"             => $this->loadPicture($pics, "del_potro"),
+				"diego_schwartzman"     => $this->loadPicture($pics, "diego_schwartzman"),
+				"dominic_thiem"         => $this->loadPicture($pics, "dominic_thiem"),
 			]
 		];
 	
 		return $this->container->renderer->render($response, 'purchases_delivery_pictures.phtml', $args);
 	}
 	
-	private function loadPicture($gallery, $guid)
+	private function loadPicture($pics, $guid)
 	{
-		if ($gallery != null)
+		if ($pics != null)
 		{
-			$picture = $gallery->where("guid", $guid)->first();
+			$picture = $pics->where("guid", $guid)->first();
 			
 			return $this->nvlPicture($picture);
 		}
@@ -103,7 +103,7 @@ class PurchasesDeliveryPicturesController extends Controller
 			$detailId 		= $args["detail_id"];
 			
 			
-			$publicDir		= '/assets/repository/' . $project->api_key . '/gallery';
+			$publicDir		= '/assets/repository/' . $project->api_key . '/pictures';
 			$privateDir 	= __DIR__ . '/../../public_html' . $publicDir;
 			
 			$fileKey 		= $_FILES['picture']['name'];
@@ -123,7 +123,7 @@ class PurchasesDeliveryPicturesController extends Controller
 				mkdir($privateDir, 0777, true);
 			}
 			
-			// create or update picture in gallery
+			// create or update picture
 			$picture = PurchasePicture::where("guid", $guid)->first();
 			
 			if ($picture == null)
@@ -183,7 +183,7 @@ class PurchasesDeliveryPicturesController extends Controller
 		$detailId 	= $args['detail_id'];
 		$guid 		= $args['guid'];
 		
-		// create or update picture in gallery
+		// create or update picture
 		$picture = PurchasePicture::where("detail_id", $detailId)->where("guid", $guid)->first();
 		
 		if ($picture != null)
