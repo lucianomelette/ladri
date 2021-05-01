@@ -127,6 +127,7 @@
 									url: '/purchases/delivery/pictures/delete/' + getDetailId() + "/" + guid, // point to server-side PHP script 
 									success: function(data, textStatus, jqXHR)
 									{
+										debugger;
 										if (data.Result == 'OK')
 										{
 										    // update base image
