@@ -12,7 +12,7 @@
 					<div class="col-lg-12 p-0">
 						<div class="card card-no-rounded">
 							<div class="card-header d-flex justify-content-between">
-								<span><b><i class="fa fa-images"></i> Galería</b></span>
+								<span><b><i class="fa fa-images"></i> Fotos</b></span>
 							</div>
 							<div class="card-body">
 								
@@ -26,6 +26,8 @@
 							        $rowCounter = 0;
 							        foreach($pictures as $key => $pic)
 							        {
+										echo '<data name="pictures-data" data-detail-id="' . $detailId . '"></data>';
+
 							            if (($rowCounter % 6) == 0) {
 							                echo '<div class="row">';
 							            }
@@ -123,7 +125,7 @@
 						        
 						        $.ajax({
 									method: 'POST',
-									url: '/purchases/delivery/pictures/delete/' + guid, // point to server-side PHP script 
+									url: '/purchases/delivery/pictures/delete/' + getDetailId() + "/" + guid, // point to server-side PHP script 
 									success: function(data, textStatus, jqXHR)
 									{
 										if (data.Result == 'OK')
@@ -188,7 +190,7 @@
 								
 									$.ajax({
 										method: 'POST',
-										url: '/purchases/delivery/pictures/upload/' + guid, // point to server-side PHP script 
+										url: '/purchases/delivery/pictures/upload/' + getDetailId() + "/" + guid, // point to server-side PHP script 
 										dataType: 'text',  // what to expect back from the PHP script, if anything
 										cache: false,
 										contentType: false,
@@ -285,7 +287,7 @@
 					// load photo from server if exists
 					$.ajax({
 						method: 'POST',
-						url: '/purchases/delivery/pictures/download/' + guid,
+						url: '/purchases/delivery/pictures/download/' + getDetailId() + "/" + guid,
 						beforeSend : function() {
 							// empty photo
 							//$('img[name="upload-picture-image"]').attr("src", "");
@@ -328,6 +330,11 @@
 					
 					if (cropper !== undefined)
 						cropper.destroy();
+				}
+
+				function getDetailId()
+				{
+					return $('data[name="pictures-data"]').attr('data-detail-id');
 				}
 				
 			});

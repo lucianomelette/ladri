@@ -28,6 +28,7 @@ class PurchasesDeliveryPicturesController extends Controller
 
 		$args = [
 			"navbar" 	=> $this->navbar,
+			"detailId"	=> $params["detail_id"],
 			"pictures" 	=> [
 				"roger_federer"         => $this->loadPicture($gallery, "roger_federer"),
 				"novak_djokovic"        => $this->loadPicture($gallery, "novak_djokovic"),
