@@ -11,6 +11,7 @@ class PurchasePicture extends Model
 		'id',
 		'detail_id',
 		'title',
+		'guid',
 		'public_url',
 		'private_url',
 	];

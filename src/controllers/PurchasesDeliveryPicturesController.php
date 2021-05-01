@@ -124,7 +124,7 @@ class PurchasesDeliveryPicturesController extends Controller
 			}
 			
 			// create or update picture
-			$picture = PurchasePicture::where("guid", $guid)->first();
+			$picture = PurchasePicture::where("detail_id", $detailId)->where("guid", $guid)->first();
 			
 			if ($picture == null)
 			{
