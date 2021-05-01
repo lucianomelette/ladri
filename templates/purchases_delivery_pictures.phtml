@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<?= $this->fetch('/partials/header.phtml') ?>
+	</head>
+	<body>
+		<?= $this->fetch('/partials/navbar.phtml', $navbar) ?>
+		
+		<div class="container-fluid">
+			<div class="content">
+				<div class="row">
+					<div class="col-lg-12 p-0">
+						<div class="card card-no-rounded">
+							<div class="card-header d-flex justify-content-between">
+								<span><b><i class="fa fa-images"></i> Galería</b></span>
+							</div>
+							<div class="card-body">
+								
+								<?php
+							    if (isset($error_message))
+								{
+									echo '<h2>' . $error_message . '</h2>';
+								}
+								else
+								{
+							        $rowCounter = 0;
+							        foreach($pictures as $key => $pic)
+							        {
+							            if (($rowCounter % 6) == 0) {
+							                echo '<div class="row">';
+							            }
+							            
+								        echo '<div class="col-lg-2">';
+								            echo '<div class="form-group">';
+								                echo '<div name="' . $key . '">';
+								                    echo '<label class="text-primary"><b>Referencia #</b> ' . $key . '</label>';
+								                    echo '<img class="img-fluid rounded mx-auto d-block" name="picture-image" src="' . $pic->public_url . '">';
+												    echo '<hr>';
+												    echo '<label name="picture-title"><b>' . $pic->title . '</b></label>';
+											    echo '</div>';
+										    echo '</div>';
+									    echo '</div>';
+									    
+									    if (($rowCounter % 6) == 5) {
+							                echo '</div>';
+							            }
+									    
+									    $rowCounter++;
+							        }
+								}
+							    ?>
+									
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+		<?= $this->fetch('/partials/libs.phtml') ?>
+		
+		<!-- Optional JavaScript -->
+		<script>
+		
+			$(function() {
+				
+				// block UI on every ajax
+				$(document)
+					.ajaxStart(function(){
+						$.blockUI({ message : null });
+					})
+					.ajaxStop(function(){
+						$.unblockUI();
+					});
+				
+				// device viewport
+				configDeviceViewport();
+					
+				// create upload picture dialog
+				createUploadPictureDialog();
+				
+				// attach events
+				attachEvents();
+				
+				// device viewport
+				function configDeviceViewport() {
+					$("body").append('<div class="device-xs d-block d-sm-none"></div>');
+					$("body").append('<div class="device-sm d-none d-sm-block d-md-none"></div>');
+					$("body").append('<div class="device-md d-none d-md-block d-lg-none"></div>');
+					$("body").append('<div class="device-lg d-none d-lg-block d-xl-none"></div>');
+					$("body").append('<div class="device-xl d-none d-xl-block"></div>');
+				}
+				
+				// create upload picture dialog
+				function createUploadPictureDialog() {
+					
+					var htmlDialog = 
+						'<div class="d-none" name="upload-picture-dialog" title="Cargar Imagen">' +
+							'<div class="row">' +
+								'<div class="col-12">' +
+									'<div class="form-group">' +
+										'<input class="form-control-file" type="file" name="upload-picture-input" accept="image/*;capture=camera">' +
+									'</div>' +
+									'<div class="form-group">' +
+										'<img class="img-fluid rounded mx-auto d-block" name="upload-picture-image">' +
+									'</div>' +
+								'</div>' +
+							'</div>' +
+						'</div>';
+
+					$("body").append(htmlDialog);
+					
+					$('div[name="upload-picture-dialog"]').dialog({
+						resizable: false,
+						height: "auto",
+						modal: true,
+						autoOpen: false,
+						buttons: {
+						    Borrar: function()
+						    {
+						        var guid    = $(this).dialog("option", "guid");
+						        var dialog 	= $(this);
+						        
+						        $.ajax({
+									method: 'POST',
+									url: '/purchases/delivery/pictures/delete/' + guid, // point to server-side PHP script 
+									success: function(data, textStatus, jqXHR)
+									{
+										if (data.Result == 'OK')
+										{
+										    // update base image
+										    d = new Date();
+											$('div[name="' + guid + '"] > img[name="picture-image"]').attr("src", data.Picture.public_url + "?"+d.getTime());
+										    
+											dialog.dialog("close");
+											
+											$.stdShowMessage({
+												icon: 'fa fa-check',
+												message: '¡Imagen borrada!',
+												type: 'success'
+											});
+										}
+										else if (data.Result == 'ERROR') {
+											$.stdShowMessage({
+												icon: 'fa fa-exclamation-triangle',
+												message: 'No pudimos borrar la imagen. Por favor, vuelva a intenterlo.',
+												type: 'warning'
+											});
+										}
+									},
+									error: function(jqXHR, textStatus, errorThrown) {
+										console.warn(jqXHR.responseText);
+									},
+								});
+						    },
+						    Rotar: function() {
+						        var image 	= $('img[name="upload-picture-image"]');
+						        var cropper = image.data('cropper');
+						        cropper.rotate(90);
+						    },
+							Cancelar: function() {
+								$(this).dialog("close");
+							},
+							Guardar: function() {
+								var guid 	= $(this).dialog("option", "guid");
+								var dialog 	= $(this);
+								
+								var image 	= $('img[name="upload-picture-image"]');
+								var input   = $('input[name="upload-picture-input"]')[0];
+								
+								if (input.files && input.files[0])
+								{
+									var filename = input.files[0];
+								}
+								else
+								{
+								    var fullPath = image.attr("src");
+									var filename = fullPath.replace(/^.*[\\\/]/, '');
+								}
+								    
+							    var cropper = image.data('cropper');
+								var canvas 	= cropper.getCroppedCanvas();
+								
+								canvas.toBlob(function(blob)
+								{
+									var formData = new FormData();
+									formData.append('picture', blob, filename);
+								
+									$.ajax({
+										method: 'POST',
+										url: '/purchases/delivery/pictures/upload/' + guid, // point to server-side PHP script 
+										dataType: 'text',  // what to expect back from the PHP script, if anything
+										cache: false,
+										contentType: false,
+										processData: false,
+										data: formData,
+										beforeSend : function() {
+										   $.blockUI({ message: null });
+										}, 
+										success: function(data, textStatus, jqXHR)
+										{
+											data = JSON.parse(data);
+											if (data.Result == 'OK')
+											{
+											    // update base image
+											    d = new Date();
+												$('div[name="' + guid + '"] > img[name="picture-image"]').attr("src", data.Picture.public_url + "?"+d.getTime());
+												
+												dialog.dialog("close");
+												
+												$.stdShowMessage({
+													icon: 'fa fa-check',
+													message: '¡Proceso finalizado!',
+													type: 'success'
+												});
+											}
+											else if (data.Result == 'ERROR') {
+												$.stdShowMessage({
+													icon: 'fa fa-exclamation-triangle',
+													message: 'No pudimos subir la imagen. Por favor, vuelva a intenterlo.',
+													type: 'warning'
+												});
+											}
+											$.unblockUI();
+										},
+										error: function(jqXHR, textStatus, errorThrown) {
+											$.unblockUI();
+											console.warn(jqXHR.responseText);
+										},
+									});
+								});
+							},
+						},
+						create: function() {
+                            $(this).closest(".ui-dialog")
+                                    .find(".ui-button:nth-child(1)") // the first button
+                                    .addClass("bg-danger text-white");
+
+							$(this).removeClass("d-none");
+						},
+					});
+				}
+				
+				// attach events
+				function attachEvents() 
+				{
+					// on click match photo button
+					$('img[name="picture-image"]').on('click', function(e) {
+						var guid = $(this).parent().attr('name');					
+						showUploadPictureDialog(guid);
+					});
+					
+				    // on change photo input
+    				$(document).on('change', 'input[name="upload-picture-input"]', function(e) {
+    					
+    					var input = $(this)[0];
+    					if (input.files && input.files[0])
+    					{
+    						resetCropper();
+    						
+    						var reader = new FileReader();
+    						reader.onload = function(e) {
+    							$('img[name="upload-picture-image"]').attr('src', e.target.result);
+    							initCropper();
+    						}
+    						reader.readAsDataURL(input.files[0]);
+    					}
+    				});
+				}
+				
+				// check viewport
+				function isBreakpoint(alias) {
+					return $('.device-' + alias).is(':visible');
+				}
+				
+				// show upload picture dialog
+				function showUploadPictureDialog(guid) {
+					
+					// define dialog width
+					var dialogWidth = "40%";
+					if (isBreakpoint('sm') || isBreakpoint('xs')) {
+						dialogWidth = "95%";
+					}
+					
+					// load photo from server if exists
+					$.ajax({
+						method: 'POST',
+						url: '/purchases/delivery/pictures/download/' + guid,
+						beforeSend : function() {
+							// empty photo
+							//$('img[name="upload-picture-image"]').attr("src", "");
+							resetCropper();
+						}, 
+						success: function(data, textStatus, jqXHR) {
+							if (data.Result == 'OK')
+							{
+								$('img[name="upload-picture-image"]').attr("src", data.Picture.public_url);
+								initCropper();
+								
+								$('div[name="upload-picture-dialog"]')
+            						.dialog("option", "guid", guid)
+            						.dialog({ width : dialogWidth })
+            						.dialog("open");
+							}
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							console.warn(jqXHR.responseText);
+						},
+					});
+				}
+				
+				function initCropper()
+				{
+					$('img[name="upload-picture-image"]').cropper({
+						//aspectRatio: 1 / 1,
+						dragMode: 'move',
+					});
+				}
+				
+				function resetCropper()
+				{
+					var image 	= $('img[name="upload-picture-image"]');
+					var cropper = image.data('cropper');
+					
+					// empty photo
+					image.attr("src", "");
+					image.data('cropper', null);
+					
+					if (cropper !== undefined)
+						cropper.destroy();
+				}
+				
+			});
+		</script>
+	</body>
+</html>

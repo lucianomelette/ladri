@@ -108,7 +108,8 @@ $app->group('/purchases', function() {
 	$this->post('/report', 'PurchasesReportsController:report');
 
 	// pictures
-	$this->post('/delivery/pictures/{action}/{id}', 'PurchasesDeliveryController:picturesActions');
+	$this->get('/delivery/pictures/{detail_id}', 'PurchasesDeliveryPicturesController');
+	$this->post('/delivery/pictures/{action}/{detail_id}[/{guid}]', 'PurchasesDeliveryPicturesController:actions');
 
 	// delivery
 	$this->get('/delivery', 'PurchasesDeliveryController');

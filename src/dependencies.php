@@ -89,6 +89,11 @@ $container['PurchasesDeliveryController'] = function ($container) {
 	return new \App\Controllers\PurchasesDeliveryController($container);
 };
 
+// purchases delivery pictures controller
+$container['PurchasesDeliveryPicturesController'] = function ($container) {
+	return new \App\Controllers\PurchasesDeliveryPicturesController($container);
+};
+
 // purchases reports controller
 $container['PurchasesReportsController'] = function ($container) {
 	return new \App\Controllers\PurchasesReportsController($container);
