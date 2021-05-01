@@ -263,8 +263,7 @@
     						
     						var reader = new FileReader();
     						reader.onload = function(e) {
-								var d = new Date();
-    							$('img[name="upload-picture-image"]').attr('src', e.target.result + "?"+d.getTime());
+    							$('img[name="upload-picture-image"]').attr('src', e.target.result);
     							initCropper();
     						}
     						reader.readAsDataURL(input.files[0]);
