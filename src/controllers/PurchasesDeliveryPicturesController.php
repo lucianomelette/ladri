@@ -14,7 +14,7 @@ class PurchasesDeliveryPicturesController extends Controller
 		if ($detail == null) {
 			$args = [
 				"navbar" 		=> $this->navbar,
-				"error_message" => "El id de talle no existe."
+				"error_message" => "Id de detalle inexistente."
 			];
 
 			return $this->container->renderer->render($response, 'purchases_delivery_pictures.phtml', $args);
