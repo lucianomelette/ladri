@@ -12,7 +12,12 @@ class PurchasesDeliveryPicturesController extends Controller
 		$detail = PurchaseDetail::find($params["detail_id"]);
 
 		if ($detail == null) {
-			return $this->container->renderer->render($response, 'purchases_delivery_pictures.phtml', ["error_message" => "El id de talle no existe."]);
+			$args = [
+				"navbar" 		=> $this->navbar,
+				"error_message" => "El id de talle no existe."
+			];
+
+			return $this->container->renderer->render($response, 'purchases_delivery_pictures.phtml', $args);
 		}
 
 		$gallery = PurchasePicture::where("detail_id", $params["detail_id"])->get();
