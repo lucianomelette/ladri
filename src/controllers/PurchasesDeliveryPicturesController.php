@@ -114,7 +114,7 @@ class PurchasesDeliveryPicturesController extends Controller
 			    $ext = "jpg";
 			}
 			
-			$fileName		= $guid . '.' . $ext;
+			$fileName		= $guid . '_' . $detailId . '.' . $ext;
 			$publicFile		= $publicDir . '/' . $fileName;
 			$privateFile	= $privateDir . '/' . $fileName;
 			
