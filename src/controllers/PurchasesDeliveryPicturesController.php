@@ -9,7 +9,11 @@ class PurchasesDeliveryPicturesController extends Controller
 {
 	public function __invoke($request, $response, $params)
 	{	
-		$detail = PurchaseDetail::find($params["detail_id"]);
+		$projectId = $_SESSION["project_session"]->id;
+		$detail = PurchaseDetail::whereHas('purchaseHeader', function($q) use ($projectId) {
+									$q->where("project_id", $projectId);
+								})
+								->find($params["detail_id"]);
 
 		if ($detail == null) {
 			$args = [
