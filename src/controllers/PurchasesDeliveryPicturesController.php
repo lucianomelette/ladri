@@ -103,7 +103,7 @@ class PurchasesDeliveryPicturesController extends Controller
 			$detailId 		= $args["detail_id"];
 			
 			
-			$publicDir		= '/assets/repository/' . $club->api_key . '/gallery';
+			$publicDir		= '/assets/repository/' . $project->api_key . '/gallery';
 			$privateDir 	= __DIR__ . '/../../public_html' . $publicDir;
 			
 			$fileKey 		= $_FILES['picture']['name'];
