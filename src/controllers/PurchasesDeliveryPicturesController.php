@@ -205,7 +205,7 @@ class PurchasesDeliveryPicturesController extends Controller
 
 	private function deletePicIfExists($private_url)
 	{
-		if ( isset($private_url) and $private_url != null and file_exists($private_url) and is_file($private_url)) )
+		if ( isset($private_url) and $private_url != null and file_exists($private_url) and is_file($private_url) )
 		{
 			unlink($private_url);
 		}
