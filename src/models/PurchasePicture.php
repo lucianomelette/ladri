@@ -13,6 +13,8 @@ class PurchasePicture extends Model
 		'title',
 		'guid',
 		'public_url',
+		'public_url_thumb',
 		'private_url',
+		'private_url_thumb',
 	];
 }

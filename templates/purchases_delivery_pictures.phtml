@@ -37,7 +37,7 @@
 								        echo '<div class="col-lg-2">';
 								            echo '<div class="form-group">';
 								                echo '<div name="' . $key . '">';
-								                    echo '<img class="img-fluid rounded mx-auto d-block" name="picture-image" src="' . $pic->public_url . '?' . $d->getTimestamp() . '">';
+								                    echo '<img class="img-fluid rounded mx-auto d-block" name="picture-image" src="' . $pic->public_url_thumb . '?' . $d->getTimestamp() . '">';
 												    echo '<hr>';
 												    echo '<label name="picture-title"><b>' . $pic->title . '</b></label>';
 											    echo '</div>';
@@ -134,7 +134,7 @@
 										{
 										    // update base image
 										    d = new Date();
-											$('div[name="' + guid + '"] > img[name="picture-image"]').attr("src", data.Picture.public_url + "?"+d.getTime());
+											$('div[name="' + guid + '"] > img[name="picture-image"]').attr("src", data.Picture.public_url_thumb + "?"+d.getTime());
 										    
 											dialog.dialog("close");
 											
@@ -208,7 +208,7 @@
 											{
 											    // update base image
 											    d = new Date();
-												$('div[name="' + guid + '"] > img[name="picture-image"]').attr("src", data.Picture.public_url + "?"+d.getTime());
+												$('div[name="' + guid + '"] > img[name="picture-image"]').attr("src", data.Picture.public_url_thumb + "?"+d.getTime());
 												
 												dialog.dialog("close");
 												
@@ -300,7 +300,7 @@
 							if (data.Result == 'OK')
 							{
 								var d = new Date();
-								$('img[name="upload-picture-image"]').attr("src", data.Picture.public_url + "?"+d.getTime());
+								$('img[name="upload-picture-image"]').attr("src", data.Picture.public_url_thumb + "?"+d.getTime());
 								initCropper();
 								
 								$('div[name="upload-picture-dialog"]')

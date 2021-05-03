@@ -114,9 +114,12 @@ class PurchasesDeliveryPicturesController extends Controller
 			    $ext = "jpg";
 			}
 			
-			$fileName		= $guid . '_' . $detailId . '.' . $ext;
-			$publicFile		= $publicDir . '/' . $fileName;
-			$privateFile	= $privateDir . '/' . $fileName;
+			$fileName			= $guid . '_' . $detailId . '.' . $ext;
+			$fileNameThumb		= $guid . '_' . $detailId . '._thumb' . $ext;
+			$publicFile			= $publicDir . '/' . $fileName;
+			$publicFileThumb	= $publicDir . '/' . $fileNameThumb;
+			$privateFile		= $privateDir . '/' . $fileName;
+			$privateFileThumb	= $privateDir . '/' . $fileNameThumb;
 			
 			// create directory if necessary
 			if (!file_exists($privateDir)) {
@@ -130,11 +133,13 @@ class PurchasesDeliveryPicturesController extends Controller
 			{
 				// create new picture
 				$newPictureData = [
-					"detail_id"		=> $detailId,
-					"title" 		=> "", //$_FILES['picture']['picture_title'],
-					"guid" 			=> $guid,
-					"public_url"	=> $publicFile,
-					"private_url"	=> $privateFile,
+					"detail_id"			=> $detailId,
+					"title" 			=> "", //$_FILES['picture']['picture_title'],
+					"guid" 				=> $guid,
+					"public_url"		=> $publicFile,
+					"public_thumb_url"	=> $publicFileThumb,
+					"private_url"		=> $privateFile,
+					"private_thumb_url"	=> $privateFileThumb,
 				];
 				
 				$picture = PurchasePicture::create($newPictureData);
@@ -145,13 +150,18 @@ class PurchasesDeliveryPicturesController extends Controller
 				$this->deletePhotoIfExists($picture);
 				
 				// update picture
-				$picture->title 		= ""; //$_FILES['picture']['picture_title'];
-				$picture->public_url	= $publicFile;
-				$picture->private_url	= $privateFile;
+				$picture->title 			= ""; //$_FILES['picture']['picture_title'];
+				$picture->public_url		= $publicFile;
+				$picture->public_url_thumb	= $publicFileThumb;
+				$picture->private_url		= $privateFile;
+				$picture->private_url_thumb	= $privateFileThumb;
 				$picture->save();
 			}
 			
 			move_uploaded_file($_FILES['picture']['tmp_name'], $privateFile);
+			
+			// Compress Image
+			$this->compressImage($_FILES['picture']['tmp_name'], $privateFileThumb, 60);
 			
 			return $response->withJson([
 				"Result" 	=> "OK",
@@ -166,15 +176,38 @@ class PurchasesDeliveryPicturesController extends Controller
 			]);
 		}
 	}
+
+	private function compressImage($source, $destination, $quality) {
+
+		$info = getimagesize($source);
+	  
+		if ($info['mime'] == 'image/jpeg') 
+		  $image = imagecreatefromjpeg($source);
+	  
+		elseif ($info['mime'] == 'image/gif') 
+		  $image = imagecreatefromgif($source);
+	  
+		elseif ($info['mime'] == 'image/png') 
+		  $image = imagecreatefrompng($source);
+	  
+		imagejpeg($image, $destination, $quality);
+	  
+	}
 	
 	private function deletePhotoIfExists($picture)
 	{
-		if ($picture != null and isset($picture->private_url) and $picture->private_url != null)
+		if ($picture != null)
 		{
-			// delete old file
-			if (file_exists($picture->private_url) and is_file($picture->private_url)) {
-				unlink($picture->private_url);
-			}
+			$this->deletePicIfExists($picture->private_url);
+			$this->deletePicIfExists($picture->private_url_thumb);
+		}
+	}
+
+	private function deletePicIfExists($private_url)
+	{
+		if ( isset($private_url) and $private_url != null and file_exists($private_url) and is_file($private_url)) )
+		{
+			unlink($private_url);
 		}
 	}
 	
