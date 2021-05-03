@@ -66,7 +66,13 @@ class PurchasesDeliveryPicturesController extends Controller
 	private function nvlPicture($picture)
 	{
 		if ($picture != null)
+		{
+			// pic hack
+			if ($picture->public_url_thumb == null)
+				$picture->public_url_thumb = $picture->public_url;
+
 			return $picture;
+		}
 		return $this->defaultPicture();
 	}
 
@@ -164,7 +170,11 @@ class PurchasesDeliveryPicturesController extends Controller
 				move_uploaded_file($_FILES['picture']['tmp_name'], $privateFile);
 				
 				// Compress Image
-				$image = $this->compressImage($privateFile, $privateFileThumb, 60);
+				$image = null;
+				if (extension_loaded('gd'))
+				{
+					$image = $this->compressImage($privateFile, $privateFileThumb, 60);
+				}
 				
 				return $response->withJson([
 					"Result" 		=> "OK",
@@ -202,11 +212,9 @@ class PurchasesDeliveryPicturesController extends Controller
 		elseif ($info['mime'] == 'image/png') 
 		  $image = imagecreatefrompng($source);
 	  
-
-		return $info;
-
 		imagejpeg($image, $destination, $quality);
 	  
+		return $info;
 	}
 	
 	private function deletePhotoIfExists($picture)
