@@ -122,52 +122,63 @@ class PurchasesDeliveryPicturesController extends Controller
 			$privateFile		= $privateDir . '/' . $fileName;
 			$privateFileThumb	= $privateDir . '/' . $fileNameThumb;
 			
-			// create directory if necessary
-			if (!file_exists($privateDir)) {
-				mkdir($privateDir, 0777, true);
-			}
-			
-			// create or update picture
-			$picture = PurchasePicture::where("detail_id", $detailId)->where("guid", $guid)->first();
-			
-			if ($picture == null)
+			try
 			{
-				// create new picture
-				$newPictureData = [
-					"detail_id"			=> $detailId,
-					"title" 			=> "", //$_FILES['picture']['picture_title'],
-					"guid" 				=> $guid,
-					"public_url"		=> $publicFile,
-					"public_thumb_url"	=> $publicFileThumb,
-					"private_url"		=> $privateFile,
-					"private_thumb_url"	=> $privateFileThumb,
-				];
+				// create directory if necessary
+				if (!file_exists($privateDir)) {
+					mkdir($privateDir, 0777, true);
+				}
 				
-				$picture = PurchasePicture::create($newPictureData);
+				// create or update picture
+				$picture = PurchasePicture::where("detail_id", $detailId)->where("guid", $guid)->first();
+				
+				if ($picture == null)
+				{
+					// create new picture
+					$newPictureData = [
+						"detail_id"			=> $detailId,
+						"title" 			=> "", //$_FILES['picture']['picture_title'],
+						"guid" 				=> $guid,
+						"public_url"		=> $publicFile,
+						"public_thumb_url"	=> $publicFileThumb,
+						"private_url"		=> $privateFile,
+						"private_thumb_url"	=> $privateFileThumb,
+					];
+					
+					$picture = PurchasePicture::create($newPictureData);
+				}
+				else
+				{
+					// delete old file
+					$this->deletePhotoIfExists($picture);
+					
+					// update picture
+					$picture->title 			= ""; //$_FILES['picture']['picture_title'];
+					$picture->public_url		= $publicFile;
+					$picture->public_url_thumb	= $publicFileThumb;
+					$picture->private_url		= $privateFile;
+					$picture->private_url_thumb	= $privateFileThumb;
+					$picture->save();
+				}
+				
+				move_uploaded_file($_FILES['picture']['tmp_name'], $privateFile);
+				
+				// Compress Image
+				$image = $this->compressImage($_FILES['picture']['tmp_name'], $privateFileThumb, 60);
+				
+				return $response->withJson([
+					"Result" 		=> "OK",
+					"Picture"		=> $picture,
+					"ImageThumb"	=> $imageThumb,
+				]);
 			}
-			else
+			catch (\Exception $e)
 			{
-				// delete old file
-				$this->deletePhotoIfExists($picture);
-				
-				// update picture
-				$picture->title 			= ""; //$_FILES['picture']['picture_title'];
-				$picture->public_url		= $publicFile;
-				$picture->public_url_thumb	= $publicFileThumb;
-				$picture->private_url		= $privateFile;
-				$picture->private_url_thumb	= $privateFileThumb;
-				$picture->save();
+				return $response->withJson([
+					"Result" 	=> "ERROR",
+					"Message"	=> $e->getMessage(),
+				]);
 			}
-			
-			move_uploaded_file($_FILES['picture']['tmp_name'], $privateFile);
-			
-			// Compress Image
-			$this->compressImage($_FILES['picture']['tmp_name'], $privateFileThumb, 60);
-			
-			return $response->withJson([
-				"Result" 	=> "OK",
-				"Picture"	=> $picture,
-			]);
 		}
 		else
 		{
@@ -192,8 +203,8 @@ class PurchasesDeliveryPicturesController extends Controller
 		  $image = imagecreatefrompng($source);
 	  
 
-		var_dump($image);
-		return;
+		return $image;
+
 		imagejpeg($image, $destination, $quality);
 	  
 	}
