@@ -122,7 +122,7 @@ class PurchasesDeliveryPicturesController extends Controller
 			}
 			
 			$fileName			= $guid . '_' . $detailId . '.' . $ext;
-			$fileNameThumb		= $guid . '_' . $detailId . '._thumb' . $ext;
+			$fileNameThumb		= $guid . '_' . $detailId . '_thumb.' . $ext;
 			$publicFile			= $publicDir . '/' . $fileName;
 			$publicFileThumb	= $publicDir . '/' . $fileNameThumb;
 			$privateFile		= $privateDir . '/' . $fileName;
