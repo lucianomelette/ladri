@@ -170,16 +170,14 @@ class PurchasesDeliveryPicturesController extends Controller
 				move_uploaded_file($_FILES['picture']['tmp_name'], $privateFile);
 				
 				// Compress Image
-				$image = null;
 				if (extension_loaded('gd'))
 				{
-					$image = $this->compressImage($privateFile, $privateFileThumb, 40);
+					$this->compressImage($privateFile, $privateFileThumb, 40);
 				}
 				
 				return $response->withJson([
 					"Result" 		=> "OK",
 					"Picture"		=> $this->nvlPicture($picture),
-					"ImageThumb"	=> $image,
 				]);
 			}
 			catch (\Exception $e)
@@ -213,8 +211,6 @@ class PurchasesDeliveryPicturesController extends Controller
 		  $image = imagecreatefrompng($source);
 	  
 		imagejpeg($image, $destination, $quality);
-	  
-		return $info;
 	}
 	
 	private function deletePhotoIfExists($picture)
