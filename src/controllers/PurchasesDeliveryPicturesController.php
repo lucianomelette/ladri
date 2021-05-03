@@ -57,8 +57,9 @@ class PurchasesDeliveryPicturesController extends Controller
 	private function defaultPicture()
 	{
 		return (object)[
-			'public_url' 	=> '/assets/repository/assets/no_photo.jpg',
-			'title' 		=> '',
+			'public_url' 		=> '/assets/repository/assets/no_photo.jpg',
+			'public_url_thumb' 	=> '/assets/repository/assets/no_photo.jpg',
+			'title' 			=> '',
 		];
 	}
 	
