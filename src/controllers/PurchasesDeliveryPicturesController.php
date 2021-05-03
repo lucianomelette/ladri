@@ -191,6 +191,9 @@ class PurchasesDeliveryPicturesController extends Controller
 		elseif ($info['mime'] == 'image/png') 
 		  $image = imagecreatefrompng($source);
 	  
+
+		var_dump($image);
+		return;
 		imagejpeg($image, $destination, $quality);
 	  
 	}
