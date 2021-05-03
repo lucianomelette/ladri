@@ -164,12 +164,12 @@ class PurchasesDeliveryPicturesController extends Controller
 				move_uploaded_file($_FILES['picture']['tmp_name'], $privateFile);
 				
 				// Compress Image
-				$image = $this->compressImage($_FILES['picture']['tmp_name'], $privateFileThumb, 60);
+				$image = $this->compressImage($privateFile, $privateFileThumb, 60);
 				
 				return $response->withJson([
 					"Result" 		=> "OK",
 					"Picture"		=> $picture,
-					"ImageThumb"	=> $_FILES['picture']['tmp_name'],
+					"ImageThumb"	=> $image,
 				]);
 			}
 			catch (\Exception $e)
