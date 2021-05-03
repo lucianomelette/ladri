@@ -169,7 +169,7 @@ class PurchasesDeliveryPicturesController extends Controller
 				return $response->withJson([
 					"Result" 		=> "OK",
 					"Picture"		=> $picture,
-					"ImageThumb"	=> getimagesize($_FILES['picture']['tmp_name']),
+					"ImageThumb"	=> $_FILES['picture']['tmp_name'],
 				]);
 			}
 			catch (\Exception $e)
