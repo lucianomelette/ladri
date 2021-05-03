@@ -146,9 +146,9 @@ class PurchasesDeliveryPicturesController extends Controller
 						"title" 			=> "", //$_FILES['picture']['picture_title'],
 						"guid" 				=> $guid,
 						"public_url"		=> $publicFile,
-						"public_thumb_url"	=> $publicFileThumb,
+						"public_url_thumb"	=> $publicFileThumb,
 						"private_url"		=> $privateFile,
-						"private_thumb_url"	=> $privateFileThumb,
+						"private_url_thumb"	=> $privateFileThumb,
 					];
 					
 					$picture = PurchasePicture::create($newPictureData);
