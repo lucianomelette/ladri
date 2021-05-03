@@ -203,7 +203,7 @@ class PurchasesDeliveryPicturesController extends Controller
 		  $image = imagecreatefrompng($source);
 	  
 
-		return $image;
+		return $info;
 
 		imagejpeg($image, $destination, $quality);
 	  
