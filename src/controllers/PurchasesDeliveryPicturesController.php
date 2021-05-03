@@ -173,7 +173,7 @@ class PurchasesDeliveryPicturesController extends Controller
 				$image = null;
 				if (extension_loaded('gd'))
 				{
-					$image = $this->compressImage($privateFile, $privateFileThumb, 60);
+					$image = $this->compressImage($privateFile, $privateFileThumb, 40);
 				}
 				
 				return $response->withJson([
