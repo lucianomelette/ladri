@@ -141,7 +141,7 @@ class PurchasesDeliveryPicturesController extends Controller
 				$thumbCreated = false;
 				if (extension_loaded('gd'))
 				{
-					$this->compressImage($privateFile, $privateFileThumb, 40);
+					$this->compressImage($privateFile, $privateFileThumb, 20);
 					$thumbCreated = true;
 				}
 
