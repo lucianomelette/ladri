@@ -135,6 +135,16 @@ class PurchasesDeliveryPicturesController extends Controller
 					mkdir($privateDir, 0777, true);
 				}
 				
+				move_uploaded_file($_FILES['picture']['tmp_name'], $privateFile);
+				
+				// Compress Image
+				$thumbCreated = false;
+				if (extension_loaded('gd'))
+				{
+					$this->compressImage($privateFile, $privateFileThumb, 40);
+					$thumbCreated = true;
+				}
+
 				// create or update picture
 				$picture = PurchasePicture::where("detail_id", $detailId)->where("guid", $guid)->first();
 				
@@ -146,9 +156,9 @@ class PurchasesDeliveryPicturesController extends Controller
 						"title" 			=> "", //$_FILES['picture']['picture_title'],
 						"guid" 				=> $guid,
 						"public_url"		=> $publicFile,
-						"public_url_thumb"	=> $publicFileThumb,
+						"public_url_thumb"	=> ($thumbCreated ? $publicFileThumb : ""),
 						"private_url"		=> $privateFile,
-						"private_url_thumb"	=> $privateFileThumb,
+						"private_url_thumb"	=> ($thumbCreated ? $privateFileThumb : ""),
 					];
 					
 					$picture = PurchasePicture::create($newPictureData);
@@ -161,18 +171,10 @@ class PurchasesDeliveryPicturesController extends Controller
 					// update picture
 					$picture->title 			= ""; //$_FILES['picture']['picture_title'];
 					$picture->public_url		= $publicFile;
-					$picture->public_url_thumb	= $publicFileThumb;
+					$picture->public_url_thumb	= ($thumbCreated ? $publicFileThumb : "");
 					$picture->private_url		= $privateFile;
-					$picture->private_url_thumb	= $privateFileThumb;
+					$picture->private_url_thumb	= ($thumbCreated ? $privateFileThumb : "");
 					$picture->save();
-				}
-				
-				move_uploaded_file($_FILES['picture']['tmp_name'], $privateFile);
-				
-				// Compress Image
-				if (extension_loaded('gd'))
-				{
-					$this->compressImage($privateFile, $privateFileThumb, 40);
 				}
 				
 				return $response->withJson([
