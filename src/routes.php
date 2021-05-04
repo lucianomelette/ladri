@@ -103,28 +103,25 @@ $app->group('/suppliers', function() {
 
 // purchases
 $app->group('/purchases', function() {
-	// pictures
-	$this->get('/delivery/pictures/{detail_id}', 'PurchasesDeliveryPicturesController');
-	$this->post('/delivery/pictures/{action}/{detail_id}[/{guid}]', 'PurchasesDeliveryPicturesController:actions');
-
-	// delivery
-	$this->get('/delivery', 'PurchasesDeliveryController');
-	$this->post('/delivery/{action}[/{detailId}]', 'PurchasesDeliveryController:action');
-})->add($profileOperAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
-
-
-$app->group('/purchases', function() {
 	// reports
-	$this->get('/report', 'PurchasesReportsController');
-	$this->post('/report', 'PurchasesReportsController:report');
+	$this->get('/report', 'PurchasesReportsController')->add($profileAdminAuth);
+	$this->post('/report', 'PurchasesReportsController:report')->add($profileAdminAuth);
 
 	// query
-	$this->get('/query', 'PurchasesController:query');
+	$this->get('/query', 'PurchasesController:query')->add($profileAdminAuth);
+
+	// pictures
+	$this->get('/delivery/pictures/{detail_id}', 'PurchasesDeliveryPicturesController')->add($profileOperAuth);
+	$this->post('/delivery/pictures/{action}/{detail_id}[/{guid}]', 'PurchasesDeliveryPicturesController:actions')->add($profileOperAuth);
+
+	// delivery
+	$this->get('/delivery', 'PurchasesDeliveryController')->add($profileAdminAuth);
+	$this->post('/delivery/{action}[/{detailId}]', 'PurchasesDeliveryController:action')->add($profileAdminAuth);
 	
 	// general
-	$this->get('[/{headerId}]', 'PurchasesController');
-	$this->post('/{action}[/{headerId}]', 'PurchasesController:action');
-})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
+	$this->get('[/{headerId}]', 'PurchasesController')->add($profileAdminAuth);
+	$this->post('/{action}[/{headerId}]', 'PurchasesController:action')->add($profileAdminAuth);
+})->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // payments
 $app->group('/payments', function() {
@@ -163,6 +160,10 @@ $app->group('/banks_accounts', function() {
 	$this->post('/{action}', 'BanksAccountsController:action');
 })->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
+// ************* //
+// **  STOCK  ** //
+// ************* //
+
 // products
 $app->group('/products', function() {
 	$this->get('', 'ProductsController');
@@ -171,9 +172,10 @@ $app->group('/products', function() {
 
 // products state
 $app->group('/products_state', function() {
-	$this->get('', 'ProductsStateController');
-	$this->post('/{action}', 'ProductsStateController:action');
-})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
+	$this->get('', 'ProductsStateController')->add($profileAdminAuth);
+	$this->post('/options', 'ProductsStateController:action')->add($profileOperAuth);
+	$this->post('/{action}', 'ProductsStateController:action')->add($profileAdminAuth);
+})->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // products units
 $app->group('/products_units', function() {
