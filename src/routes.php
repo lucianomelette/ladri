@@ -103,10 +103,6 @@ $app->group('/suppliers', function() {
 
 // purchases
 $app->group('/purchases', function() {
-	// reports
-	$this->get('/report', 'PurchasesReportsController');
-	$this->post('/report', 'PurchasesReportsController:report');
-
 	// pictures
 	$this->get('/delivery/pictures/{detail_id}', 'PurchasesDeliveryPicturesController');
 	$this->post('/delivery/pictures/{action}/{detail_id}[/{guid}]', 'PurchasesDeliveryPicturesController:actions');
@@ -114,6 +110,13 @@ $app->group('/purchases', function() {
 	// delivery
 	$this->get('/delivery', 'PurchasesDeliveryController');
 	$this->post('/delivery/{action}[/{detailId}]', 'PurchasesDeliveryController:action');
+})->add($profileOperAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
+
+
+$app->group('/purchases', function() {
+	// reports
+	$this->get('/report', 'PurchasesReportsController');
+	$this->post('/report', 'PurchasesReportsController:report');
 
 	// query
 	$this->get('/query', 'PurchasesController:query');
