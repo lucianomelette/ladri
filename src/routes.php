@@ -180,7 +180,7 @@ $app->group('/products_state', function() use ($profileAdminAuth, $profileOperAu
 // products units
 $app->group('/products_units', function() use ($profileAdminAuth, $profileOperAuth) {
 	$this->get('', 'ProductsUnitsController')->add($profileAdminAuth);
-	$this->post('/{action:/options/}', 'ProductsUnitsController:action')->add($profileOperAuth);
+	$this->post('/{action:options}', 'ProductsUnitsController:action')->add($profileOperAuth);
 	$this->post('/{action}', 'ProductsUnitsController:action')->add($profileAdminAuth);
 })->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
