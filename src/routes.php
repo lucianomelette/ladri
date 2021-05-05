@@ -115,8 +115,8 @@ $app->group('/purchases', function() use ($profileAdminAuth, $profileOperAuth) {
 	$this->post('/delivery/pictures/{action}/{detail_id}[/{guid}]', 'PurchasesDeliveryPicturesController:actions')->add($profileOperAuth);
 
 	// delivery
-	$this->get('/delivery', 'PurchasesDeliveryController')->add($profileAdminAuth);
-	$this->post('/delivery/{action}[/{detailId}]', 'PurchasesDeliveryController:action')->add($profileAdminAuth);
+	$this->get('/delivery', 'PurchasesDeliveryController')->add($profileOperAuth);
+	$this->post('/delivery/{action}[/{detailId}]', 'PurchasesDeliveryController:action')->add($profileOperAuth);
 	
 	// general
 	$this->get('[/{headerId}]', 'PurchasesController')->add($profileAdminAuth);
