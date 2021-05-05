@@ -173,7 +173,7 @@ $app->group('/products', function() {
 // products state
 $app->group('/products_state', function() use ($profileAdminAuth, $profileOperAuth) {
 	$this->get('', 'ProductsStateController')->add($profileAdminAuth);
-	$this->post('/{action:.*options.*}', 'ProductsStateController:action')->add($profileOperAuth);
+	$this->post('/{action:/options/gi}', 'ProductsStateController:action')->add($profileOperAuth);
 	$this->post('/{action}', 'ProductsStateController:action')->add($profileAdminAuth);
 })->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
