@@ -173,15 +173,16 @@ $app->group('/products', function() {
 // products state
 $app->group('/products_state', function() use ($profileAdminAuth, $profileOperAuth) {
 	$this->get('', 'ProductsStateController')->add($profileAdminAuth);
-	$this->post('/{action:/options/gi}', 'ProductsStateController:action')->add($profileOperAuth);
+	$this->post('/{action:/options/}', 'ProductsStateController:action')->add($profileOperAuth);
 	$this->post('/{action}', 'ProductsStateController:action')->add($profileAdminAuth);
 })->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // products units
-$app->group('/products_units', function() {
-	$this->get('', 'ProductsUnitsController');
-	$this->post('/{action}', 'ProductsUnitsController:action');
-})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
+$app->group('/products_units', function() use ($profileAdminAuth, $profileOperAuth) {
+	$this->get('', 'ProductsUnitsController')->add($profileAdminAuth);
+	$this->post('/{action:/options/}', 'ProductsUnitsController:action')->add($profileOperAuth);
+	$this->post('/{action}', 'ProductsUnitsController:action')->add($profileAdminAuth);
+})->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // ******************* //
 // **  INVESTMENTS  ** //
