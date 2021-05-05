@@ -102,25 +102,25 @@ $app->group('/suppliers', function() {
 })->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // purchases
-$app->group('/purchases', function() {
+$app->group('/purchases', function() use ($app) {
 	// reports
-	$this->get('/report', 'PurchasesReportsController')->add($profileAdminAuth);
-	$this->post('/report', 'PurchasesReportsController:report')->add($profileAdminAuth);
+	$app->get('/report', 'PurchasesReportsController')->add($profileAdminAuth);
+	$app->post('/report', 'PurchasesReportsController:report')->add($profileAdminAuth);
 
 	// query
-	$this->get('/query', 'PurchasesController:query')->add($profileAdminAuth);
+	$app->get('/query', 'PurchasesController:query')->add($profileAdminAuth);
 
 	// pictures
-	$this->get('/delivery/pictures/{detail_id}', 'PurchasesDeliveryPicturesController')->add($profileOperAuth);
-	$this->post('/delivery/pictures/{action}/{detail_id}[/{guid}]', 'PurchasesDeliveryPicturesController:actions')->add($profileOperAuth);
+	$app->get('/delivery/pictures/{detail_id}', 'PurchasesDeliveryPicturesController')->add($profileOperAuth);
+	$app->post('/delivery/pictures/{action}/{detail_id}[/{guid}]', 'PurchasesDeliveryPicturesController:actions')->add($profileOperAuth);
 
 	// delivery
-	$this->get('/delivery', 'PurchasesDeliveryController')->add($profileAdminAuth);
-	$this->post('/delivery/{action}[/{detailId}]', 'PurchasesDeliveryController:action')->add($profileAdminAuth);
+	$app->get('/delivery', 'PurchasesDeliveryController')->add($profileAdminAuth);
+	$app->post('/delivery/{action}[/{detailId}]', 'PurchasesDeliveryController:action')->add($profileAdminAuth);
 	
 	// general
-	$this->get('[/{headerId}]', 'PurchasesController')->add($profileAdminAuth);
-	$this->post('/{action}[/{headerId}]', 'PurchasesController:action')->add($profileAdminAuth);
+	$app->get('[/{headerId}]', 'PurchasesController')->add($profileAdminAuth);
+	$app->post('/{action}[/{headerId}]', 'PurchasesController:action')->add($profileAdminAuth);
 })->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // payments
@@ -171,10 +171,10 @@ $app->group('/products', function() {
 })->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // products state
-$app->group('/products_state', function() {
-	$this->get('', 'ProductsStateController')->add($profileAdminAuth);
-	$this->post('/options', 'ProductsStateController:action')->add($profileOperAuth);
-	$this->post('/{action}', 'ProductsStateController:action')->add($profileAdminAuth);
+$app->group('/products_state', function() use ($app) {
+	$app->get('', 'ProductsStateController')->add($profileAdminAuth);
+	$app->post('/options', 'ProductsStateController:action')->add($profileOperAuth);
+	$app->post('/{action}', 'ProductsStateController:action')->add($profileAdminAuth);
 })->add($appAuth)->add($sessionAuth)->add($hostAuth);
 
 // products units
