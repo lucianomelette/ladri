@@ -208,7 +208,7 @@
 				});
 		 
 				//Load list from server
-				$('div[name="table-content"]').jtable('load');
+				//$('div[name="table-content"]').jtable('load');
 				
 				// click on search
 				$('div[name="btn-search"]').on('click', function(e) {
@@ -220,6 +220,8 @@
 						products_state_ids : $('select[name="products-state-select"]').val(),
 					});
 				});
+
+				$('div[name="btn-search"]').click();
 				
 				// Add Bootstrap style to jTable
 				$.stdjTableBootstrapStyle();
