@@ -145,7 +145,7 @@
 				});
 		 
 				//Load list from server
-				$('div[name="table-content"]').jtable('load');
+				// $('div[name="table-content"]').jtable('load');
 				
 				// click on search
 				$('div[name="btn-search"]').on('click', function(e) {
@@ -156,6 +156,8 @@
 						docs_types_codes : $('select[name="docs-types-select"]').val(),
 					});
 				});
+
+				$('div[name="btn-search"]').click();
 				
 				// Add Bootstrap style to jTable
 				$.stdjTableBootstrapStyle();
