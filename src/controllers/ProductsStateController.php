@@ -80,7 +80,7 @@ class ProductsStateController extends Controller
 	{
 		$updatedRecord = $request->getParsedBody();
 		
-		if (!isset($updatedRecord['selected'])
+		if (!isset($updatedRecord['selected']))
 			$updatedRecord['selected'] = false;
 
 		Model::find($updatedRecord["id"])
