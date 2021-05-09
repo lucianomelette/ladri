@@ -11,6 +11,7 @@ class ProductStatus extends Model
 		'id',
 		'unique_code',
 		'description',
+		'selected',
 		'company_id',
 	];
 }

@@ -56,6 +56,9 @@ class ProductsStateController extends Controller
 			$newRecord 					= $request->getParsedBody();
 			$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
 			
+			if (!isset($newRecord['selected'])
+				$newRecord['selected'] = false;
+
 			$id = Model::create($newRecord)->id;
 			$newRecord['id'] = $id;
 			
@@ -77,6 +80,9 @@ class ProductsStateController extends Controller
 	{
 		$updatedRecord = $request->getParsedBody();
 		
+		if (!isset($updatedRecord['selected'])
+			$updatedRecord['selected'] = false;
+
 		Model::find($updatedRecord["id"])
 				->update($updatedRecord);
 		

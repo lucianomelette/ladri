@@ -64,7 +64,9 @@
 											<?php if ($productsState_enabled) : ?>
 											<?php foreach($productsState as $status) : ?>
 												<option
-													value="<?= $status->id ?>">
+													value="<?= $status->id ?>"
+													<?= $status->selected ? "selected" : "" ?>
+													>
 													<?= trim($status->description) ?>
 												</option>
 											<?php endforeach; ?>
