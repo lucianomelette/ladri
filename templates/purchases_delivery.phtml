@@ -182,6 +182,17 @@
 								return 'Sin fecha';
 							},
 						},
+						delivery_place: {
+							title: 'Lugar. Entrega',
+							width: '10%',
+							edit: false,
+							display: function(data) {
+								if (data.record.delivery_place) {
+									return data.record.delivery_place;
+								}
+								return 'Sin lugar';
+							},
+						},
 						quantity: {
 							title: 'Cant.',
 							width: '5%',
