@@ -174,7 +174,7 @@
 							width: '10%',
 							edit: false,
 							display: function(data) {
-								if (data.record.purchase_header.delivery_date) {
+								if (data.record.purchase_header.delivery_date && data.record.purchase_header.delivery_date != '0000-00-00') {
 									US_Date = new Date(data.record.purchase_header.delivery_date);
 									US_Date.setHours(US_Date.getHours() + 3); // AR_Date
 									return US_Date.toLocaleDateString();
