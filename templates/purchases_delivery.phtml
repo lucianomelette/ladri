@@ -174,8 +174,8 @@
 							width: '10%',
 							edit: false,
 							display: function(data) {
-								if (data.record.delivery_date) {
-									US_Date = new Date(data.record.delivery_date);
+								if (data.record.purchase_header.delivery_date) {
+									US_Date = new Date(data.record.purchase_header.delivery_date);
 									US_Date.setHours(US_Date.getHours() + 3); // AR_Date
 									return US_Date.toLocaleDateString();
 								}
@@ -187,8 +187,8 @@
 							width: '10%',
 							edit: false,
 							display: function(data) {
-								if (data.record.delivery_place) {
-									return data.record.delivery_place;
+								if (data.record.purchase_header.delivery_place) {
+									return data.record.purchase_header.delivery_place;
 								}
 								return 'Sin lugar';
 							},
