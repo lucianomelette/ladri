@@ -214,9 +214,13 @@ class PurchasesController extends Controller
 			$body['project_id'] = $_SESSION["project_session"]->id;		
 			$headerId = $body["id"];
 			PurchaseHeader::find($headerId)->update($body);
+
+			$this->container->logger->info("PurchaseHeader id {$headerId} updated.");
 					
 			// save each detail
 			PurchaseDetail::where("header_id", $headerId)->delete();
+
+			$this->container->logger->info("PurchaseDetail headerId {$headerId} deleted.");
 			
 			$detail = $body["detail"];
 			foreach ($detail as $row)
@@ -231,7 +235,9 @@ class PurchasesController extends Controller
 				if (isset($row['unit_id']) && $row['unit_id'] == -1)
 					unset($row['unit_id']);
 
-				PurchaseDetail::create($row);
+				$detailId = PurchaseDetail::create($row)->id;
+
+				$this->container->logger->info("PurchaseDetail id {$detailId} created.");
 			}
 
 			DB::commit();
