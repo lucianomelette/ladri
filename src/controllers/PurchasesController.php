@@ -250,6 +250,8 @@ class PurchasesController extends Controller
 		catch (\Exception $e)
 		{
 			DB::rollBack();
+
+			$this->container->logger->info("Error PurchasesController.update(): {$e}.");
 			
 			return $response->withJson([
 				'status'	=> 'ERROR',
