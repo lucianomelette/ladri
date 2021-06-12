@@ -214,18 +214,15 @@ class PurchasesController extends Controller
 			$body['project_id'] = $_SESSION["project_session"]->id;		
 			$headerId = $body["id"];
 			PurchaseHeader::find($headerId)->update($body);
-
 			$this->container->logger->info("PurchaseHeader id {$headerId} updated.");
 					
 			// save each detail
-			PurchaseDetail::where("header_id", $headerId)->delete();
+			$oldDetail = PurchaseDetail::where("header_id", $headerId)->get();
 
-			$this->container->logger->info("PurchaseDetail headerId {$headerId} deleted.");
-			
-			$detail = $body["detail"];
-			foreach ($detail as $row)
+			$newDetail = $body["detail"];
+			foreach ($newDetail as $row)
 			{
-				$row['header_id'] = $headerId;
+				$oldRow = PurchaseDetail::find($row->detail_id);
 
 				// product status
 				if (isset($row['status_id']) && $row['status_id'] == -1)
@@ -235,9 +232,39 @@ class PurchasesController extends Controller
 				if (isset($row['unit_id']) && $row['unit_id'] == -1)
 					unset($row['unit_id']);
 
-				$detailId = PurchaseDetail::create($row)->id;
+				// if the product doesn't exist... create
+				if ($oldRow == null)
+				{
+					$row['header_id'] = $headerId;
+					$detailId = PurchaseDetail::create($row)->id;
+					$this->container->logger->info("PurchaseDetail id {$detailId} created.");
+				}
+				// if the product already exists... update
+				else
+				{
+					PurchaseDetail::update($row);
+					$this->container->logger->info("PurchaseDetail id {$row->id} updated.");
+				}
+			}
 
-				$this->container->logger->info("PurchaseDetail id {$detailId} created.");
+			// delete in back, rows deleted in front
+			foreach ($oldDetail as $row)
+			{
+				$found = false;
+				for ($i = 0; $i < count($newDetail); $i++ {
+					if ($row->id == $newDetail[$i]->detail_id) {
+						$found = true;
+					}
+				}
+
+				if (!$found and !$row->has_pictures) {
+					$row->delete();
+					$this->container->logger->info("PurchaseDetail id {$row->id} deleted.");
+				}
+				else
+				{
+					$this->container->logger->info("PurchaseDetail id {$row->id} not deleted.");
+				}
 			}
 
 			DB::commit();

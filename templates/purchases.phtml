@@ -415,6 +415,16 @@
 							isHtmlName: true,
 							callback: function(itemKey, opt, e) {
 								var row = $('tr#' + opt.$trigger.attr('data-record-key'));
+
+								if (row.attr("has-pictures") == 1) {
+									$.stdShowMessage({
+										icon: 'fa fa-exclamation-triangle',
+										message: "No se puede el artículo, porque tienen fotos asociadas.",
+										type: 'warning'
+									});
+									return false;
+								}
+
 								row.remove();
 								
 								// update document totals
@@ -682,7 +692,7 @@
 					currentRecordNumber++;
 
 					var newRecordHTML =
-						"<tr id='" + currentRecordNumber + "'>" +
+						`<tr id='${currentRecordNumber}' detail-id='${data.detail_id || 0}' has-pictures='${data.has_pictures || 0}'>` +
 							"<td class='align-middle'><span class='btn btn-light btn-sm' name='btn-row-context-menu' data-record-key='" + currentRecordNumber + "'><i class='fa fa-ellipsis-v'></i></span></td>" +
 							"<td class='align-middle font-weight-bold'>" + currentRecordNumber + "</td>" +
 							"<td class='align-middle form-inline' name='col-product' width='350px' data-key='" + data.product_id + "'>" + data.product_desc + "</td>" +
@@ -769,6 +779,7 @@
 							}
 
 							detailData[index] = {
+								detail_id:				parseInt($(this).attr("detail-id")),
 								product_id : 			parseInt($(this).find('td[name="col-product"]').attr("data-key")),
 								product_description : 	$(this).find('td[name="col-product"]').text().trim(),
 								status_id : 			statusId,
@@ -935,6 +946,8 @@
 									data.Document.details.forEach(function(detail)
 									{
 										var recordData = {
+											detail_id:		detail.id,
+											has_pictures:	detail.has_pictures ? 1 : 0,
 											product_id : 	detail.product_id,
 											product_desc : 	detail.product_description,
 											status_id :		detail.status_id,

@@ -21,6 +21,9 @@ class PurchaseDetail extends Model
 		'total',
 		'more_info',
 	];
+	protected $appends = [
+		'has_pictures',
+	];
 
 	public function purchaseHeader()
 	{
@@ -30,5 +33,9 @@ class PurchaseDetail extends Model
 	public function Pictures()
 	{
 		return $this->hasMany('App\Models\PurchasePicture', 'detail_id', 'id');
+	}
+
+	public function getHasPicturesAttribute() {
+		return count($this->Pictures()) > 0;
 	}
 }
