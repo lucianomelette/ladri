@@ -219,9 +219,9 @@ class SalesController extends Controller
 					if ($row->id == $newDetail[$i]->detail_id) {
 						$found = true;
 					}
+					$found_r = $found ? "true" : "false";
+					$this->container->logger->info("Old: {$row->id}, new: {$newDetail[$i]->detail_id}, found: {$found_r}.");
 				}
-
-				$this->container->logger->info("SalesController.update() found?: {$found}.");
 
 				// if exists in back, but doesn't in front... delete
 				if (!$found) {
