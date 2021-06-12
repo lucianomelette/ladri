@@ -36,6 +36,6 @@ class PurchaseDetail extends Model
 	}
 
 	public function getHasPicturesAttribute() {
-		return count($this->Pictures()) > 0;
+		return ($this->hasMany('App\Models\PurchasePicture', 'detail_id', 'id')->count() > 0);
 	}
 }
