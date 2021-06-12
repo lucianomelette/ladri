@@ -253,7 +253,7 @@ class PurchasesController extends Controller
 			{
 				$found = false;
 				for ($i = 0; $i < count($newDetail); $i++) {
-					if ($row->id == $newDetail[$i]->detail_id) {
+					if ($row->id == $newDetail[$i]["detail_id"]) {
 						$found = true;
 					}
 				}
