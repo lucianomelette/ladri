@@ -744,7 +744,11 @@
 									}
 								}
 								else {
-									alert('error');
+									$.stdShowMessage({
+										icon: 'fa fa-skull-crossbones',
+										message: data.message,
+										type: 'warning'
+									});
 								}
 							},
 							error: function(jqXHR, textStatus, errorThrown) {

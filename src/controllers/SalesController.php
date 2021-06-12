@@ -214,7 +214,7 @@ class SalesController extends Controller
 			foreach ($oldDetail as $row)
 			{
 				$found = false;
-				$this->container->logger->info("SalesController.update() searching to delete id: {$oldDetail->id}.");
+				$this->container->logger->info("SalesController.update() searching to delete id: {$row->id}.");
 				for ($i = 0; $i < count($newDetail); $i++) {
 					if ($row->id == $newDetail[$i]->detail_id) {
 						$found = true;
