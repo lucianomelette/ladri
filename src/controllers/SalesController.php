@@ -221,7 +221,7 @@ class SalesController extends Controller
 					}
 				}
 
-				$this->container->logger->info("SalesController.update() found?: {$found ? "true" : "false"}.");
+				$this->container->logger->info("SalesController.update() found?: {$found}.");
 
 				// if exists in back, but doesn't in front... delete
 				if (!$found) {
