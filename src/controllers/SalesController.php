@@ -186,6 +186,9 @@ class SalesController extends Controller
 			// save each detail
 			$oldDetail = SaleDetail::where("header_id", $headerId)->get();
 			
+			$this->container->logger->info("SalesController.update() body: {$body}.");
+			$this->container->logger->info("SalesController.update() old detail: {$oldDetail}.");
+			
 			$newDetail = $body["detail"];
 			foreach ($newDetail as $row)
 			{
