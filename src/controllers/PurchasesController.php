@@ -223,6 +223,7 @@ class PurchasesController extends Controller
 			foreach ($newDetail as $row)
 			{
 				$oldRow = PurchaseDetail::find($row->detail_id);
+				$this->container->logger->info("PurchaseDetail row {$oldRow} found.");
 
 				// product status
 				if (isset($row['status_id']) && $row['status_id'] == -1)
@@ -232,14 +233,14 @@ class PurchasesController extends Controller
 				if (isset($row['unit_id']) && $row['unit_id'] == -1)
 					unset($row['unit_id']);
 
-				// if the product doesn't exist... create
+				// if the detail row doesn't exist... create
 				if ($oldRow == null)
 				{
 					$row['header_id'] = $headerId;
 					$detailId = PurchaseDetail::create($row)->id;
 					$this->container->logger->info("PurchaseDetail id {$detailId} created.");
 				}
-				// if the product already exists... update
+				// if the detail row already exists... update
 				else
 				{
 					PurchaseDetail::update($row);
