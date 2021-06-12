@@ -243,7 +243,7 @@ class PurchasesController extends Controller
 				// if the detail row already exists... update
 				else
 				{
-					PurchaseDetail::update($row);
+					$oldRow->update($row);
 					$this->container->logger->info("PurchaseDetail id {$row->id} updated.");
 				}
 			}
