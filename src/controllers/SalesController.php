@@ -216,11 +216,11 @@ class SalesController extends Controller
 				$found = false;
 				$this->container->logger->info("SalesController.update() searching to delete id: {$row->id}.");
 				for ($i = 0; $i < count($newDetail); $i++) {
-					if ($row->id == $newDetail[$i]->detail_id) {
+					if ($row->id == $newDetail[$i]["detail_id"]) {
 						$found = true;
 					}
 					$found_r = $found ? "true" : "false";
-					$this->container->logger->info("Old: {$row->id}, new: {$newDetail[$i]->detail_id}, found: {$found_r}.");
+					$this->container->logger->info("Old: {$row->id}, new: {$newDetail[$i]["detail_id"]}, found: {$found_r}.");
 				}
 
 				// if exists in back, but doesn't in front... delete
