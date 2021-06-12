@@ -184,13 +184,40 @@ class SalesController extends Controller
 			SaleHeader::find($headerId)->update($body);
 					
 			// save each detail
-			SaleDetail::where("header_id", $headerId)->delete();
+			$oldDetail = SaleDetail::where("header_id", $headerId)->get();
 			
-			$detail = $body["detail"];
-			foreach ($detail as $row)
+			$newDetail = $body["detail"];
+			foreach ($newDetail as $row)
 			{
-				$row['header_id'] = $headerId;
-				SaleDetail::create($row);
+				$oldRow = SaleDetail::find($row["detail_id"]);
+
+				// if the detail row doesn't exist... create
+				if ($oldRow == null)
+				{
+					$row['header_id'] = $headerId;
+					SaleDetail::create($row);
+				}
+				// if the detail row already exists... update
+				else
+				{
+					$oldRow->update($row);
+				}
+			}
+
+			// delete in back, rows deleted in front
+			foreach ($oldDetail as $row)
+			{
+				$found = false;
+				for ($i = 0; $i < count($newDetail); $i++) {
+					if ($row->id == $newDetail[$i]->detail_id) {
+						$found = true;
+					}
+				}
+
+				// if exists in back, but doesn't in front... delete
+				if (!$found) {
+					$row->delete();
+				}
 			}
 
 			DB::commit();

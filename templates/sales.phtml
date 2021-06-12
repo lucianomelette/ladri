@@ -598,7 +598,7 @@
 					currentRecordNumber++;
 
 					var newRecordHTML =
-						"<tr id='" + currentRecordNumber + "'>" +
+						`<tr id='${currentRecordNumber}' detail-id='${data.detail_id || 0}'>` +
 							"<td class='align-middle'><span class='btn btn-light btn-sm' name='btn-row-context-menu' data-record-key='" + currentRecordNumber + "'><i class='fa fa-ellipsis-v'></i></span></td>" +
 							"<td class='align-middle font-weight-bold'>" + currentRecordNumber + "</td>" +
 							"<td class='align-middle form-inline' name='col-product' width='350px' data-key='" + data.product_id + "'>" + data.product_desc + "</td>" +
@@ -691,6 +691,7 @@
 						rows.each(function(index){
 
 							detailData[index] = {
+								detail_id:				parseInt($(this).attr("detail-id")),
 								product_id : 			parseInt($(this).find('td[name="col-product"]').attr("data-key")),
 								product_description : 	$(this).find('td[name="col-product"]').text().trim(),
 								quantity : 				parseFloat($(this).find('td[name="col-quantity"]').text()),
@@ -734,7 +735,12 @@
 									
 									if (!isEdit())
 									{
-									    resetDocument(documentData);
+										resetDocument(documentData);
+									}
+									else
+									{
+										resetDocument();
+										initializeDocument();
 									}
 								}
 								else {
@@ -780,7 +786,7 @@
 					return !error;
 				}
 				
-				function resetDocument(data)
+				function resetDocument(data = null)
 				{
 					$('select[name="customers-select"]').val('N/A').trigger('change');
 					$('select[name="docs-types-select"]').val('N/A').trigger('change');
@@ -798,10 +804,12 @@
 					currentRecordNumber = 0;
 					
 					// update document type sequence
-					var seq = data.number.trim().substring(5);
-					if ( $.isNumeric(seq) ) {
-						var nextSeq = parseInt(seq) + 1;
-						$('select[name="docs-types-select"] > option[value="' + data.document_type_code + '"]').attr("data-sequence", nextSeq);
+					if (data) {
+						var seq = data.number.trim().substring(5);
+						if ( $.isNumeric(seq) ) {
+							var nextSeq = parseInt(seq) + 1;
+							$('select[name="docs-types-select"] > option[value="' + data.document_type_code + '"]').attr("data-sequence", nextSeq);
+						}
 					}
 				}
 				
@@ -844,6 +852,7 @@
 									data.Document.details.forEach(function(detail)
 									{
 										var recordData = {
+											detail_id:		detail.id,
 											product_id : 	detail.product_id,
 											product_desc : 	detail.product_description,
 											quantity : 		detail.quantity,
