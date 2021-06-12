@@ -222,7 +222,7 @@ class PurchasesController extends Controller
 			$newDetail = $body["detail"];
 			foreach ($newDetail as $row)
 			{
-				$oldRow = PurchaseDetail::find($row->detail_id);
+				$oldRow = PurchaseDetail::find($row["detail_id"]);
 				$this->container->logger->info("PurchaseDetail row {$oldRow} found.");
 
 				// product status
