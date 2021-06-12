@@ -186,7 +186,8 @@ class SalesController extends Controller
 			// save each detail
 			$oldDetail = SaleDetail::where("header_id", $headerId)->get();
 			
-			$this->container->logger->info("SalesController.update() body: {$body}.");
+			$body_r = print_r($body, true);
+			$this->container->logger->info("SalesController.update() body: {$body_r}.");
 			$this->container->logger->info("SalesController.update() old detail: {$oldDetail}.");
 			
 			$newDetail = $body["detail"];
@@ -208,14 +209,19 @@ class SalesController extends Controller
 			}
 
 			// delete in back, rows deleted in front
+			$newDetail_r = print_r($newDetail, true);
+			$this->container->logger->info("SalesController.update() detail where to look for: {$newDetail_r}.");
 			foreach ($oldDetail as $row)
 			{
 				$found = false;
+				$this->container->logger->info("SalesController.update() searching to delete id: {$oldDetail->id}.");
 				for ($i = 0; $i < count($newDetail); $i++) {
 					if ($row->id == $newDetail[$i]->detail_id) {
 						$found = true;
 					}
 				}
+
+				$this->container->logger->info("SalesController.update() found?: {$found ? "true" : "false"}.");
 
 				// if exists in back, but doesn't in front... delete
 				if (!$found) {
