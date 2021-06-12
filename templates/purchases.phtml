@@ -832,6 +832,7 @@
 									}
 									else
 									{
+										resetDocument();
 										initializeDocument();
 									}
 								}
@@ -882,7 +883,7 @@
 					return !error;
 				}
 				
-				function resetDocument(data)
+				function resetDocument(data = null)
 				{
 					$('select[name="suppliers-select"]').val('N/A').trigger('change');
 					$('select[name="docs-types-select"]').val('N/A').trigger('change');
@@ -902,10 +903,12 @@
 					currentRecordNumber = 0;
 					
 					// update document type sequence
-					var seq = data.number.trim().substring(5);
-					if ( $.isNumeric(seq) ) {
-						var nextSeq = parseInt(seq) + 1;
-						$('select[name="docs-types-select"] > option[value="' + data.document_type_code + '"]').attr("data-sequence", nextSeq);
+					if (data) {
+						var seq = data.number.trim().substring(5);
+						if ( $.isNumeric(seq) ) {
+							var nextSeq = parseInt(seq) + 1;
+							$('select[name="docs-types-select"] > option[value="' + data.document_type_code + '"]').attr("data-sequence", nextSeq);
+						}
 					}
 				}
 				
