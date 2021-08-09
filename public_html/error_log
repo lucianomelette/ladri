@@ -1,0 +1,20 @@
+[03-May-2021 18:47:03 UTC] PHP Notice:  Undefined index: user_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 16
+[03-May-2021 18:47:03 UTC] PHP Notice:  Trying to get property 'username' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 16
+[03-May-2021 18:47:03 UTC] PHP Notice:  Undefined index: user_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 17
+[03-May-2021 18:47:03 UTC] PHP Notice:  Trying to get property 'display_name' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 17
+[03-May-2021 18:47:03 UTC] PHP Notice:  Undefined index: user_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 18
+[03-May-2021 18:47:03 UTC] PHP Notice:  Trying to get property 'profile' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 18
+[03-May-2021 18:47:03 UTC] PHP Notice:  Undefined index: project_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 19
+[03-May-2021 18:47:03 UTC] PHP Notice:  Trying to get property 'full_name' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 19
+[03-May-2021 18:47:03 UTC] PHP Notice:  Undefined index: company_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 20
+[03-May-2021 18:47:03 UTC] PHP Notice:  Trying to get property 'business_name' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 20
+[03-May-2021 18:47:18 UTC] PHP Notice:  Undefined index: user_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 16
+[03-May-2021 18:47:18 UTC] PHP Notice:  Trying to get property 'username' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 16
+[03-May-2021 18:47:18 UTC] PHP Notice:  Undefined index: user_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 17
+[03-May-2021 18:47:18 UTC] PHP Notice:  Trying to get property 'display_name' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 17
+[03-May-2021 18:47:18 UTC] PHP Notice:  Undefined index: user_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 18
+[03-May-2021 18:47:18 UTC] PHP Notice:  Trying to get property 'profile' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 18
+[03-May-2021 18:47:18 UTC] PHP Notice:  Undefined index: project_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 19
+[03-May-2021 18:47:18 UTC] PHP Notice:  Trying to get property 'full_name' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 19
+[03-May-2021 18:47:18 UTC] PHP Notice:  Undefined index: company_session in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 20
+[03-May-2021 18:47:18 UTC] PHP Notice:  Trying to get property 'business_name' of non-object in /home/u859902207/domains/yoladrillo.com.ar/src/controllers/Controller.php on line 20
