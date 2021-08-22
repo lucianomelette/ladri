@@ -47,6 +47,11 @@ class Project extends Model
 						$photo->public_url = '/assets/repository/assets/no_photo.jpg';
 					});
 	}
+
+	public function plansFiles()
+    {
+        return $this->hasMany('App\Models\PlanFile');
+    }
 	
 	public function customersBalances()
 	{

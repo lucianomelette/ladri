@@ -193,3 +193,13 @@ $app->group('/investors', function() {
 	$this->get('', 'InvestorsController')->setName('investors');
 	$this->post('/{action}[/{investor_id}]', 'InvestorsController:action');
 })->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);
+
+// ******************* //
+// **  PLANS FILES  ** //
+// ******************* //
+
+// plans files
+$app->group('/plans', function() {
+	$this->get('', 'PlansFilesController');
+	$this->post('/{action}[/{guid}]', 'PlansFilesController:actions');
+})->add($profileAdminAuth)->add($appAuth)->add($sessionAuth)->add($hostAuth);

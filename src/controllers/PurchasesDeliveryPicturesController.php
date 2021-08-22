@@ -194,7 +194,7 @@ class PurchasesDeliveryPicturesController extends Controller
 		{
 			return $response->withJson([
 				"Result" 	=> "ERROR",
-				"Picture"	=> "No se pudo cargar ninguna imagen.",
+				"Message"	=> "No se pudo cargar ninguna imagen.",
 			]);
 		}
 	}

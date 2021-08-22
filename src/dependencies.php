@@ -44,6 +44,11 @@ $container['ProjectsController'] = function ($container) {
 	return new \App\Controllers\ProjectsController($container);
 };
 
+// plans files controller
+$container['PlansFilesController'] = function ($container) {
+	return new \App\Controllers\PlansFilesController($container);
+};
+
 // currencies controller
 $container['CurrenciesController'] = function ($container) {
 	return new \App\Controllers\CurrenciesController($container);
