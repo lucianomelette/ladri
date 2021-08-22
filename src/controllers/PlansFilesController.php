@@ -25,7 +25,7 @@ class PlansFilesController extends Controller
 			]
 		];
 	
-		return $this->container->renderer->render($response, 'projects_plans.phtml', $args);
+		return $this->container->renderer->render($response, 'plans_files.phtml', $args);
 	}
 	
 	private function loadFile($files, $guid)
