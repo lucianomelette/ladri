@@ -13,6 +13,7 @@ class PlanFile extends Model
 		'guid',
 		'public_url',
 		'private_url',
+		'preview_url',
 		'project_id',
 	];
 }

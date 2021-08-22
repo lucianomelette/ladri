@@ -43,7 +43,8 @@ class PlansFilesController extends Controller
 	private function defaultFile()
 	{
 		return (object)[
-			'public_url' 		=> '/assets/repository/assets/no_photo.jpg',
+			'public_url' 		=> '/assets/repository/assets/upload-file-image.jpg',
+			'preview_url' 		=> '/assets/repository/assets/upload-file-image.jpg',
 			'title' 			=> '',
 		];
 	}
