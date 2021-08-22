@@ -155,11 +155,6 @@
 									},
 								});
 						    },
-						    Rotar: function() {
-						        var image 	= $('img[name="upload-file-image"]');
-						        var cropper = image.data('cropper');
-						        cropper.rotate(90);
-						    },
 							Cancelar: function() {
 								$(this).dialog("close");
 							},
@@ -180,56 +175,50 @@
 									var filename = fullPath.replace(/^.*[\\\/]/, '');
 								}
 								    
-							    var cropper = image.data('cropper');
-								var canvas 	= cropper.getCroppedCanvas();
-								
-								canvas.toBlob(function(blob)
-								{
-									var formData = new FormData();
-									formData.append('plan_file', blob, filename);
-								
-									$.ajax({
-										method: 'POST',
-										url: `/plan/upload/${guid}`, // point to server-side PHP script 
-										dataType: 'text',  // what to expect back from the PHP script, if anything
-										cache: false,
-										contentType: false,
-										processData: false,
-										data: formData,
-										beforeSend : function() {
-										   $.blockUI({ message: null });
-										}, 
-										success: function(data, textStatus, jqXHR)
+								var formData = new FormData();
+								formData.append('plan_file', input.files[0], filename);
+							
+								$.ajax({
+									method: 'POST',
+									url: `/plan/upload/${guid}`, // point to server-side PHP script 
+									dataType: 'text',  // what to expect back from the PHP script, if anything
+									cache: false,
+									contentType: false,
+									processData: false,
+									data: formData,
+									beforeSend : function() {
+										$.blockUI({ message: null });
+									}, 
+									success: function(data, textStatus, jqXHR)
+									{
+										data = JSON.parse(data);
+										if (data.Result == 'OK')
 										{
-											data = JSON.parse(data);
-											if (data.Result == 'OK')
-											{
-											    // update base image
-											    d = new Date();
-												$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
-												
-												dialog.dialog("close");
-												
-												$.stdShowMessage({
-													icon: 'fa fa-check',
-													message: '¡Proceso finalizado!',
-													type: 'success'
-												});
-											}
-											else if (data.Result == 'ERROR') {
-												$.stdShowMessage({
-													icon: 'fa fa-exclamation-triangle',
-													message: 'No pudimos subir el archivo. Por favor, vuelva a intenterlo.',
-													type: 'warning'
-												});
-											}
-											$.unblockUI();
-										},
-										error: function(jqXHR, textStatus, errorThrown) {
-											$.unblockUI();
-											console.warn(jqXHR.responseText);
-										},
-									});
+											// update base image
+											d = new Date();
+											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
+											
+											dialog.dialog("close");
+											
+											$.stdShowMessage({
+												icon: 'fa fa-check',
+												message: '¡Proceso finalizado!',
+												type: 'success'
+											});
+										}
+										else if (data.Result == 'ERROR') {
+											$.stdShowMessage({
+												icon: 'fa fa-exclamation-triangle',
+												message: 'No pudimos subir el archivo. Por favor, vuelva a intenterlo.',
+												type: 'warning'
+											});
+										}
+										$.unblockUI();
+									},
+									error: function(jqXHR, textStatus, errorThrown) {
+										$.unblockUI();
+										console.warn(jqXHR.responseText);
+									},
 								});
 							},
 						},
@@ -258,12 +247,9 @@
     					var input = $(this)[0];
     					if (input.files && input.files[0])
     					{
-    						resetCropper();
-    						
     						var reader = new FileReader();
     						reader.onload = function(e) {
     							$('img[name="upload-file-image"]').attr('src', e.target.result);
-    							initCropper();
     						}
     						reader.readAsDataURL(input.files[0]);
     					}
@@ -291,7 +277,7 @@
 						beforeSend : function() {
 							// empty photo
 							//$('img[name="upload-file-image"]').attr("src", "");
-							resetCropper();
+							// resetCropper();
 						}, 
 						success: function(data, textStatus, jqXHR) {
 
@@ -299,7 +285,6 @@
 							{
 								var d = new Date();
 								$('img[name="upload-file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
-								initCropper();
 								
 								$('div[name="upload-file-dialog"]')
             						.dialog("option", "guid", guid)
@@ -311,27 +296,6 @@
 							console.warn(jqXHR.responseText);
 						},
 					});
-				}
-				
-				function initCropper()
-				{
-					$('img[name="upload-file-image"]').cropper({
-						//aspectRatio: 1 / 1,
-						dragMode: 'move',
-					});
-				}
-				
-				function resetCropper()
-				{
-					var image 	= $('img[name="upload-file-image"]');
-					var cropper = image.data('cropper');
-					
-					// empty photo
-					image.attr("src", "");
-					image.data('cropper', null);
-					
-					if (cropper !== undefined)
-						cropper.destroy();
 				}
 				
 			});
