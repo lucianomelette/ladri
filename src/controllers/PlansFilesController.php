@@ -83,9 +83,10 @@ class PlansFilesController extends Controller
 	
 	private function upload($request, $response, $args)
 	{
-		$guid = $args['guid'];
+		$guid 			= $args['guid'];
+		$fileToUpload 	= isset($_FILES['plan_file']) ? $_FILES['plan_file'] : null;
 		
-		if (isset($_FILES['plan_file']) and $_FILES['plan_file']['error'] == 0 and isset($guid) and $guid != "")
+		if (isset($fileToUpload) and $fileToUpload['error'] == 0 and isset($guid) and $guid != "")
 		{
 			// upload file to server repository
 			$project 		= $_SESSION["project_session"];
@@ -93,18 +94,26 @@ class PlansFilesController extends Controller
 			$publicDir		= '/assets/repository/' . $project->api_key . '/plans';
 			$privateDir 	= __DIR__ . '/../../public_html' . $publicDir;
 			
-			$fileKey 		= $_FILES['plan_file']['name'];
+			$fileKey 		= $fileToUpload['name'];
 			$ext 			= pathinfo($fileKey, PATHINFO_EXTENSION);
+			$fileType		= $fileToUpload['type'];
 			
 			// sanitize string
 			if (trim($ext) == "" || trim($ext) != "pdf") {
 			    return $response->withJson([
 					"Result" 	=> "ERROR",
+					"Message"	=> "La extensión del archivo debe ser PDF.",
+				]);
+			}
+
+			if ($fileType != "application/pdf") {
+				return $response->withJson([
+					"Result" 	=> "ERROR",
 					"Message"	=> "El formato del archivo debe ser PDF.",
 				]);
 			}
 			
-			$fileName			= $guid . '_' . $detailId . '.' . $ext;
+			$fileName			= $guid . '_' . $project->id . '.' . $ext;
 			$publicFile			= $publicDir . '/' . $fileName;
 			$privateFile		= $privateDir . '/' . $fileName;
 			
@@ -115,7 +124,7 @@ class PlansFilesController extends Controller
 					mkdir($privateDir, 0777, true);
 				}
 				
-				move_uploaded_file($_FILES['plan_file']['tmp_name'], $privateFile);
+				move_uploaded_file($fileToUpload['tmp_name'], $privateFile);
 				
 				// create or update
 				$planFile = PlanFile::where("project_id", $project->id)->where("guid", $guid)->first();
