@@ -35,7 +35,7 @@
 								        echo '<div class="col-lg-2">';
 								            echo '<div class="form-group">';
 								                echo '<div name="' . $key . '">';
-								                    echo '<img class="img-fluid rounded mx-auto d-block" name="file-image" src="' . $pic->public_url . '?' . $d->getTimestamp() . '">';
+								                    echo '<img class="img-fluid rounded mx-auto d-block" name="file-image" src="' . $plan->public_url . '?' . $d->getTimestamp() . '">';
 												    echo '<hr>';
 												    echo '<label name="file-title"><b>' . $plan->title . '</b></label>';
 											    echo '</div>';
@@ -279,8 +279,8 @@
 							//$('img[name="upload-file-image"]').attr("src", "");
 							// resetCropper();
 						}, 
-						success: function(data, textStatus, jqXHR) {
-debugger;
+						success: function(data, textStatus, jqXHR)
+						{
 							if (data.Result == 'OK')
 							{
 								var d = new Date();
