@@ -96,7 +96,7 @@
 				function createUploadFileDialog() {
 					
 					var htmlDialog = 
-						'<div class="d-none" name="upload-file-dialog" title="Cargar Imagen">' +
+						'<div class="d-none" name="upload-file-dialog" title="Cargar PDF">' +
 							'<div class="row">' +
 								'<div class="col-12">' +
 									'<div class="form-group">' +
@@ -138,14 +138,14 @@
 											
 											$.stdShowMessage({
 												icon: 'fa fa-check',
-												message: '¡Imagen borrada!',
+												message: '¡Archivo borrado!',
 												type: 'success'
 											});
 										}
 										else if (data.Result == 'ERROR') {
 											$.stdShowMessage({
 												icon: 'fa fa-exclamation-triangle',
-												message: 'No pudimos borrar la imagen. Por favor, vuelva a intenterlo.',
+												message: 'No pudimos borrar el archivo. Por favor, vuelva a intenterlo.',
 												type: 'warning'
 											});
 										}
@@ -219,7 +219,7 @@
 											else if (data.Result == 'ERROR') {
 												$.stdShowMessage({
 													icon: 'fa fa-exclamation-triangle',
-													message: 'No pudimos subir la imagen. Por favor, vuelva a intenterlo.',
+													message: 'No pudimos subir el archivo. Por favor, vuelva a intenterlo.',
 													type: 'warning'
 												});
 											}
