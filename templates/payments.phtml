@@ -595,7 +595,7 @@
 					width:	'20%',
 					displayText: 'Efectivo',
 					fields: [
-						{ tag: 'select', name: 'currency', column: 'currency_code', defaultValue: 'ARS', 	visible: true },
+						{ tag: 'select', name: 'currency', column: 'currency_code', defaultValue: 'MOL', 	visible: true },
 						{ tag: 'input',  name: 'amount',   column: 'amount', 	 	defaultValue: 0,		visible: true },
 					],
 				};
@@ -1028,8 +1028,8 @@
 					
 					currentRecordNumber++;
 					
-					// 2019-03-13 - exchange to AR$
-					exchangeToARS 	= false;
+					// 2019-03-13 - exchange to MOL
+					exchangeToMOL 	= false;
 					exchange 		= 0;
 					
 					var fieldsData = "";
@@ -1037,9 +1037,9 @@
 					{
 						fieldsData += " data-" + key + "='" + data[key] + "'";
 						
-						// 2019-03-13 - exchange to AR$
+						// 2019-03-13 - exchange to MOL
 						if (key === 'currency' && data[key] === 'USD') {
-							exchangeToARS 	= true;
+							exchangeToMOL 	= true;
 							exchange 		= $('input[name="doc-exchange"]').val();
 						}
 					}
@@ -1051,7 +1051,7 @@
 							"</td>" +
 							"<td class='align-middle font-weight-bold'>" + currentRecordNumber + "</td>" +
 							"<td class='align-middle form-inline' name='col-detail'>" + detailText + "</td>" +
-							"<td class='align-middle' name='col-amount'>" + roundAmount(data["amount"] * (exchangeToARS ? exchange : 1)) + "</td>" +
+							"<td class='align-middle' name='col-amount'>" + roundAmount(data["amount"] * (exchangeToMOL ? exchange : 1)) + "</td>" +
 						"</tr>";
 						
 					body.append(newRecordHTML);
@@ -1063,23 +1063,23 @@
 				function editRecord(recordKey, type, detailText, data) {
 					var row = $('tr#' + recordKey);
 					
-					// 2019-03-13 - exchange to AR$
-					exchangeToARS 	= false;
+					// 2019-03-13 - exchange to MOL
+					exchangeToMOL 	= false;
 					exchange 		= 0;
 					
 					for (var key in data)
 					{
 						row.attr("data-" + key, data[key]);
 						
-						// 2019-03-13 - exchange to AR$
+						// 2019-03-13 - exchange to MOL
 						if (key === 'currency' && data[key] === 'USD') {
-							exchangeToARS 	= true;
+							exchangeToMOL 	= true;
 							exchange 		= $('input[name="doc-exchange"]').val();
 						}
 					}
 					
 					row.find('td[name="col-detail"]').text(detailText);
-                    row.find('td[name="col-amount"]').text( roundAmount(data["amount"] * (exchangeToARS ? exchange : 1)) );
+                    row.find('td[name="col-amount"]').text( roundAmount(data["amount"] * (exchangeToMOL ? exchange : 1)) );
 					
 					updateDocumentTotals();
 				}				

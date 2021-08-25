@@ -75,9 +75,6 @@ class CashReportsController extends Controller
 	    $col = 0;
 	    $pay = 0;
 		
-		$balanceARS = 0;
-		$balanceUSD = 0;
-		
 		$find 		= ['Ñ', 'ñ', 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú'];
 		$replace 	= ['N', 'n', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
 		
@@ -143,25 +140,6 @@ class CashReportsController extends Controller
 					}
 				}
 	        }
-			
-			// subtotals
-			/*$document->total *= $document->documentType->balance_multiplier;
-			
-			if ($document->documentType->currency_code == 'ARS') {
-				$subtotalARS = $document->detailsCash->;
-				$subtotalUSD = $document->total / $exchangePrice;
-			}
-			elseif ($document->documentType->currency_code == 'USD') {
-				$subtotalARS = $document->total * $exchangePrice;
-				$subtotalUSD = $document->total;
-			}
-			else {
-				return $response->write('Error de seteo de moneda');
-			}
-			
-			// balance
-			$balanceARS	+= $subtotalARS;
-			$balanceUSD += $subtotalUSD;*/
 			
 			$balanceMultiplier = $document->documentType->balance_multiplier;
 			

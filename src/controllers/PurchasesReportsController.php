@@ -63,7 +63,7 @@ class PurchasesReportsController extends Controller
 	    $pur = 0;
 	    $pay = 0;
 		
-		$balanceARS = 0;
+		$balanceMOL = 0;
 		$balanceUSD = 0;
 		
 		$find 		= ['Ñ', 'ñ', 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', '°'];
@@ -120,12 +120,12 @@ class PurchasesReportsController extends Controller
 			// subtotals
 			$document->total *= $document->documentType->balance_multiplier;
 			
-			if ($document->documentType->currency_code == 'ARS' || $document->documentType->currency_code == 'UYU') {
-				$subtotalARS = $document->total;
+			if ($document->documentType->currency_code == 'MOL') {
+				$subtotalMOL = $document->total;
 				$subtotalUSD = $document->total / $exchangePrice;
 			}
 			elseif ($document->documentType->currency_code == 'USD') {
-				$subtotalARS = $document->total * $exchangePrice;
+				$subtotalMOL = $document->total * $exchangePrice;
 				$subtotalUSD = $document->total;
 			}
 			else {
@@ -133,7 +133,7 @@ class PurchasesReportsController extends Controller
 			}
 			
 			// balance
-			$balanceARS	+= $subtotalARS;
+			$balanceMOL	+= $balanceMOL;
 			$balanceUSD += $subtotalUSD;
 			
 	        array_push($records, (object)[
@@ -144,9 +144,9 @@ class PurchasesReportsController extends Controller
                 "business_name" => strtoupper(str_replace($find, $replace, $document->supplier->business_name)),
 				"description"	=> $description,
                 "exchange"		=> $this->parsedFloat($exchangePrice, 2),
-				"totalARS"		=> $this->parsedFloat($subtotalARS, 2),
+				"totalMOL"		=> $this->parsedFloat($subtotalMOL, 2),
 				"totalUSD"		=> $this->parsedFloat($subtotalUSD, 2),
-				"balanceARS"	=> $this->parsedFloat($balanceARS, 2),
+				"balanceMOL"	=> $this->parsedFloat($balanceMOL, 2),
 				"balanceUSD"	=> $this->parsedFloat($balanceUSD, 2),
             ]);
 	    }
@@ -158,9 +158,9 @@ class PurchasesReportsController extends Controller
 						$this->padr("PROVEEDOR", 20, " ") .
 						$this->padr("DESCRIPCION", 15, " ") .
 						$this->padl("CAMBIO", 7, " ") .
-						$this->padl("TOTAL AR", 14, " ") .
+						$this->padl("TOTAL", 14, " ") .
 						$this->padl("TOTAL USD", 14, " ") .
-						$this->padl("SALDO AR", 14, " ") .
+						$this->padl("SALDO", 14, " ") .
 						$this->padl("SALDO USD", 14, " ") . "\n" .
 						str_repeat("-", 137) . "\n";
 		
@@ -173,9 +173,9 @@ class PurchasesReportsController extends Controller
 	                            $this->padr($record->business_name, 20, " ", " ") .
 	                            $this->padr($record->description, 15, " ", " ") .
 								$this->padl($record->exchange, 7, " ") .
-	                            $this->padl($record->totalARS, 14, " ") .
+	                            $this->padl($record->totalMOL, 14, " ") .
 								$this->padl($record->totalUSD, 14, " ") .
-	                            $this->padl($record->balanceARS, 14, " ") .
+	                            $this->padl($record->balanceMOL, 14, " ") .
 	                            $this->padl($record->balanceUSD, 14, " ") . "\n";
 	                            
 	    }
@@ -188,7 +188,7 @@ class PurchasesReportsController extends Controller
 							$this->padr("", 20, " ") .
 							$this->padr("", 15, " ") .
 							$this->padl("", 7, " ") .
-							$this->padl($this->parsedFloat($balanceARS, 2), 14, " ") .
+							$this->padl($this->parsedFloat($balanceMOL, 2), 14, " ") .
 							$this->padl($this->parsedFloat($balanceUSD, 2), 14, " ") .
 							$this->padl("", 14, " ") .
 							$this->padl("", 14, " ");
