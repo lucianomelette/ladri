@@ -97,7 +97,7 @@ class CashReportsController extends Controller
 				$description = strtoupper(str_replace($find, $replace, $document->comments));
 				
 				// business name
-				$businessName = $document->customer->business_name;
+				$businessName = strtoupper(str_replace($find, $replace, $document->customer->business_name));
 				
 				// document exchange
 				if ($document->exchange != 0)
@@ -124,7 +124,7 @@ class CashReportsController extends Controller
 				$description = strtoupper(str_replace($find, $replace, $document->comments));
 				
 				// business name
-				$businessName = $document->supplier->business_name;
+				$businessName = strtoupper(str_replace($find, $replace, $document->supplier->business_name));
 				
 				// document exchange
 				if ($document->exchange != 0)
