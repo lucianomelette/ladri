@@ -29,12 +29,15 @@ class ExchangeController extends Controller
 	
 	private function read($request, $response, $args)
 	{
+		$company = $_SESSION["company_session"];
+		
 		$pageSize       = $request->getQueryParam("jtPageSize", $default = null);
 		$startIndex     = $request->getQueryParam("jtStartIndex", $default = null);
 		$recordsCount   = 0;
 		
 	    if ($pageSize != null) {
 			$records = Model::orderBy('dated_at', 'desc')
+							->where('company_id', $company->id)
 	                        ->take($pageSize)
 	                        ->skip($startIndex)
 							->get();
@@ -43,6 +46,7 @@ class ExchangeController extends Controller
 	    }
 	    else {
 	        $records = Model::orderBy('dated_at', 'desc')
+							->where('company_id', $company->id)
 							->get();
 	    }
 		
@@ -55,19 +59,19 @@ class ExchangeController extends Controller
 	
 	private function oneByDate($request, $response, $args)
 	{
+		$company = $_SESSION["company_session"];
+
 		$datedAt 		= $request->getParsedBody()["dated_at"];
 		$currencyCode 	= $request->getParsedBody()["currency_code"];
 		
-		/*
-		$exchange =	Model::where('company_id', $_SESSION["company_session"]->id)
+		$exchange =	Model::where('company_id', $company->id)
 				->where("currency_code", $currencyCode)
 				->where("dated_at", $datedAt)
 				->first();
-		*/
 				
-		$exchange =	Model::where("currency_code", $currencyCode)
-				->where("dated_at", $datedAt)
-				->first();
+		// $exchange =	Model::where("currency_code", $currencyCode)
+		// 		->where("dated_at", $datedAt)
+		// 		->first();
 			
 		if ($exchange != null) {
 			return $response->withJson([
@@ -85,7 +89,7 @@ class ExchangeController extends Controller
 	private function create($request, $response, $args)
 	{
 		$newRecord 					= $request->getParsedBody();
-		//$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
+		$newRecord['company_id'] 	= $_SESSION["company_session"]->id;
 		
 		$id = Model::create($newRecord)->id;
 		$newRecord['id'] = $id;
