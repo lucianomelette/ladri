@@ -41,14 +41,14 @@ class ExchangeController extends Controller
 	                        ->take($pageSize)
 	                        ->skip($startIndex)
 							->get();
-			
-			$recordsCount = Model::count();
 	    }
 	    else {
 	        $records = Model::orderBy('dated_at', 'desc')
 							->where('company_id', $company->id)
 							->get();
 	    }
+
+		$recordsCount = Model::where('company_id', $company->id)->count();
 		
 		return $response->withJson([
 			"Result" 			=> "OK",
