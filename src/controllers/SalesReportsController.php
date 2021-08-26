@@ -363,7 +363,7 @@ class SalesReportsController extends Controller
                 "Cliente"       => $document->customer->business_name,
 				"Descripción"	=> $description,
                 "Cambio"		=> $this->parsedFloat($exchangePrice, 2),
-				"Total"		=> $this->parsedFloat($subtotalMOL, 2),
+				"Total"			=> $this->parsedFloat($subtotalMOL, 2),
 				"Total US"		=> $this->parsedFloat($subtotalUSD, 2),
             ]);
 	    }
