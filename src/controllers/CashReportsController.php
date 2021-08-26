@@ -28,6 +28,9 @@ class CashReportsController extends Controller
 	
 	public function report($request, $response, $args)
 	{
+		$company = $_SESSION["company_session"];
+		$project = $_SESSION['project_session'];
+
 		$body = $request->getParsedBody();
 		
 		$payment_method_code 	= (isset($body["payment_method_code"]) ? $body["payment_method_code"] : null);
@@ -38,7 +41,7 @@ class CashReportsController extends Controller
 		
 		$type = $split[0];
 		
-		$collections = CollectionHeader::where('project_id', $_SESSION['project_session']->id)
+		$collections = CollectionHeader::where('project_id', $project->id)
 										->where('is_canceled', false)
 										->when($collections_docs_codes != null, function($query) use ($collections_docs_codes) {
 											$query->whereIn('document_type_code', $collections_docs_codes);
@@ -54,7 +57,7 @@ class CashReportsController extends Controller
 										->orderBy('dated_at', 'ASC')
 										->get();
 				
-		$payments = PaymentHeader::where('project_id', $_SESSION['project_session']->id)
+		$payments = PaymentHeader::where('project_id', $project->id)
 									->where('is_canceled', false)
 									->when($payments_docs_codes != null, function($query) use ($payments_docs_codes) {
 										$query->whereIn('document_type_code', $payments_docs_codes);
@@ -132,7 +135,8 @@ class CashReportsController extends Controller
 				else
 				{
 					// daily exchange
-					$exchange = Exchange::where('dated_at', $document->dated_at)
+					$exchange = Exchange::where('company_id', $company->id)
+									->where('dated_at', $document->dated_at)
 									->where('currency_code', 'USD')->first();
 				
 					if ($exchange != null and $exchange->price != 0) {
