@@ -133,7 +133,7 @@ class PurchasesReportsController extends Controller
 			}
 			
 			// balance
-			$balanceMOL	+= $balanceMOL;
+			$balanceMOL	+= $subtotalMOL;
 			$balanceUSD += $subtotalUSD;
 			
 	        array_push($records, (object)[
