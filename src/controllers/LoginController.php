@@ -64,7 +64,7 @@ class LoginController extends Controller
 					->companies;
 	
 		$args = [
-			"navbar" 	=> $this->navbar,
+			"navbar" 	=> $this->buildNavbar(),
 			"companies"	=> $companies,
 		];
 		
@@ -90,7 +90,7 @@ class LoginController extends Controller
 					->where('company_id', $_SESSION["company_session"]->id);
 	
 		$args = [
-			"navbar" 	=> $this->navbar,
+			"navbar" 	=> $this->buildNavbar(),
 			"projects"	=> $projects,
 		];
 		
