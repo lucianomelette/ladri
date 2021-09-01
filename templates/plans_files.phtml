@@ -204,7 +204,7 @@
 											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
 
 											debugger;
-											$('div[name="' + guid + '"] > label[name="file-title"]').text(filename.name);
+											$('div[name="' + guid + '"] > label[name="file-title"] > b').text(filename.name);
 											
 											dialog.dialog("close");
 											
