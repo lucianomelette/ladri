@@ -37,7 +37,12 @@
 								                echo '<div name="' . $key . '">';
 								                    echo '<img class="img-fluid rounded mx-auto d-block" name="file-image" src="' . ($plan->icon != "" ? $plan->icon : $plan->public_url) . '?' . $d->getTimestamp() . '">';
 												    echo '<hr>';
-												    echo '<label name="file-title"><b><a target="_blank" href="' . $plan->public_url . '">' . $plan->file_name . '</a></b></label>';
+												    echo '<label name="file-title"><b>';
+														echo '<a target="_blank" ';
+															echo 'href="' . $plan->public_url . '" ';
+															echo 'download="' . $plan->file_name . '">' . $plan->file_name;
+														echo '</a>';
+													echo '</b></label>';
 											    echo '</div>';
 										    echo '</div>';
 									    echo '</div>';
@@ -134,6 +139,8 @@
 										    d = new Date();
 											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", data.File.public_url + "?"+d.getTime());
 											$('div[name="' + guid + '"] > label[name="file-title"] > b > a').text("");
+											planFileLink.attr("href", "");
+											planFileLink.attr("download", "");
 										    
 											dialog.dialog("close");
 											
@@ -202,8 +209,11 @@
 											// update base image
 											d = new Date();
 											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.icon}?${d.getTime()}`);
-											$('div[name="' + guid + '"] > label[name="file-title"] > b > a').text(filename.name);
-											$('div[name="' + guid + '"] > label[name="file-title"] > b > a').attr("href", `${data.File.public_url}?${d.getTime()}`);
+
+											var planFileLink = $('div[name="' + guid + '"] > label[name="file-title"] > b > a');
+											planFileLink.text(filename.name);
+											planFileLink.attr("href", `${data.File.public_url}?${d.getTime()}`);
+											planFileLink.attr("download", `${filename.name}`);
 											
 											dialog.dialog("close");
 											
