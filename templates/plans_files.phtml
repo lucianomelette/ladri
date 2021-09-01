@@ -162,64 +162,65 @@
 								var guid 	= $(this).dialog("option", "guid");
 								var dialog 	= $(this);
 								
-								var image 	= $('img[name="upload-file-image"]');
+								// var image 	= $('img[name="upload-file-image"]');
 								var input   = $('input[name="upload-file-input"]')[0];
 								
 								if (input.files && input.files[0])
 								{
 									var filename = input.files[0];
-								}
-								else
-								{
-								    var fullPath = image.attr("src");
-									var filename = fullPath.replace(/^.*[\\\/]/, '');
-								}
-								    
-								var formData = new FormData();
-								formData.append('plan_file', filename);
-							
-								$.ajax({
-									method: 'POST',
-									url: `/plans/upload/${guid}`, // point to server-side PHP script 
-									dataType: 'text',  // what to expect back from the PHP script, if anything
-									cache: false,
-									contentType: false,
-									processData: false,
-									data: formData,
-									beforeSend : function() {
-										$.blockUI({ message: null });
-									}, 
-									success: function(data, textStatus, jqXHR)
-									{
-										data = JSON.parse(data);
-										if (data.Result == 'OK')
+									// }
+									// else
+									// {
+									//     var fullPath = image.attr("src");
+									// 	var filename = fullPath.replace(/^.*[\\\/]/, '');
+									// }
+										
+									var formData = new FormData();
+									formData.append('plan_file', filename);
+								
+									$.ajax({
+										method: 'POST',
+										url: `/plans/upload/${guid}`, // point to server-side PHP script 
+										dataType: 'text',  // what to expect back from the PHP script, if anything
+										cache: false,
+										contentType: false,
+										processData: false,
+										data: formData,
+										beforeSend : function() {
+											$.blockUI({ message: null });
+										}, 
+										success: function(data, textStatus, jqXHR)
 										{
-											// update base image
-											d = new Date();
-											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
-											
-											dialog.dialog("close");
-											
-											$.stdShowMessage({
-												icon: 'fa fa-check',
-												message: '¡Proceso finalizado!',
-												type: 'success'
-											});
-										}
-										else if (data.Result == 'ERROR') {
-											$.stdShowMessage({
-												icon: 'fa fa-exclamation-triangle',
-												message: 'No pudimos subir el archivo. Por favor, vuelva a intenterlo.',
-												type: 'warning'
-											});
-										}
-										$.unblockUI();
-									},
-									error: function(jqXHR, textStatus, errorThrown) {
-										$.unblockUI();
-										console.warn(jqXHR.responseText);
-									},
-								});
+											data = JSON.parse(data);
+											if (data.Result == 'OK')
+											{
+												// update base image
+												d = new Date();
+												$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
+												
+												dialog.dialog("close");
+												
+												$.stdShowMessage({
+													icon: 'fa fa-check',
+													message: '¡Proceso finalizado!',
+													type: 'success'
+												});
+											}
+											else if (data.Result == 'ERROR') {
+												$.stdShowMessage({
+													icon: 'fa fa-exclamation-triangle',
+													message: 'No pudimos subir el archivo. Por favor, vuelva a intenterlo.',
+													type: 'warning'
+												});
+											}
+											$.unblockUI();
+										},
+										error: function(jqXHR, textStatus, errorThrown) {
+											$.unblockUI();
+											console.warn(jqXHR.responseText);
+										},
+									});
+								}
 							},
 						},
 						create: function() {
@@ -242,18 +243,18 @@
 					});
 					
 				    // on change photo input
-    				$(document).on('change', 'input[name="upload-file-input"]', function(e) {
+    				// $(document).on('change', 'input[name="upload-file-input"]', function(e) {
     					
-    					var input = $(this)[0];
-    					if (input.files && input.files[0])
-    					{
-    						var reader = new FileReader();
-    						reader.onload = function(e) {
-    							$('img[name="upload-file-image"]').attr('src', e.target.result);
-    						}
-    						reader.readAsDataURL(input.files[0]);
-    					}
-    				});
+    				// 	var input = $(this)[0];
+    				// 	if (input.files && input.files[0])
+    				// 	{
+    				// 		var reader = new FileReader();
+    				// 		reader.onload = function(e) {
+    				// 			$('img[name="upload-file-image"]').attr('src', e.target.result);
+    				// 		}
+    				// 		reader.readAsDataURL(input.files[0]);
+    				// 	}
+    				// });
 				}
 				
 				// check viewport
@@ -283,8 +284,8 @@
 						{
 							if (data.Result == 'OK')
 							{
-								var d = new Date();
-								$('img[name="upload-file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
+								// var d = new Date();
+								// $('img[name="upload-file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
 								
 								$('div[name="upload-file-dialog"]')
             						.dialog("option", "guid", guid)
