@@ -138,7 +138,9 @@
 										    // update base image
 										    d = new Date();
 											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", data.File.public_url + "?"+d.getTime());
-											$('div[name="' + guid + '"] > label[name="file-title"] > b > a').text("");
+
+											var planFileLink = $('div[name="' + guid + '"] > label[name="file-title"] > b > a');
+											planFileLink.text("");
 											planFileLink.attr("href", "");
 											planFileLink.attr("download", "");
 										    
