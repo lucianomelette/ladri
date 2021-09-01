@@ -35,7 +35,7 @@
 								        echo '<div class="col-lg-2">';
 								            echo '<div class="form-group">';
 								                echo '<div name="' . $key . '">';
-								                    echo '<img class="img-fluid rounded mx-auto d-block" name="file-image" src="' . $plan->public_url . '?' . $d->getTimestamp() . '">';
+								                    echo '<img class="img-fluid rounded mx-auto d-block" name="file-image" src="' . ($plan->icon != "" ? $plan->icon : $plan->public_url) . '?' . $d->getTimestamp() . '">';
 												    echo '<hr>';
 												    echo '<label name="file-title"><b>' . $plan->file_name . '</b></label>';
 											    echo '</div>';
@@ -201,9 +201,7 @@
 										{
 											// update base image
 											d = new Date();
-											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
-
-											debugger;
+											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.icon}?${d.getTime()}`);
 											$('div[name="' + guid + '"] > label[name="file-title"] > b').text(filename.name);
 											
 											dialog.dialog("close");

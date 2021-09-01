@@ -53,6 +53,7 @@ class PlansFilesController extends Controller
 	{
 		if ($file != null)
 		{
+			$file->icon = '/assets/repository/assets/pdf-uploaded-image.png';
 			return $file;
 		}
 		return $this->defaultFile();
