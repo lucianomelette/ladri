@@ -202,6 +202,8 @@
 											// update base image
 											d = new Date();
 											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
+
+											debugger;
 											$('div[name="' + guid + '"] > label[name="file-title"]').text(filename);
 											
 											dialog.dialog("close");
