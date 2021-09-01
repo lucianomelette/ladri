@@ -107,10 +107,11 @@ class PurchasesDeliveryPicturesController extends Controller
 		{
 			// upload file to server repository
 			$project 		= $_SESSION["project_session"];
+			$project->load("company");
 			$detailId 		= $args["detail_id"];
 			
 			
-			$publicDir		= '/assets/repository/' . $project->api_key . '/pictures';
+			$publicDir		= '/assets/repository/companies/' . $project->company->unique_code . '/projects/' . $project->api_key . '/pictures';
 			$privateDir 	= __DIR__ . '/../../public_html' . $publicDir;
 			
 			$fileKey 		= $_FILES['picture']['name'];
