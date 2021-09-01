@@ -21,7 +21,7 @@ class Controller
 		}
 		
 		if (isset($_SESSION["project_session"])) {
-			$this->navbar["project_session"] = $_SESSION["project_session"]->full_name;
+			$this->navbar["project_session"] = "prueba"; // $_SESSION["project_session"]->full_name;
 		}
 		
 		if (isset($_SESSION["company_session"])) {
