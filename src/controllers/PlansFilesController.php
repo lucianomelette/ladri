@@ -125,8 +125,6 @@ class PlansFilesController extends Controller
 					mkdir($privateDir, 0777, true);
 				}
 				
-				move_uploaded_file($fileToUpload['tmp_name'], $privateFile);
-				
 				// create or update
 				$planFile = PlanFile::where("project_id", $project->id)->where("guid", $guid)->first();
 				
@@ -156,6 +154,9 @@ class PlansFilesController extends Controller
 					$planFile->private_url		= $privateFile;
 					$planFile->save();
 				}
+
+				// save file phisically
+				move_uploaded_file($fileToUpload['tmp_name'], $privateFile);
 				
 				return $response->withJson([
 					"Result" 	=> "OK",
