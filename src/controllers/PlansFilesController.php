@@ -137,7 +137,7 @@ class PlansFilesController extends Controller
 						"project_id"		=> $project->id,
 						"title" 			=> "", //$_FILES['picture']['picture_title'],
 						"guid" 				=> $guid,
-						"file_name"			=> $file_name,
+						"file_name"			=> $fileKey,
 						"public_url"		=> $publicFile,
 						"private_url"		=> $privateFile,
 					];
