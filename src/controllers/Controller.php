@@ -15,9 +15,9 @@ class Controller
 		$this->navbar = [];
 
 		if (isset($_SESSION["user_session"])) {
-			$this->navbar["username_session"] = $_SESSION["user_session"]->username;
-			$this->navbar["user_display_name"] = $_SESSION["user_session"]->full_name;
-			$this->navbar["user_profile"] = $_SESSION["user_session"]->profile;
+			$this->navbar["username_session"] 	= $_SESSION["user_session"]->username;
+			$this->navbar["user_display_name"] 	= $_SESSION["user_session"]->display_name;
+			$this->navbar["user_profile"] 		= $_SESSION["user_session"]->profile;
 		}
 		
 		if (isset($_SESSION["project_session"])) {
