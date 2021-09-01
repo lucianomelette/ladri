@@ -168,59 +168,61 @@
 								if (input.files && input.files[0])
 								{
 									var filename = input.files[0];
-									// }
-									// else
-									// {
-									//     var fullPath = image.attr("src");
-									// 	var filename = fullPath.replace(/^.*[\\\/]/, '');
-									// }
-										
-									var formData = new FormData();
-									formData.append('plan_file', filename);
-								
-									$.ajax({
-										method: 'POST',
-										url: `/plans/upload/${guid}`, // point to server-side PHP script 
-										dataType: 'text',  // what to expect back from the PHP script, if anything
-										cache: false,
-										contentType: false,
-										processData: false,
-										data: formData,
-										beforeSend : function() {
-											$.blockUI({ message: null });
-										}, 
-										success: function(data, textStatus, jqXHR)
-										{
-											data = JSON.parse(data);
-											if (data.Result == 'OK')
-											{
-												// update base image
-												d = new Date();
-												$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
-												
-												dialog.dialog("close");
-												
-												$.stdShowMessage({
-													icon: 'fa fa-check',
-													message: '¡Proceso finalizado!',
-													type: 'success'
-												});
-											}
-											else if (data.Result == 'ERROR') {
-												$.stdShowMessage({
-													icon: 'fa fa-exclamation-triangle',
-													message: 'No pudimos subir el archivo. Por favor, vuelva a intenterlo.',
-													type: 'warning'
-												});
-											}
-											$.unblockUI();
-										},
-										error: function(jqXHR, textStatus, errorThrown) {
-											$.unblockUI();
-											console.warn(jqXHR.responseText);
-										},
+								}
+								else
+								{
+									$.stdShowMessage({
+										icon: 'fa fa-exclamation-triangle',
+										message: 'Debe seleccionar un archivo para continuar.',
+										type: 'warning'
 									});
 								}
+										
+								var formData = new FormData();
+								formData.append('plan_file', filename);
+							
+								$.ajax({
+									method: 'POST',
+									url: `/plans/upload/${guid}`, // point to server-side PHP script 
+									dataType: 'text',  // what to expect back from the PHP script, if anything
+									cache: false,
+									contentType: false,
+									processData: false,
+									data: formData,
+									beforeSend : function() {
+										$.blockUI({ message: null });
+									}, 
+									success: function(data, textStatus, jqXHR)
+									{
+										data = JSON.parse(data);
+										if (data.Result == 'OK')
+										{
+											// update base image
+											d = new Date();
+											$('div[name="' + guid + '"] > img[name="file-image"]').attr("src", `${data.File.public_url}?${d.getTime()}`);
+											
+											dialog.dialog("close");
+											
+											$.stdShowMessage({
+												icon: 'fa fa-check',
+												message: '¡Proceso finalizado!',
+												type: 'success'
+											});
+										}
+										else if (data.Result == 'ERROR') {
+											$.stdShowMessage({
+												icon: 'fa fa-exclamation-triangle',
+												message: 'No pudimos subir el archivo. Por favor, vuelva a intenterlo.',
+												type: 'warning'
+											});
+										}
+										$.unblockUI();
+									},
+									error: function(jqXHR, textStatus, errorThrown) {
+										$.unblockUI();
+										console.warn(jqXHR.responseText);
+									},
+								});
 							},
 						},
 						create: function() {
@@ -270,6 +272,9 @@
 					if (isBreakpoint('sm') || isBreakpoint('xs')) {
 						dialogWidth = "100%";
 					}
+
+					// clear input text
+					$('input[name="upload-file-input"]').val("");
 					
 					// load photo from server if exists
 					$.ajax({

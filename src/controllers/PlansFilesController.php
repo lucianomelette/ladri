@@ -114,7 +114,7 @@ class PlansFilesController extends Controller
 				]);
 			}
 			
-			$fileName			= $guid . '_' . $project->id . '.' . $ext;
+			$fileName			= $guid . '_' . $project->api_key . '.' . $ext;
 			$publicFile			= $publicDir . '/' . $fileName;
 			$privateFile		= $privateDir . '/' . $fileName;
 			
