@@ -92,7 +92,7 @@ class PlansFilesController extends Controller
 			// upload file to server repository
 			$project 		= $_SESSION["project_session"];
 			
-			$publicDir		= '/assets/repository/' . $project->api_key . '/plans';
+			$publicDir		= '/assets/repository/companies/' . $project->company->unique_code . '/projects/' . $project->api_key . '/plans';
 			$privateDir 	= __DIR__ . '/../../public_html' . $publicDir;
 			
 			$fileKey 		= $fileToUpload['name'];
