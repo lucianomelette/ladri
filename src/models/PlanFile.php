@@ -11,6 +11,7 @@ class PlanFile extends Model
 		'id',
 		'title',
 		'guid',
+		'file_name',
 		'public_url',
 		'private_url',
 		'preview_url',

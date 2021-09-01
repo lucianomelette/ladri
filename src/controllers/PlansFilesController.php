@@ -137,6 +137,7 @@ class PlansFilesController extends Controller
 						"project_id"		=> $project->id,
 						"title" 			=> "", //$_FILES['picture']['picture_title'],
 						"guid" 				=> $guid,
+						"file_name"			=> $file_name,
 						"public_url"		=> $publicFile,
 						"private_url"		=> $privateFile,
 					];
@@ -150,6 +151,7 @@ class PlansFilesController extends Controller
 					
 					// update plan
 					$planFile->title 			= ""; //$_FILES['picture']['picture_title'];
+					$planFile->file_name		= $fileKey;
 					$planFile->public_url		= $publicFile;
 					$planFile->private_url		= $privateFile;
 					$planFile->save();
