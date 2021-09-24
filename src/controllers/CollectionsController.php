@@ -370,7 +370,7 @@ class CollectionsController extends Controller
 			'notify_at'		=> $data['notify_at'],
 		];
 
-		$pushNotifController->create($newRecord)
+		$pushNotifController->create($newRecord);
 	}
 
 	private function deleteNotifications($headerId)
