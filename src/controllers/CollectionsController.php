@@ -244,7 +244,7 @@ class CollectionsController extends Controller
 			CollectionDetailThirdPartyCheck::where("header_id", $headerId)->delete();
 			CollectionDetailTransfer::where("header_id", $headerId)->delete();
 
-			// $this->deleteNotifications($headerId);
+			$this->deleteNotifications($headerId);
 			
 			// save each detail
 			$errorOnPaymentType = false;
