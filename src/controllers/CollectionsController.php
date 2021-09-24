@@ -268,7 +268,8 @@ class CollectionsController extends Controller
 						break;
 					
 					case 'third-party-check':
-						CollectionDetailThirdPartyCheck::create($row);
+						$thirdPartyCheckId = CollectionDetailThirdPartyCheck::create($row)->id;
+						$row['id'] = $thirdPartyCheckId;
 						
 						// If 'notify_at' is set
 						if (isset($row['notify_at']) && !empty($row['notify_at']))
@@ -363,7 +364,7 @@ class CollectionsController extends Controller
 
 		$expAt = date('d/m/Y', strtotime($data['expiration_at']));
 		$number = $data['number'];
-		$bankName = 'VARIABLE NOMBRE BANCO';
+		$bankName = CollectioDetailThirdPartyCheck::find($data['id'])->bank->description->trim();;
 		$notification = "El {$expAt} vence el cheque No. {$number} del Banco {$bankName}";
 
 		$newRecord = [
