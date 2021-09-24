@@ -376,6 +376,6 @@ class CollectionsController extends Controller
 	private function deleteNotifications($headerId)
 	{
 		$pushNotifController = $this->container['PushNotificationsController'];
-		$pushNotifController->removeAllByModuleHead($this->_module, $headerId)
+		$pushNotifController->removeAllByModuleHead($this->_module, $headerId);
 	}
 }
