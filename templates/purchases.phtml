@@ -62,7 +62,7 @@
 												<option
 													value="<?= $documentType->unique_code ?>"
 													data-sequence="<?= $documentType->sequence ?>"
-													data-aff-stock="<?= (isset($documentType->aff_stock) ? $documentType->aff_stock : 0) ?>">
+													data-aff-stock="<?= (isset($documentType->affects_stock) ? $documentType->affects_stock : 0) ?>">
 													<?= trim($documentType->description) ?>
 												</option>
 											<?php endforeach; ?>

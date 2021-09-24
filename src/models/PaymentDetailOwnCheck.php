@@ -14,6 +14,7 @@ class PaymentDetailOwnCheck extends Model
 		'number',
 		'dated_at',
 		'expiration_at',
+		'notify_at',
 		'amount',
 	];
 

@@ -156,6 +156,8 @@ class CollectionsController extends Controller
 						
 					case 'third-party-check':
 						CollectionDetailThirdPartyCheck::create($row);
+
+						// $this->createNotification($row);
 						break;
 						
 					case 'transfer':
@@ -235,6 +237,8 @@ class CollectionsController extends Controller
 			CollectionDetailMaterial::where("header_id", $headerId)->delete();
 			CollectionDetailThirdPartyCheck::where("header_id", $headerId)->delete();
 			CollectionDetailTransfer::where("header_id", $headerId)->delete();
+
+			// $this->deleteNotifications($headerId);
 			
 			// save each detail
 			$errorOnPaymentType = false;
@@ -259,6 +263,8 @@ class CollectionsController extends Controller
 					
 					case 'third-party-check':
 						CollectionDetailThirdPartyCheck::create($row);
+
+						// $this->createNotification($row);
 						break;
 
 					default:
@@ -300,6 +306,9 @@ class CollectionsController extends Controller
 		
 		CollectionHeader::find($id)
 				->update([ "is_canceled" => true ]);
+
+		// $this->deleteNotifications($id);
+		// meter todo dentro de una 'transaction'
 		
 		return $response->withJson([
 			"Result" => "OK",

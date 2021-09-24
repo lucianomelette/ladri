@@ -13,6 +13,8 @@ class Supplier extends Model
 		'fantasy_name',
 		'business_name',
 		'cuit',
+		'phone_number_1',
+		'phone_number_2',
 		'category_id',
 		'company_id',
 	];

@@ -271,6 +271,16 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="row">
+					<div class="col-12">
+						<div class="form-group">
+							<label class="font-weight-bold">Fecha de Notificación:</label>
+							<br>
+							<input type='date' class='form-control' name='dialog-third-party-check-notify-date'>
+						</div>
+					</div>
+				</div>
 				
 				<div class="row">
 					<div class="col-12">
@@ -497,6 +507,16 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="row">
+					<div class="col-12">
+						<div class="form-group">
+							<label class="font-weight-bold">Fecha de Notificación:</label>
+							<br>
+							<input type='date' class='form-control' name='dialog-own-check-notify-date'>
+						</div>
+					</div>
+				</div>
 				
 				<div class="row">
 					<div class="col-12">
@@ -609,6 +629,7 @@
 						{ tag: 'input', 	name: 'number', 			column: 'number',			defaultValue: "", 		visible: true },
 						{ tag: 'input', 	name: 'owner', 				column: 'owner',			defaultValue: "", 		visible: false },
 						{ tag: 'input', 	name: 'expiration-date',	column: 'expiration_at',	defaultValue: null, 	visible: false },
+						{ tag: 'input', 	name: 'notify-date',		column: 'notify_at',		defaultValue: null, 	visible: false },
 						{ tag: 'input', 	name: 'amount', 			column: 'amount',			defaultValue: 0, 		visible: false },
 					],
 				};
@@ -648,6 +669,7 @@
 						{ tag: 'input',		name: 'number',				column: 'number',			defaultValue: "", 		visible: true },
 						{ tag: 'input',		name: 'created-date', 		column: 'dated_at',			defaultValue: null,		visible: false },
 						{ tag: 'input',		name: 'expiration-date', 	column: 'expiration_at',	defaultValue: null,		visible: false },
+						{ tag: 'input',		name: 'notify-date', 		column: 'notify_at',		defaultValue: null,		visible: false },
 						{ tag: 'input',		name: 'amount',				column: 'amount', 			defaultValue: 0,		visible: false },
 					],
 				};

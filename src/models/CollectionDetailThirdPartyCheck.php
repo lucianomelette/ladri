@@ -14,6 +14,7 @@ class CollectionDetailThirdPartyCheck extends Model
 		'number',
 		'owner',
 		'expiration_at',
+		'notify_at',
 		'amount',
 	];
 	

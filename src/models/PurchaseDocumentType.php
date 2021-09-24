@@ -14,7 +14,8 @@ class PurchaseDocumentType extends Model
 		'sequence',
 		'currency_code',
 		'balance_multiplier',
-		'aff_stock',
+		'affects_stock',
+		'handles_expiration',
 		'project_id',
 	];
 }

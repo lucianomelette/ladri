@@ -20,7 +20,7 @@ class PurchasesDeliveryController extends Controller
 		$args = [
 			"navbar" 			=> $this->navbar,
 			"suppliers" 		=> $company->suppliers->sortBy("business_name"),
-			"documentsTypes" 	=> $project->purchasesDocumentsTypes->where("aff_stock", "<>", 0)->sortBy("description"),
+			"documentsTypes" 	=> $project->purchasesDocumentsTypes->where("affects_stock", "<>", 0)->sortBy("description"),
 			"productsState" 	=> $company->productsState->sortBy("description"),
 		];
 	
@@ -51,8 +51,8 @@ class PurchasesDeliveryController extends Controller
 
 		$records = PurchaseDetail::whereHas('purchaseHeader', function($q1) use ($projectId, $suppliers_ids) {
 										$q1->whereHas('documentType', function($q2) {
-												$q2->whereNotNull('aff_stock')
-													->where('aff_stock', '!=', 0);
+												$q2->whereNotNull('affects_stock')
+													->where('affects_stock', '!=', 0);
 											})
 											->where('project_id', $projectId)
 											->where('is_canceled', 0)
