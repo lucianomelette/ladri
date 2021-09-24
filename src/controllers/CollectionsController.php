@@ -14,7 +14,7 @@ use Illuminate\Database\Capsule\Manager as DB;
  
 class CollectionsController extends Controller
 {
-	private _module = 'collections';
+	private $_module = 'collections';
 
 	public function __invoke($request, $response, $params)
 	{	
