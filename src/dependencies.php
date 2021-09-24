@@ -149,6 +149,11 @@ $container['InvestorsController'] = function ($container) {
 	return new \App\Controllers\InvestorsController($container);
 };
 
+// push notifications controller
+$container['PushNotificationsController'] = function ($container) {
+	return new \App\Controllers\PushNotificationsController($container);
+};
+
 // api controller
 $container['ApiController'] = function ($container) {
 	return new \App\Controllers\ApiController($container);

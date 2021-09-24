@@ -14,6 +14,8 @@ use Illuminate\Database\Capsule\Manager as DB;
  
 class CollectionsController extends Controller
 {
+	private _module = 'collections';
+
 	public function __invoke($request, $response, $params)
 	{	
 		$company = $_SESSION["company_session"];
@@ -157,7 +159,11 @@ class CollectionsController extends Controller
 					case 'third-party-check':
 						CollectionDetailThirdPartyCheck::create($row);
 
-						// $this->createNotification($row);
+						// If 'notify_at' is set
+						if (isset($row['notify_at']) && $row['notify_at'] !== null)
+						{
+							$this->createNotification($row);
+						}
 						break;
 						
 					case 'transfer':
@@ -263,8 +269,12 @@ class CollectionsController extends Controller
 					
 					case 'third-party-check':
 						CollectionDetailThirdPartyCheck::create($row);
-
-						// $this->createNotification($row);
+						
+						// If 'notify_at' is set
+						if (isset($row['notify_at']) && $row['notify_at'] !== null)
+						{
+							$this->createNotification($row);
+						}
 						break;
 
 					default:
@@ -302,17 +312,32 @@ class CollectionsController extends Controller
 	
 	private function remove($request, $response, $args)
 	{
-		$id = $request->getParsedBody()["id"];
-		
-		CollectionHeader::find($id)
-				->update([ "is_canceled" => true ]);
+		DB::beginTransaction();
 
-		// $this->deleteNotifications($id);
-		// meter todo dentro de una 'transaction'
-		
-		return $response->withJson([
-			"Result" => "OK",
-		]);
+		try
+		{
+			$id = $request->getParsedBody()["id"];
+			
+			CollectionHeader::find($id)
+					->update([ "is_canceled" => true ]);
+
+			$this->deleteNotifications($id);
+
+			DB::commit();
+			
+			return $response->withJson([
+				"Result" => "OK",
+			]);
+		}
+		catch(\Exception $e)
+		{
+			DB::rollBack();
+			
+			return $response->withJson([
+				'status'	=> 'ERROR',
+				'message'	=> 'Algo salió mal. Vuelva a intentarlo.',
+			]);
+		}
 	}
 	
 	public function query($request, $response, $args)
@@ -330,5 +355,27 @@ class CollectionsController extends Controller
 		];
 	
 		return $this->container->renderer->render($response, 'collections_query.phtml', $args);
+	}
+
+	private function createNotification($data)
+	{
+		$pushNotifController = $this->container['PushNotificationsController'];
+
+		$notification = "El {$data['expiration_at']} vence el cheque No. {$date['number']}";
+
+		$newRecord = [
+			'module' 		=> $this->_module,
+			'header_id'		=> $data['header_id'],
+			'notification'	=> $notification,
+			'notify_at'		=> $data['notify_at'],
+		];
+
+		$pushNotifController->create($newRecord)
+	}
+
+	private function deleteNotifications($headerId)
+	{
+		$pushNotifController = $this->container['PushNotificationsController'];
+		$pushNotifController->removeAllByModuleHead($this->_module, $headerId)
 	}
 }
