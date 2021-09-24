@@ -160,7 +160,7 @@ class CollectionsController extends Controller
 						CollectionDetailThirdPartyCheck::create($row);
 
 						// If 'notify_at' is set
-						if (isset($row['notify_at']) && $row['notify_at'] !== null)
+						if (isset($row['notify_at']) && !empty($row['notify_at']))
 						{
 							$this->createNotification($row);
 						}
@@ -271,7 +271,7 @@ class CollectionsController extends Controller
 						CollectionDetailThirdPartyCheck::create($row);
 						
 						// If 'notify_at' is set
-						if (isset($row['notify_at']) && $row['notify_at'] !== null)
+						if (isset($row['notify_at']) && !empty($row['notify_at']))
 						{
 							$this->createNotification($row);
 						}
