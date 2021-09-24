@@ -366,7 +366,7 @@ class CollectionsController extends Controller
 		$expAt = date('d/m/Y', strtotime($data['expiration_at']));
 		$number = $data['number'];
 		$bankName = trim(CollectionDetailThirdPartyCheck::find($data['id'])->bank->description);
-		$notification = "El {$expAt} vence el cheque No. {$number} del Banco {$bankName}";
+		$notification = "El {$expAt} vence el cheque No. {$number} de la entidad {$bankName}";
 
 		$newRecord = [
 			'module' 		=> $this->_module,
