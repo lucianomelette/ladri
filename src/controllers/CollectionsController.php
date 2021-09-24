@@ -361,7 +361,10 @@ class CollectionsController extends Controller
 	{
 		$pushNotifController = $this->container['PushNotificationsController'];
 
-		$notification = "El {$data['expiration_at']} vence el cheque No. {$date['number']}";
+		$expAt = date('d/m/Y', strtotime($data['expiration_at']));
+		$number = $data['number'];
+		$bankName = 'VARIABLE NOMBRE BANCO';
+		$notification = "El {$expAt} vence el cheque No. {$number} del Banco {$bankName}";
 
 		$newRecord = [
 			'module' 		=> $this->_module,
